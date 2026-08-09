@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import {
   REFERRAL_REWARDS,
   buildReferralMessage,
+  normalizeReferralCode,
 } from "@/lib/api/referrals";
 import type { ReferralEvent, ReferralStats } from "@/lib/api/types";
 
@@ -30,12 +31,18 @@ interface Props {
  * clipboard when neither is available.
  */
 export function ReferralPanel({ stats, events }: Props) {
-  const message = buildReferralMessage(stats.referralCode);
+  // Normalise the code on read. The backend migration strips
+  // `PM-` + dashes on rollout, but until it lands in prod some
+  // users' stored codes are still `PM-XXXX-YYY`. Doing it here
+  // means the display, the clipboard copy, the WhatsApp deep-link
+  // message, and the aria-label all match.
+  const displayCode = normalizeReferralCode(stats.referralCode);
+  const message = buildReferralMessage(displayCode);
   const [copied, setCopied] = useState(false);
 
   const copyCode = async () => {
     try {
-      await navigator.clipboard.writeText(stats.referralCode);
+      await navigator.clipboard.writeText(displayCode);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -79,9 +86,9 @@ export function ReferralPanel({ stats, events }: Props) {
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <div
             className="flex-1 min-w-0 flex items-center justify-center sm:justify-start px-4 py-3 rounded-2xl bg-yellow-soft border-2 border-orange/40 font-display text-[28px] sm:text-[32px] tracking-[0.3em] text-orange"
-            aria-label={`Your referral code is ${stats.referralCode.split("").join(" ")}`}
+            aria-label={`Your referral code is ${displayCode.split("").join(" ")}`}
           >
-            {stats.referralCode}
+            {displayCode}
           </div>
           <button
             type="button"

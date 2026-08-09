@@ -46,6 +46,24 @@ export const REFERRAL_REWARDS = {
 export const REFERRAL_SHARE_TEMPLATE =
   "Join me on Bondzi Ghana and ace your exams. Use my code {code} when you sign up — we both earn XP. https://bondzi.online";
 
+/**
+ * Normalise a referral code for display + sharing. Strips the legacy
+ * `PM-` prefix and any dashes so pre-migration codes stored in the
+ * DB read the same as new ones on-screen. Safe to run on already-
+ * normalised codes (no-op). Kept here so every consumer — panel,
+ * clipboard copy, share message — goes through the same funnel.
+ */
+export function normalizeReferralCode(code: string): string {
+  return (code ?? "")
+    .trim()
+    .toUpperCase()
+    .replace(/^PM-/, "")
+    .replace(/-/g, "");
+}
+
 export function buildReferralMessage(code: string): string {
-  return REFERRAL_SHARE_TEMPLATE.replace("{code}", code);
+  return REFERRAL_SHARE_TEMPLATE.replace(
+    "{code}",
+    normalizeReferralCode(code),
+  );
 }
