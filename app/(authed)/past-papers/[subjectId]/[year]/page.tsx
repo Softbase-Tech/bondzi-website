@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/config";
 import { getSubject } from "@/lib/api/subjects";
-import { createExam } from "@/lib/api/exams";
 import { PastPaperLauncher } from "./PastPaperLauncher";
 
 interface Props {
@@ -40,27 +39,17 @@ export default async function PastPaperLauncherPage({ params }: Props) {
     redirect("/past-papers");
   }
 
-  // Server action bound to the launcher's Start button.
-  async function start(): Promise<void> {
-    "use server";
-    const s = await auth();
-    if (!s?.accessToken) redirect("/login");
-    const exam = await createExam(s.accessToken, {
-      mode: "past_paper",
-      subjectFilter: {
-        subjectIds: [subjectId],
-        years: [yearNum],
-      },
-    });
-    redirect(`/exam/${exam.id}`);
-  }
-
+  // Start is client-side so we can catch 403 (entitlement missing for
+  // elective subjects) and route the user into the paywall via
+  // handlePaywallError — server actions swallow the specific error in
+  // production and surface a redacted "Server Components render"
+  // message that no user can act on.
   return (
     <PastPaperLauncher
+      subjectId={subject.id}
       subjectName={subject.name}
       subjectCode={subject.code}
       year={yearNum}
-      onStart={start}
     />
   );
 }

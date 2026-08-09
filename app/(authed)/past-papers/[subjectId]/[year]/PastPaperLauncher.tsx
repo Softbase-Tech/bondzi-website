@@ -2,38 +2,80 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, Calendar, BookOpenText, Clock } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { api } from "@/lib/api/client";
+import { handlePaywallError } from "@/lib/paywall";
+import type { ExamSession } from "@/lib/api/types";
 
 interface Props {
+  subjectId: string;
   subjectName: string;
   subjectCode: string;
   year: number;
-  onStart: () => Promise<void>;
 }
 
 /**
- * Client-side launcher card. Shows the paper's headline info and a
- * primary Start button. Uses `useTransition` around the server action
- * so the Start button can show a loading state while the exam row is
- * being created — non-trivial when the backend fans out subject +
- * question fetches on that endpoint.
+ * Client-side launcher card. Two reasons the Start button lives on the
+ * client (not in a server action):
+ *
+ *   1. We need to catch 403 / 429 from POST /exams and route the user
+ *      to /subscription/plans instead of surfacing Next's redacted
+ *      "Server Components render error" toast. Server actions swallow
+ *      the specific status code.
+ *   2. `useTransition` gives us a loading state on the Start button
+ *      while the exam row is being created.
+ *
+ * The "All years" back link uses the SUBJECT UUID (`subjectId`), not
+ * the human-readable code — the code (e.g. WASSCE_PHYSICS) is not a
+ * valid `/subjects/:id` param on the backend and 400s the year page.
  */
 export function PastPaperLauncher({
+  subjectId,
   subjectName,
   subjectCode,
   year,
-  onStart,
 }: Props) {
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+
+  const onStart = () => {
+    setError(null);
+    const returnTo = `/past-papers/${subjectId}/${year}`;
+    startTransition(async () => {
+      try {
+        const exam = await api<ExamSession>("/exams", {
+          method: "POST",
+          body: {
+            mode: "past_paper",
+            subjectFilter: {
+              subjectIds: [subjectId],
+              years: [year],
+            },
+          },
+        });
+        router.push(`/exam/${exam.id}`);
+      } catch (err) {
+        if (handlePaywallError(err, (href) => router.push(href), returnTo)) {
+          return;
+        }
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Couldn't start the paper. Try again.",
+        );
+      }
+    });
+  };
 
   return (
     <div className="max-w-[720px] mx-auto space-y-8">
       <div>
         <Link
-          href={`/past-papers/${encodeURIComponent(subjectCode)}`}
+          href={`/past-papers/${encodeURIComponent(subjectId)}`}
           className="inline-flex items-center gap-1 text-[13px] font-medium text-ink-mute hover:text-ink transition-colors"
         >
           <ChevronLeft size={14} /> All years
@@ -79,30 +121,7 @@ export function PastPaperLauncher({
         ) : null}
 
         <div className="mt-6">
-          <Button
-            block
-            size="lg"
-            loading={pending}
-            onClick={() => {
-              setError(null);
-              // Server actions can't throw a caught error client-side
-              // in a normal try/catch — Next-15+ wraps rejections in a
-              // synthetic error. Best-effort: capture and surface if
-              // the action calls back into client via a Promise
-              // rejection.
-              startTransition(async () => {
-                try {
-                  await onStart();
-                } catch (err) {
-                  setError(
-                    err instanceof Error
-                      ? err.message
-                      : "Couldn't start the exam. Try again.",
-                  );
-                }
-              });
-            }}
-          >
+          <Button block size="lg" loading={pending} onClick={onStart}>
             Start paper
           </Button>
         </div>

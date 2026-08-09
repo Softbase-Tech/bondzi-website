@@ -31,7 +31,7 @@ export function MyRankBanner({ rows, currentUserId, periodLabel }: Props) {
           </div>
           <div className="min-w-0">
             <div className="font-display text-[16px] text-ink">
-              Not on the {periodLabel} board yet
+              Not on {periodLabel}&apos;s board yet
             </div>
             <p className="text-[13px] text-ink-soft mt-0.5">
               Answer a few questions to earn XP — you&apos;ll show up here

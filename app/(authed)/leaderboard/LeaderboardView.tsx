@@ -79,7 +79,12 @@ export function LeaderboardView({ currentUserId, initialWeekly }: Props) {
         <EmptyState periodLabel={periodLabel} />
       ) : (
         <>
-          <PodiumCard top={top3} currentUserId={currentUserId} />
+          {/* Only render the podium when at least one top-3 rank
+              exists. Otherwise the three empty columns read as broken
+              UI to a student who's just glancing at the page. */}
+          {top3.length > 0 ? (
+            <PodiumCard top={top3} currentUserId={currentUserId} />
+          ) : null}
           <MyRankBanner
             rows={rows}
             currentUserId={currentUserId}
@@ -170,7 +175,7 @@ function EmptyState({ periodLabel }: { periodLabel: string }) {
         <Trophy size={22} />
       </div>
       <p className="font-display text-[20px] text-ink">
-        The {periodLabel} board just reset
+        {capitalise(periodLabel)}&apos;s board just reset
       </p>
       <p className="mt-1.5 text-[13.5px] text-ink-soft max-w-[42ch] mx-auto">
         Be the first to earn XP — every question you answer gets you
@@ -178,4 +183,8 @@ function EmptyState({ periodLabel }: { periodLabel: string }) {
       </p>
     </Card>
   );
+}
+
+function capitalise(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }

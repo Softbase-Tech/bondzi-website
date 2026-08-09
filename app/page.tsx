@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { SiteHeader } from "../components/site/SiteHeader";
+import { appPath } from "../lib/urls";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -277,18 +279,24 @@ function Hero() {
             </p>
 
             <div className="mt-7 sm:mt-9 flex flex-wrap items-center gap-3">
-              <a
-                href="#get"
+              <Link
+                href={appPath("/register")}
                 className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
               >
-                Get Bondzi App
+                Try Bondzi free
                 <ArrowRight size={16} strokeWidth={2.25} />
-              </a>
-              <a
-                href="#inside"
+              </Link>
+              <Link
+                href={appPath("/login")}
                 className="inline-flex items-center gap-2 px-5 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[15px] whitespace-nowrap"
               >
-                See what&apos;s inside
+                Sign in
+              </Link>
+              <a
+                href="#get"
+                className="text-[14px] text-ink-soft hover:text-ink underline underline-offset-4"
+              >
+                or get the mobile app
               </a>
             </div>
 
@@ -889,6 +897,25 @@ function GetTheApp() {
               Direct APK · v1.0.0 · ~70&nbsp;MB. On Play Store soon. Enable
               install from unknown sources if your phone asks.
             </p>
+            <div className="mt-6 sm:mt-8 border-t border-rule pt-5 flex flex-wrap items-center gap-3">
+              <span className="text-[13px] text-ink-soft">
+                No phone handy? Study in your browser:
+              </span>
+              <Link
+                href={appPath("/register")}
+                className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-orange hover:text-orange-deep underline underline-offset-4 whitespace-nowrap"
+              >
+                Create account
+                <ArrowUpRight size={14} strokeWidth={2.25} />
+              </Link>
+              <span className="text-ink-mute">·</span>
+              <Link
+                href={appPath("/login")}
+                className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-orange hover:text-orange-deep underline underline-offset-4 whitespace-nowrap"
+              >
+                Sign in
+              </Link>
+            </div>
           </div>
           <div className="lg:col-span-5 order-1 lg:order-2">
             <PhoneMock />
