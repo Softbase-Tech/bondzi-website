@@ -233,6 +233,7 @@ export type ExamMode =
   | "practice"
   | "topic_drill"
   | "pm_test"
+  | "mock_exam"
   | "srs_review";
 
 export interface ExamSession {
@@ -296,4 +297,39 @@ export interface Explanation {
   generatedAt: string;
   upvotes?: number;
   downvotes?: number;
+}
+
+// --- Quiz (PM Test) + Syllabus catalogue -----------------------------------
+
+/**
+ * Row on the `/pm-test/subjects` endpoint — one per subject the
+ * signed-in student can take an adaptive Quiz session on. `accuracy`
+ * arrives from the backend as 0..1 (unlike the other endpoints which
+ * ship 0..100); we pass it through as-is because the UI uses it
+ * directly as a fraction.
+ */
+export interface PmTestSubjectSummary {
+  subjectId: string;
+  subjectName: string;
+  iconSlug?: string | null;
+  activeQuestionCount: number;
+  lastAttemptedAt: string | null;
+  accuracy: number | null;
+}
+
+/**
+ * A single syllabus-catalogue topic — used by the Level Test picker.
+ * Different from `Topic` (which is a subject's question-bank grouping);
+ * syllabus topics are curated by admin against the WAEC syllabus and
+ * flow into pm_test question generation.
+ */
+export interface SyllabusTopic {
+  id: string;
+  subjectId: string;
+  examType: ExamType;
+  formLevel: 1 | 2 | 3;
+  title: string;
+  description: string | null;
+  sortOrder: number;
+  isActive: boolean;
 }

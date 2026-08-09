@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/config";
 import { AuthedHeader } from "@/components/authed/AuthedHeader";
+import { BottomTabBar } from "@/components/authed/BottomTabBar";
 import { VerifyEmailBanner } from "@/components/authed/VerifyEmailBanner";
 import { SessionErrorGuard } from "./SessionErrorGuard";
 
@@ -33,10 +34,11 @@ export default async function AuthedLayout({ children }: { children: ReactNode }
       <AuthedHeader />
       <main
         id="main"
-        className="flex-1 mx-auto w-full max-w-[1280px] px-5 sm:px-6 lg:px-10 py-6 sm:py-10"
+        className="flex-1 mx-auto w-full max-w-[1280px] px-5 sm:px-6 lg:px-10 py-6 sm:py-10 pb-[calc(env(safe-area-inset-bottom)+80px)] md:pb-10"
       >
         {children}
       </main>
+      <BottomTabBar />
     </div>
   );
 }

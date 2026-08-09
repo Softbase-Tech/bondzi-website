@@ -2,12 +2,20 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ChevronDown, LogOut, User as UserIcon, Settings } from "lucide-react";
+import {
+  ChevronDown,
+  LogOut,
+  User as UserIcon,
+  Settings,
+} from "lucide-react";
 import { toast } from "sonner";
 import { marketingPath, POST_LOGOUT_DEFAULT_PATH } from "@/lib/urls";
 import { logout as apiLogout } from "@/lib/api/auth";
+import { AUTHED_NAV } from "./nav-items";
+import { cn } from "@/lib/utils";
 
 /**
  * Top bar for the authed area. Kept minimal in Phase 1 — logo on the
@@ -24,6 +32,7 @@ import { logout as apiLogout } from "@/lib/api/auth";
  */
 export function AuthedHeader() {
   const { data: session } = useSession();
+  const pathname = usePathname();
   const profile = session?.profile;
   const initials = getInitials(profile?.fullName ?? session?.user?.name ?? "");
 
@@ -60,6 +69,32 @@ export function AuthedHeader() {
             Bondzi
           </span>
         </Link>
+
+        {/* Desktop nav — hidden on mobile (mobile uses BottomTabBar). */}
+        <nav
+          aria-label="Primary"
+          className="hidden md:flex items-center gap-0.5 flex-1 justify-center"
+        >
+          {AUTHED_NAV.map(({ href, label, Icon }) => {
+            const isActive = pathname === href || pathname?.startsWith(`${href}/`);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "inline-flex items-center gap-1.5 h-9 px-3 rounded-full text-[13px] font-medium transition-colors motion-reduce:transition-none",
+                  isActive
+                    ? "bg-yellow-soft/80 text-ink"
+                    : "text-ink-soft hover:text-ink hover:bg-yellow-soft/40",
+                )}
+              >
+                <Icon size={14} strokeWidth={2.25} />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </nav>
 
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
