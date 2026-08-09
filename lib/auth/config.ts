@@ -130,6 +130,8 @@ export const authConfig: NextAuthConfig = {
         email: { label: "Email", type: "email" },
         phone: { label: "Phone", type: "tel" },
         password: { label: "Password", type: "password" },
+        deviceId: { label: "Device ID", type: "text" },
+        deviceName: { label: "Device Name", type: "text" },
       },
       async authorize(credentials) {
         const email =
@@ -142,6 +144,18 @@ export const authConfig: NextAuthConfig = {
             : undefined;
         const password =
           typeof credentials?.password === "string" ? credentials.password : "";
+        // Backend requires `deviceId` (single-active-session enforcement)
+        // — we can't read it from a cookie here because NextAuth runs
+        // this callback server-side. LoginForm threads it in via the
+        // signIn() credentials.
+        const deviceId =
+          typeof credentials?.deviceId === "string" && credentials.deviceId.length > 0
+            ? credentials.deviceId
+            : undefined;
+        const deviceName =
+          typeof credentials?.deviceName === "string" && credentials.deviceName.length > 0
+            ? credentials.deviceName
+            : undefined;
         if ((!email && !phone) || !password) return null;
 
         try {
@@ -149,6 +163,8 @@ export const authConfig: NextAuthConfig = {
             email: email && email.length > 0 ? email : undefined,
             phone: phone && phone.length > 0 ? phone : undefined,
             password,
+            deviceId,
+            deviceName,
           });
           // Role gate: mobile is student-only; the web app follows the
           // same rule. Staff must use /admin.

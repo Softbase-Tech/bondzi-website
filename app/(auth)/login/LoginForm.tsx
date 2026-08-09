@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { detectAuthMode, normalizeGhanaPhone } from "@/lib/auth-input";
+import { getWebDeviceId, getWebDeviceName } from "@/lib/device";
 
 /**
  * Sign-in form. Accepts either email or phone in a single field — the
@@ -66,11 +67,20 @@ export function LoginForm() {
       email = identifier.trim().toLowerCase();
     }
 
+    // Device id has to be threaded through the credentials submit —
+    // NextAuth's authorize() runs on the server (no `document`), so
+    // we can't read the cookie in there. Backend rejects logins
+    // without one to enforce the single-active-session rule.
+    const deviceId = getWebDeviceId() ?? "";
+    const deviceName = getWebDeviceName();
+
     try {
       const res = await signIn("credentials", {
         email,
         phone,
         password,
+        deviceId,
+        deviceName,
         redirect: false,
       });
       if (res?.ok) {

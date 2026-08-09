@@ -11,10 +11,19 @@ import type { AuthResponse, SafeUser, TokenPair } from "./types";
  * helper which reads the session would loop.
  */
 
+/**
+ * `POST /auth/login` — backend requires `deviceId` either via the
+ * `X-Device-ID` header or in the body. NextAuth's authorize() runs
+ * server-side (no browser cookies to read), so we forward it in the
+ * body and let the client-side call site (LoginForm) supply the
+ * value from `getWebDeviceId()`.
+ */
 export async function login(input: {
   email?: string;
   phone?: string;
   password: string;
+  deviceId?: string;
+  deviceName?: string;
 }): Promise<AuthResponse> {
   return requestRaw<AuthResponse>("/auth/login", {
     method: "POST",
@@ -35,6 +44,8 @@ export async function register(input: {
   referralCode?: string;
   schoolName?: string;
   region?: string;
+  deviceId?: string;
+  deviceName?: string;
 }): Promise<AuthResponse> {
   return requestRaw<AuthResponse>("/auth/register", {
     method: "POST",

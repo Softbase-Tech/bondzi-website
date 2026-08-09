@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Dialog, DialogActions } from "@/components/ui/Dialog";
 import { register, requestEmailOtp } from "@/lib/api/auth";
+import { getWebDeviceId, getWebDeviceName } from "@/lib/device";
 import { ApiError } from "@/lib/api/client";
 import {
   MIN_PASSWORD_LENGTH,
@@ -158,6 +159,12 @@ export function RegisterFlow() {
   async function submitProfile() {
     if (!readyToSubmit || submitting) return;
     setSubmitting(true);
+    // Backend requires `deviceId` on register + login (single-active-
+    // session gate). LoginForm has the same thread — see the note in
+    // lib/api/auth.ts login().
+    const deviceId = getWebDeviceId() ?? "";
+    const deviceName = getWebDeviceName();
+
     try {
       await register({
         fullName: fullName.trim(),
@@ -168,6 +175,8 @@ export function RegisterFlow() {
         examType: examType as ExamType,
         gender: gender as Gender,
         dateOfBirth: dateOfBirthIso as string,
+        deviceId,
+        deviceName,
         ...(needsFormLevel && formLevel !== null ? { formLevel } : {}),
         ...(referralCode.trim() ? { referralCode: referralCode.trim() } : {}),
       });
@@ -178,6 +187,8 @@ export function RegisterFlow() {
       const signInResult = await signIn("credentials", {
         email,
         password,
+        deviceId,
+        deviceName,
         redirect: false,
       });
       if (signInResult?.ok) {
