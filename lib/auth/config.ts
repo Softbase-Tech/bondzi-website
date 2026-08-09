@@ -192,8 +192,35 @@ export const authConfig: NextAuthConfig = {
      * Runs on every request to /api/auth/session and on every
      * sign-in. Owns the refresh cycle: if the stored access token is
      * about to expire, hit /auth/refresh and store the new pair.
+     *
+     * Also handles the explicit `update` trigger fired by
+     * `useSession().update(...)` — used today by the exam-type switch
+     * screen, which receives a brand-new token pair from
+     * `PATCH /auth/me/exam-type` and needs to swap the session
+     * tokens without a full sign-out + sign-in.
      */
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      // Explicit update from the client with a fresh token pair and/or
+      // profile snapshot. Trust it — the client only invokes this after
+      // a successful backend mutation. Merge in whatever was supplied
+      // and leave the rest of the token untouched.
+      if (trigger === "update" && session && typeof session === "object") {
+        const patch = session as {
+          accessToken?: string;
+          refreshToken?: string;
+          accessExpiresAt?: string;
+          refreshExpiresAt?: string;
+          profile?: SafeUser;
+        };
+        if (patch.accessToken) token.accessToken = patch.accessToken;
+        if (patch.refreshToken) token.refreshToken = patch.refreshToken;
+        if (patch.accessExpiresAt) token.accessExpiresAt = patch.accessExpiresAt;
+        if (patch.refreshExpiresAt) token.refreshExpiresAt = patch.refreshExpiresAt;
+        if (patch.profile) token.profile = patch.profile;
+        delete (token as { error?: string }).error;
+        return token;
+      }
+
       // First call after sign-in: `user` is populated from
       // Credentials.authorize.
       if (user) {

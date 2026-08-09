@@ -1,5 +1,5 @@
-import { requestRaw } from "./client";
-import type { AuthResponse, TokenPair } from "./types";
+import { api, requestRaw } from "./client";
+import type { AuthResponse, SafeUser, TokenPair } from "./types";
 
 /**
  * Auth service — the endpoints the NextAuth Credentials provider
@@ -123,5 +123,67 @@ export async function logout(
     body: refreshToken ? { refreshToken } : {},
     accessToken,
     raw: true,
+  });
+}
+
+/**
+ * Sign the user out of every device session (client-side call — no
+ * refresh-token arg because backend uses `user.id` from the JWT to
+ * revoke everything).
+ */
+export async function logoutAll(): Promise<void> {
+  await api<void>("/auth/logout-all", { method: "POST", body: {}, raw: true });
+}
+
+/**
+ * `PATCH /users/me/password` — requires the CURRENT password.
+ * Backend returns 204 on success; 401 when the current password is
+ * wrong or the account has no password hash (Google-only); 400 when
+ * the new password equals the current one.
+ */
+export async function changePassword(input: {
+  currentPassword: string;
+  newPassword: string;
+}): Promise<void> {
+  await api<void>("/users/me/password", {
+    method: "PATCH",
+    body: input,
+    raw: true,
+  });
+}
+
+export type ExamType = "bece" | "wassce" | "novdec";
+
+/**
+ * `PATCH /auth/me/exam-type` — throttled 3/hour by the backend.
+ * Returns fresh tokens ONLY when examType actually changed (the JWT
+ * bakes examType + per-level entitlement). formLevel-only changes
+ * return `tokens: null`, so the caller doesn't need to rotate.
+ */
+export async function updateExamType(input: {
+  examType: ExamType;
+  formLevel: number | null;
+}): Promise<{ user: SafeUser; tokens: TokenPair | null }> {
+  return api<{ user: SafeUser; tokens: TokenPair | null }>(
+    "/auth/me/exam-type",
+    { method: "PATCH", body: input },
+  );
+}
+
+/**
+ * `GET /auth/username/available` — public, rate-limited. Returns
+ * `available: false` with a machine-readable reason so the form can
+ * render specific copy.
+ */
+export interface UsernameAvailability {
+  available: boolean;
+  reason?: "too_short" | "too_long" | "invalid_chars" | "reserved" | "taken";
+  message?: string;
+}
+export async function checkUsernameAvailable(
+  username: string,
+): Promise<UsernameAvailability> {
+  return requestRaw<UsernameAvailability>("/auth/username/available", {
+    query: { q: username },
   });
 }

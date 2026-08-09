@@ -1,5 +1,5 @@
-import { apiServer } from "./client";
-import type { SubjectProgress, UserStats } from "./types";
+import { api, apiServer } from "./client";
+import type { SafeUser, SubjectProgress, UserStats } from "./types";
 
 /**
  * Users domain — the read side of the profile / dashboard. Writes
@@ -124,4 +124,95 @@ export async function getSelectedSubjectIds(
     "/users/me/subjects",
   );
   return res.subjectIds ?? [];
+}
+
+// --- Settings mutations ----------------------------------------------------
+
+/**
+ * `PATCH /users/me` — updates the whitelisted profile fields. Backend
+ * rejects any extra fields (400 forbidNonWhitelisted). Returns the
+ * refreshed SafeUser.
+ */
+export interface UpdateProfilePayload {
+  fullName?: string;
+  formLevel?: 1 | 2 | 3;
+  schoolName?: string;
+  region?: string;
+  avatarUrl?: string;
+}
+export async function updateProfile(
+  payload: UpdateProfilePayload,
+): Promise<SafeUser> {
+  return api<SafeUser>("/users/me", { method: "PATCH", body: payload });
+}
+
+/**
+ * `PATCH /users/me/username` — enforces the 90-day cooldown after the
+ * first change. Case-only re-cases don't consume the cooldown.
+ */
+export async function updateUsername(
+  username: string,
+): Promise<{ username: string; usernameChangedAt: string | null }> {
+  return api<{ username: string; usernameChangedAt: string | null }>(
+    "/users/me/username",
+    { method: "PATCH", body: { username } },
+  );
+}
+
+/**
+ * `PATCH /users/me/email-preferences` — all fields optional; undefined
+ * means "leave alone". Backend returns the post-update snapshot of
+ * all four flags.
+ */
+export interface EmailPreferences {
+  weeklyDigest: boolean;
+  streakNudges: boolean;
+  levelUp: boolean;
+  marketing: boolean;
+}
+export async function updateEmailPreferences(
+  payload: Partial<EmailPreferences>,
+): Promise<EmailPreferences> {
+  return api<EmailPreferences>("/users/me/email-preferences", {
+    method: "PATCH",
+    body: payload,
+  });
+}
+
+/**
+ * `PATCH /users/me/push-preferences` — same shape rules as email.
+ */
+export interface PushPreferences {
+  reminders: boolean;
+  streakNudges: boolean;
+}
+export async function updatePushPreferences(
+  payload: Partial<PushPreferences>,
+): Promise<PushPreferences> {
+  return api<PushPreferences>("/users/me/push-preferences", {
+    method: "PATCH",
+    body: payload,
+  });
+}
+
+/**
+ * `PUT /users/me/subjects` — replace-all semantics. Backend rejects
+ * more than 50 ids, inactive ids, and ids belonging to a different
+ * examType.
+ */
+export async function setSelectedSubjectIds(
+  subjectIds: string[],
+): Promise<{ subjectIds: string[] }> {
+  return api<{ subjectIds: string[] }>("/users/me/subjects", {
+    method: "PUT",
+    body: { subjectIds },
+  });
+}
+
+/**
+ * `DELETE /users/me` — soft-delete. Actual PII removal runs 30 days
+ * later. Backend returns 204.
+ */
+export async function deleteMyAccount(): Promise<void> {
+  await api<void>("/users/me", { method: "DELETE", raw: true });
 }
