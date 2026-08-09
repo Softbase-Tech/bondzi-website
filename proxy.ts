@@ -18,6 +18,9 @@ import { auth } from "@/lib/auth/config";
  *                            to app.bondzi.online/…
  *
  *   app.bondzi.online     →  serves /login /register /dashboard etc.
+ *   www.app.bondzi.online →  same behaviour — both bare and www-prefixed
+ *                            forms are treated as app hosts so whichever
+ *                            side Vercel canonicalises to also works.
  *                            redirects /  (unauthed) → /login
  *                                       (authed)   → /dashboard
  *                            redirects /blog/*  → bondzi.online/blog/*
@@ -80,8 +83,14 @@ export default auth((req: NextRequest & { auth: unknown }) => {
     req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
   const host = forwardedHost.toLowerCase().split(":")[0];
 
-  const isMarketingHost = host === "bondzi.online" || host === "www.bondzi.online";
-  const isAppHost = host === "app.bondzi.online";
+  const isMarketingHost =
+    host === "bondzi.online" || host === "www.bondzi.online";
+  // Both bare and www-prefixed forms of the app subdomain resolve to
+  // the same project. Whichever one Vercel serves the project on (and
+  // whichever one redirects to the other) both need to trigger the
+  // app-host branch below so the routing works either way round.
+  const isAppHost =
+    host === "app.bondzi.online" || host === "www.app.bondzi.online";
 
   // -----------------------------------------------------------------
   // Marketing host: only marketing routes served here.
