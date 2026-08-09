@@ -177,3 +177,123 @@ export interface SubjectProgress {
     accuracy: number;
   }[];
 }
+
+// --- Questions & exam sessions --------------------------------------------
+
+export type Difficulty = "easy" | "medium" | "hard";
+export type QuestionType = "mcq" | "short_answer" | "true_false";
+
+export interface QuestionOption {
+  id: string;
+  label: string;
+  /** Plain text — the renderer falls back to this if `bodyHtml` is null. */
+  body: string;
+  /**
+   * Pre-sanitised HTML from the backend's markdown → HTML pipeline
+   * (KaTeX rendered inline). Trusted; rendered via
+   * `dangerouslySetInnerHTML`. Sanitisation and math pre-render happen
+   * on the backend so mobile + web share identical output.
+   */
+  bodyHtml?: string | null;
+  imageUrl?: string | null;
+}
+
+export interface QuestionStimulus {
+  id: string;
+  text: string;
+  /** Same trust rules as option `bodyHtml`. */
+  textHtml?: string | null;
+  imageUrl?: string | null;
+}
+
+export interface Question {
+  id: string;
+  subjectId: string;
+  topicId: string | null;
+  stimulusId?: string | null;
+  stimulus?: QuestionStimulus | null;
+  examType?: ExamType;
+  /** Plain text — the renderer falls back to this if `bodyHtml` is null. */
+  body: string;
+  /** Pre-sanitised HTML (see `QuestionOption.bodyHtml`). */
+  bodyHtml?: string | null;
+  type: QuestionType;
+  options: QuestionOption[];
+  correctAnswer?: string | null;
+  difficulty: Difficulty;
+  year: number | null;
+  paper?: string | null;
+  source?: string | null;
+  isVerified: boolean;
+  imageUrl?: string | null;
+}
+
+export type ExamMode =
+  | "past_paper"
+  | "practice"
+  | "topic_drill"
+  | "pm_test"
+  | "srs_review";
+
+export interface ExamSession {
+  id: string;
+  userId: string;
+  mode: ExamMode;
+  questionPool: "past_paper" | "pm_test";
+  questionCount: number;
+  durationSeconds: number | null;
+  startedAt: string;
+  completedAt: string | null;
+  abandonedAt: string | null;
+  score: number | null;
+  grade: string | null;
+  questions: Question[];
+  subjectIds: string[];
+}
+
+export interface ExamResult {
+  examId: string;
+  /** 0..100 */
+  score: number;
+  grade: string;
+  totalQuestions: number;
+  correctCount: number;
+  wrongCount: number;
+  skippedCount: number;
+  xpEarned: number;
+  durationSeconds: number;
+  streakMaintained: boolean;
+  byTopic: {
+    topicId: string;
+    topicName: string;
+    /** 0..1 */
+    accuracy: number;
+    correctCount: number;
+    totalCount: number;
+  }[];
+  wrongAnswers: {
+    questionId: string;
+    questionText: string;
+    yourAnswer: string | null;
+    correctAnswer: string;
+  }[];
+}
+
+export interface AnswerResponse {
+  isCorrect: boolean;
+  correctOptionId: string | null;
+}
+
+// --- Explanations ----------------------------------------------------------
+
+export interface Explanation {
+  questionId: string;
+  /** Raw markdown source. */
+  markdown: string;
+  /** Pre-rendered HTML (same trust rules as question bodyHtml). */
+  contentHtml?: string | null;
+  source: "ai" | "human";
+  generatedAt: string;
+  upvotes?: number;
+  downvotes?: number;
+}
