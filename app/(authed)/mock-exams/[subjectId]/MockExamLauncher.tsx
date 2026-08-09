@@ -9,8 +9,10 @@ import { Button } from "@/components/ui/Button";
 import { PaywallDialog } from "@/components/exam/PaywallDialog";
 import { handlePaywallError } from "@/lib/paywall";
 
+// House-rule: every exam is 40 questions (fewer only when the pool
+// is smaller). Practice is the one exception — the student picks.
 const MOCK_EXAM_DURATION_S = 3 * 60 * 60;
-const MOCK_EXAM_COUNT = 50;
+const MOCK_EXAM_COUNT = 40;
 
 interface Props {
   subjectId: string;

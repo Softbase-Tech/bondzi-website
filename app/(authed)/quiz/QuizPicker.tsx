@@ -18,7 +18,10 @@ const DIFFICULTIES: { key: Difficulty; label: string }[] = [
   { key: "hard", label: "Hard" },
   { key: "mixed", label: "Mixed" },
 ];
-const COUNTS = [10, 20, 30] as const;
+// Quiz sessions are fixed at 40 questions — same house-rule as
+// every other exam mode. Practice is the one exception where the
+// student picks their own count.
+const QUIZ_COUNT = 40;
 
 interface Props {
   subjects: PmTestSubjectSummary[];
@@ -42,7 +45,6 @@ interface Props {
 export function QuizPicker({ subjects, pro, examType }: Props) {
   const router = useRouter();
   const [subjectId, setSubjectId] = useState<string | null>(null);
-  const [count, setCount] = useState<number>(20);
   const [difficulty, setDifficulty] = useState<Difficulty>("mixed");
   const [pending, startTransition] = useTransition();
   const [paywallOpen, setPaywallOpen] = useState(false);
@@ -133,21 +135,8 @@ export function QuizPicker({ subjects, pro, examType }: Props) {
                   ))}
                 </div>
               </div>
-              <div>
-                <div className="text-[13px] font-medium uppercase tracking-widest text-ink-mute mb-2">
-                  Questions
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {COUNTS.map((n) => (
-                    <Chip
-                      key={n}
-                      selected={count === n}
-                      onClick={() => setCount(n)}
-                    >
-                      {n}
-                    </Chip>
-                  ))}
-                </div>
+              <div className="text-[12.5px] text-ink-soft">
+                Every quiz session is {QUIZ_COUNT} questions.
               </div>
               {error ? (
                 <p className="text-[13px] font-medium text-red-600">{error}</p>
@@ -169,7 +158,7 @@ export function QuizPicker({ subjects, pro, examType }: Props) {
                         body: {
                           mode: "pm_test",
                           subjectFilter: { subjectIds: [subjectId] },
-                          questionCount: count,
+                          questionCount: QUIZ_COUNT,
                           // Backend accepts difficulty only when
                           // explicit; omit 'mixed'.
                           ...(difficulty === "mixed"

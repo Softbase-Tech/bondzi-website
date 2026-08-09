@@ -55,6 +55,9 @@ export function PastPaperLauncher({
               subjectIds: [subjectId],
               years: [year],
             },
+            // House-rule: every exam caps at 40 questions. When the
+            // year's pool has fewer, backend returns what's there.
+            questionCount: 40,
           },
         });
         router.push(`/exam/${exam.id}`);

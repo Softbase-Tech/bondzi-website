@@ -11,7 +11,9 @@ import { Button } from "@/components/ui/Button";
 import { PaywallDialog } from "@/components/exam/PaywallDialog";
 import { cn } from "@/lib/utils";
 
-const COUNTS = [10, 20, 30] as const;
+// Every exam caps at 40 questions (fewer only when the pool is
+// smaller). Practice is the one exception — the student picks.
+const LEVEL_TEST_COUNT = 40;
 
 interface Props {
   subjectId: string;
@@ -40,7 +42,6 @@ export function LevelTestPicker({
 }: Props) {
   const router = useRouter();
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [count, setCount] = useState<number>(20);
   const [paywallOpen, setPaywallOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -77,7 +78,7 @@ export function LevelTestPicker({
               subjectIds: [subjectId],
               syllabusTopicIds: Array.from(selected),
             },
-            questionCount: count,
+            questionCount: LEVEL_TEST_COUNT,
             difficulty: "mixed",
           },
         });
@@ -174,28 +175,9 @@ export function LevelTestPicker({
           )}
         </div>
 
-        <div>
-          <div className="text-[13px] font-medium uppercase tracking-widest text-ink-mute mb-2">
-            Questions
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {COUNTS.map((n) => (
-              <button
-                key={n}
-                type="button"
-                onClick={() => setCount(n)}
-                aria-pressed={count === n}
-                className={cn(
-                  "inline-flex items-center min-h-9 px-3.5 rounded-full text-[13.5px] font-medium border transition-colors motion-reduce:transition-none",
-                  count === n
-                    ? "border-orange bg-orange text-paper"
-                    : "border-rule-strong bg-paper text-ink hover:border-ink-soft",
-                )}
-              >
-                {n}
-              </button>
-            ))}
-          </div>
+        <div className="text-[12.5px] text-ink-soft">
+          Every level test is {LEVEL_TEST_COUNT} questions — drawn
+          from the topics you picked.
         </div>
 
         {error ? (
