@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth/config";
 import {
   listWinnersServer,
   listAllTimeWinnersServer,
+  currentWeekPeriodStart,
 } from "@/lib/api/winners";
 import type { WinnerRow, AllTimeWinnerRow } from "@/lib/api/types";
 import { WinnersView } from "./WinnersView";
@@ -26,8 +27,14 @@ export default async function WinnersPage() {
   const session = await auth();
   if (!session?.accessToken || !session.user) redirect("/login");
 
+  // Explicit periodStart so the "This week" tab only shows CURRENT
+  // week's winners. Without it, backend `listPast` returns up to 200
+  // rows across every past period ever awarded.
   const [weeklyRes, allTimeRes] = await Promise.allSettled([
-    listWinnersServer(session.accessToken, { periodType: "weekly" }),
+    listWinnersServer(session.accessToken, {
+      periodType: "weekly",
+      periodStart: currentWeekPeriodStart(),
+    }),
     listAllTimeWinnersServer(session.accessToken),
   ]);
   const initialWeekly: WinnerRow[] =

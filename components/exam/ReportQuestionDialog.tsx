@@ -13,6 +13,13 @@ interface Props {
   onOpenChange: (open: boolean) => void;
   questionId: string;
   questionNumber?: number;
+  /**
+   * Fires after a successful `POST /questions/:id/flag` call. The
+   * ExamRunner uses this to also mark the question client-side (so
+   * the nav grid pin lights up) — a single flag action now covers
+   * both "admin sees this" and "student's own visual reminder".
+   */
+  onReported?: (questionId: string, reason: FlagReason) => void;
 }
 
 const REASONS: { key: FlagReason; label: string; hint: string }[] = [
@@ -49,16 +56,22 @@ const REASONS: { key: FlagReason; label: string; hint: string }[] = [
 ];
 
 /**
- * Reports a question to admins via `POST /questions/:id/flag`. This
- * is distinct from the runner's "Flag for review" bookmark — that
- * one is a personal client-side reminder; this one is a real report
- * admins triage.
+ * Flag a question for admin review via `POST /questions/:id/flag`.
+ * The student picks a reason (wrong answer / typo / bad image /
+ * outdated / duplicate / other) + optional note; the payload lands
+ * in the admin question-review queue.
+ *
+ * The runner mirrors a successful flag into its own `marksForReview`
+ * Set (via `onReported`) so the nav grid pin lights up — a single
+ * action covers "admin sees this" AND "student's own visual
+ * reminder" that they've flagged it.
  */
 export function ReportQuestionDialog({
   open,
   onOpenChange,
   questionId,
   questionNumber,
+  onReported,
 }: Props) {
   const [reason, setReason] = useState<FlagReason | null>(null);
   const [note, setNote] = useState("");
@@ -72,9 +85,10 @@ export function ReportQuestionDialog({
           reason,
           note: note.trim() || undefined,
         });
-        toast.success("Reported — thanks for flagging.", {
-          description: "Our team will review this question.",
+        toast.success("Flagged for review — thanks.", {
+          description: "Our team will look into this question.",
         });
+        onReported?.(questionId, reason);
         setReason(null);
         setNote("");
         onOpenChange(false);

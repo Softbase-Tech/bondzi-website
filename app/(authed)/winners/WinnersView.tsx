@@ -4,7 +4,12 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Trophy, Share2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { listWinners, listAllTimeWinners } from "@/lib/api/winners";
+import {
+  listWinners,
+  listAllTimeWinners,
+  currentWeekPeriodStart,
+  currentMonthPeriodStart,
+} from "@/lib/api/winners";
 import type {
   AllTimeWinnerRow,
   LeaderboardPeriodType,
@@ -38,16 +43,24 @@ export function WinnersView({
   initialAllTime,
 }: Props) {
   const [tab, setTab] = useState<Tab>("weekly");
+  // Backend `listPast` returns every past period when no
+  // `periodStart` is passed. Pin the This-Week / This-Month tabs to
+  // the CURRENT period so they only show winners actually awarded in
+  // that window.
+  const weekStart = currentWeekPeriodStart();
+  const monthStart = currentMonthPeriodStart();
 
   const weekly = useQuery({
-    queryKey: ["winners", "weekly"] as const,
-    queryFn: () => listWinners({ periodType: "weekly" }),
+    queryKey: ["winners", "weekly", weekStart] as const,
+    queryFn: () =>
+      listWinners({ periodType: "weekly", periodStart: weekStart }),
     initialData: initialWeekly,
     staleTime: STALE_MS,
   });
   const monthly = useQuery({
-    queryKey: ["winners", "monthly"] as const,
-    queryFn: () => listWinners({ periodType: "monthly" }),
+    queryKey: ["winners", "monthly", monthStart] as const,
+    queryFn: () =>
+      listWinners({ periodType: "monthly", periodStart: monthStart }),
     enabled: tab === "monthly",
     staleTime: STALE_MS,
   });

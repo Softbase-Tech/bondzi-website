@@ -9,7 +9,6 @@ import {
   Clock,
   Check,
   Sparkles,
-  AlertTriangle,
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -95,6 +94,29 @@ export function ExamRunner({ session }: Props) {
   const questions = session.questions;
   const total = questions.length;
   const currentQuestion: Question | undefined = questions[currentIndex];
+
+  // Prompt on tab close / refresh / URL-bar navigation. Fires the
+  // native browser "Leave site?" dialog while the exam is in
+  // progress. This does NOT fire on Next.js in-app Link clicks —
+  // those navigate normally; every submitted answer is already
+  // persisted server-side per pick, so a mid-exam nav is only a
+  // "you might not finish" situation, not "you'll lose progress".
+  // The Leave button below still shows an explicit abandon confirm.
+  useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Once the student has submitted the exam we don't need to
+      // gate the tab close; the result page can be reopened later.
+      if (submittingComplete) return;
+      e.preventDefault();
+      // Setting returnValue is what most browsers actually check.
+      // Modern Chrome/Firefox ignore the string content and show
+      // their own generic copy — the important thing is a truthy
+      // returnValue.
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [submittingComplete]);
 
   // Countdown timer (guarded: only ticks for timed exams). Auto-submits
   // when time hits zero.
@@ -203,16 +225,20 @@ export function ExamRunner({ session }: Props) {
     setCurrentIndex(idx);
     setNavOpen(false);
   }, []);
-  const toggleMark = useCallback(() => {
-    if (!currentQuestion) return;
-    const qid = currentQuestion.id;
+  /**
+   * Called by ReportQuestionDialog after a successful POST to
+   * /questions/:id/flag. Marks the question client-side so the nav
+   * grid pin lights up — a visual confirmation that the flag went
+   * through, tied to the same button the student pressed.
+   */
+  const onQuestionFlagged = useCallback((qid: string) => {
     setMarksForReview((prev) => {
+      if (prev.has(qid)) return prev;
       const next = new Set(prev);
-      if (next.has(qid)) next.delete(qid);
-      else next.add(qid);
+      next.add(qid);
       return next;
     });
-  }, [currentQuestion]);
+  }, []);
 
   async function handleComplete(reason: "manual" | "timeout") {
     if (submittingComplete) return;
@@ -393,30 +419,20 @@ export function ExamRunner({ session }: Props) {
           <Button
             variant={isMarked ? "primary" : "outline"}
             size="md"
-            onClick={toggleMark}
+            onClick={() => setReportOpen(true)}
             leftIcon={<Flag size={15} />}
             title={
               isMarked
-                ? "Unflag this question — it will drop from your review list."
-                : "Flag this question to come back to it before submitting."
+                ? "This question was flagged for admin review. Tap to add another note."
+                : "Flag this question — an admin will review it and fix any problems."
             }
             aria-label={
               isMarked
-                ? "Unflag question for review"
-                : "Flag question for review"
+                ? "This question has been flagged. Tap to flag again."
+                : "Flag this question for admin review"
             }
           >
             {isMarked ? "Flagged" : "Flag for review"}
-          </Button>
-          <Button
-            variant="ghost"
-            size="md"
-            onClick={() => setReportOpen(true)}
-            leftIcon={<AlertTriangle size={15} />}
-            title="Report a problem with this question — an admin will review."
-            aria-label="Report a problem with this question"
-          >
-            <span className="hidden sm:inline">Report</span>
           </Button>
         </div>
         <div className="flex items-center gap-2">
@@ -514,12 +530,17 @@ export function ExamRunner({ session }: Props) {
         </DialogActions>
       </Dialog>
 
-      {/* Abandon confirm */}
+      {/* Abandon confirm. Three real options, spelled out clearly
+          so a student doesn't lose work by accident:
+            - "Keep working" — dismiss the dialog and stay put.
+            - "Submit now" — finalise everything answered so far and
+              route to the result screen.
+            - "Discard session" — mark abandoned; no result, no XP. */}
       <Dialog
         open={confirmAbandonOpen}
         onOpenChange={setConfirmAbandonOpen}
         title="Leave this exam?"
-        description="Your answers so far are saved, but the session will be marked abandoned. You can start a fresh one from the subject page."
+        description="Every answer you've picked is already saved. You can submit now to see your result, or discard this session and start over later."
       >
         <DialogActions>
           <Button
@@ -528,8 +549,17 @@ export function ExamRunner({ session }: Props) {
           >
             Keep working
           </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setConfirmAbandonOpen(false);
+              setConfirmSubmitOpen(true);
+            }}
+          >
+            Submit now
+          </Button>
           <Button variant="destructive" onClick={handleAbandon}>
-            Leave
+            Discard session
           </Button>
         </DialogActions>
       </Dialog>
@@ -544,15 +574,15 @@ export function ExamRunner({ session }: Props) {
         }}
       />
 
-      {/* Report a problem — admin-visible flag via POST
-          /questions/:id/flag. Distinct from the per-session
-          "Flag for review" bookmark; that one is only a client
-          bookmark for the student's own end-of-exam review. */}
+      {/* Flag-for-review dialog. Hits POST /questions/:id/flag with
+          the picked reason + note. On success the runner mirrors the
+          flag into `marksForReview` so the nav grid pin lights up. */}
       <ReportQuestionDialog
         open={reportOpen}
         onOpenChange={setReportOpen}
         questionId={currentQuestion.id}
         questionNumber={currentIndex + 1}
+        onReported={onQuestionFlagged}
       />
     </div>
   );
