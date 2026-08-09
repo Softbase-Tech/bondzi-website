@@ -1,7 +1,17 @@
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { renderMarkdown } from "@/lib/markdown";
 import type { Question, QuestionOption } from "@/lib/api/types";
+
+/*
+ * Question / option / stimulus image URLs come from the backend
+ * item bank and can point at Cloudinary, the API host, or any
+ * third-party CDN the admin uploads to. Next.js `<Image>` requires
+ * every host to be pre-registered in `next.config.ts` remotePatterns,
+ * and a mis-configured deploy hides images entirely with no visible
+ * error to the student. Plain `<img>` sidesteps the whitelist — we
+ * lose Next's optimizer for these specific images, which is fine
+ * because they're already sized reasonably at upload time.
+ */
 
 interface Props {
   question: Question;
@@ -53,13 +63,13 @@ export function QuestionRenderer({
             }}
           />
           {question.stimulus.imageUrl ? (
-            <div className="mt-3 relative w-full aspect-video">
-              <Image
+            <div className="mt-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={question.stimulus.imageUrl}
                 alt=""
-                fill
-                sizes="(min-width: 768px) 720px, 100vw"
-                className="object-contain rounded-lg"
+                className="w-full max-h-[420px] object-contain rounded-lg"
+                loading="lazy"
               />
             </div>
           ) : null}
@@ -78,13 +88,13 @@ export function QuestionRenderer({
       />
 
       {question.imageUrl ? (
-        <div className="mt-4 relative w-full aspect-video">
-          <Image
+        <div className="mt-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={question.imageUrl}
             alt=""
-            fill
-            sizes="(min-width: 768px) 720px, 100vw"
-            className="object-contain rounded-lg border border-rule"
+            className="w-full max-h-[520px] object-contain rounded-lg border border-rule"
+            loading="lazy"
           />
         </div>
       ) : null}
@@ -188,13 +198,13 @@ function OptionTile({
           dangerouslySetInnerHTML={{ __html: renderMarkdown(option.text) }}
         />
         {option.imageUrl ? (
-          <div className="mt-2 relative w-full max-w-xs aspect-video">
-            <Image
+          <div className="mt-2 max-w-xs">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={option.imageUrl}
               alt=""
-              fill
-              sizes="320px"
-              className="object-contain rounded-lg"
+              className="w-full max-h-[220px] object-contain rounded-lg"
+              loading="lazy"
             />
           </div>
         ) : null}

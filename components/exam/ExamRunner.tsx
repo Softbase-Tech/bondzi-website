@@ -34,6 +34,15 @@ interface LocalAnswer {
   submitting: boolean;
   /** Set after a successful submit — used by the review nav map. */
   finalised: boolean;
+  /**
+   * `POST /exams/:id/answers` returns `{ isCorrect, correctOptionId }`
+   * so we can reveal correct/wrong feedback inline the moment the
+   * student picks — same as mobile. Populated on successful submit
+   * only; failed submits leave these undefined and the runner falls
+   * back to a plain "selected" tile without correctness colouring.
+   */
+  isCorrect?: boolean;
+  correctOptionId?: string | null;
 }
 
 /**
@@ -122,7 +131,7 @@ export function ExamRunner({ session }: Props) {
       }));
 
       try {
-        await submitAnswer(session.id, {
+        const res = await submitAnswer(session.id, {
           questionId: qid,
           selectedOptionId: optionId,
           idempotencyKey,
@@ -139,6 +148,8 @@ export function ExamRunner({ session }: Props) {
             }),
             submitting: false,
             finalised: true,
+            isCorrect: res.isCorrect,
+            correctOptionId: res.correctOptionId,
           },
         }));
       } catch (err) {
@@ -286,13 +297,37 @@ export function ExamRunner({ session }: Props) {
         />
       </div>
 
-      {/* The question */}
+      {/* The question. Once the student picks and the server responds,
+          we reveal correct/wrong inline via `correctOptionId` — same as
+          mobile. Options stay tap-able so the student can change their
+          mind; every change re-submits and re-reveals. */}
       <QuestionRenderer
         question={currentQuestion}
         kicker={`Question ${currentIndex + 1} of ${total}`}
         selectedOptionId={currentAnswer?.selectedOptionId ?? null}
+        correctOptionId={
+          currentAnswer?.finalised
+            ? (currentAnswer.correctOptionId ?? null)
+            : null
+        }
         onSelect={handleSelect}
       />
+      {currentAnswer?.finalised && currentAnswer.isCorrect != null ? (
+        <div
+          className={cn(
+            "mt-4 rounded-xl px-4 py-3 text-[13.5px] font-medium",
+            currentAnswer.isCorrect
+              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+              : "bg-red-50 text-red-700 border border-red-200",
+          )}
+          role="status"
+          aria-live="polite"
+        >
+          {currentAnswer.isCorrect
+            ? "Correct — nice."
+            : "Not this one. The correct answer is highlighted in green."}
+        </div>
+      ) : null}
 
       {/* Bottom action row */}
       <div className="mt-8 flex items-center justify-between gap-2 flex-wrap">
@@ -311,8 +346,18 @@ export function ExamRunner({ session }: Props) {
             size="md"
             onClick={toggleMark}
             leftIcon={<Flag size={15} />}
+            title={
+              isMarked
+                ? "Unflag this question — it will drop from your review list."
+                : "Flag this question to come back to it before submitting."
+            }
+            aria-label={
+              isMarked
+                ? "Unflag question for review"
+                : "Flag question for review"
+            }
           >
-            {isMarked ? "Marked" : "Mark"}
+            {isMarked ? "Flagged" : "Flag for review"}
           </Button>
         </div>
         <div className="flex items-center gap-2">

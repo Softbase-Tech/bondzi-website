@@ -52,7 +52,11 @@ export default async function ExamResultPage({ params }: Props) {
   const examSession =
     sessionRes.status === "fulfilled" ? sessionRes.value : null;
 
-  const scoreFraction = Math.max(0, Math.min(1, result.score / 100));
+  // Backend serialiser (`toExamResultResponse`) ships `score` as a
+  // 0..1 ratio. Multiply by 100 for percentage display; use the raw
+  // ratio for the ring fill.
+  const scoreFraction = Math.max(0, Math.min(1, result.score));
+  const scorePercent = Math.round(scoreFraction * 100);
 
   return (
     <div className="max-w-[960px] mx-auto space-y-8">
@@ -63,7 +67,7 @@ export default async function ExamResultPage({ params }: Props) {
             Exam complete
           </p>
           <h1 className="mt-1 font-display text-[36px] sm:text-[48px] leading-[1.05] text-ink">
-            You scored {Math.round(result.score)}%
+            You scored {scorePercent}%
           </h1>
           <p className="mt-2 text-[15px] text-ink-soft">
             Grade{" "}
@@ -93,7 +97,7 @@ export default async function ExamResultPage({ params }: Props) {
           >
             <div className="text-center">
               <div className="font-display text-[42px] leading-none text-ink">
-                {Math.round(result.score)}
+                {scorePercent}
               </div>
               <div className="text-[11px] font-semibold uppercase tracking-widest text-ink-mute mt-1">
                 out of 100
@@ -180,40 +184,21 @@ export default async function ExamResultPage({ params }: Props) {
         </section>
       ) : null}
 
-      {/* Wrong-answer review — rich mode when we have the session, else compact */}
-      {examSession ? (
-        <section>
-          <h2 className="font-display text-[22px] text-ink mb-3">
-            Review your wrong answers
-          </h2>
-          <ReviewList result={result} questions={examSession.questions} />
-        </section>
-      ) : result.wrongAnswers.length > 0 ? (
-        <section>
-          <h2 className="font-display text-[22px] text-ink mb-3">
-            Wrong answers
-          </h2>
-          <ul className="space-y-3">
-            {result.wrongAnswers.map((row) => (
-              <Card key={row.questionId} className="p-4">
-                <p className="text-[14px] text-ink">{row.questionText}</p>
-                <div className="mt-2 grid gap-1 text-[12.5px]">
-                  {row.yourAnswer ? (
-                    <div className="text-red-600">
-                      Your answer: {row.yourAnswer}
-                    </div>
-                  ) : (
-                    <div className="text-ink-mute">Skipped</div>
-                  )}
-                  <div className="text-emerald-700">
-                    Correct answer: {row.correctAnswer}
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      {/*
+        Wrong-answer review — ReviewList handles both the rich path
+        (using the session's full questions[]) and the compact
+        fallback (per-row rendering when session is missing or a
+        specific question wasn't returned).
+      */}
+      <section>
+        <h2 className="font-display text-[22px] text-ink mb-3">
+          Review your wrong answers
+        </h2>
+        <ReviewList
+          result={result}
+          questions={examSession?.questions ?? []}
+        />
+      </section>
 
       <section className="pt-2">
         <Link
