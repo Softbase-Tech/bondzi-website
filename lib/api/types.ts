@@ -210,26 +210,24 @@ export interface SubjectProgress {
 export type Difficulty = "easy" | "medium" | "hard";
 export type QuestionType = "mcq" | "short_answer" | "true_false";
 
+/**
+ * Backend serialises questions with `text` (not `body`). The value is
+ * markdown with `$...$` math ALREADY expanded to inline SVG data URIs
+ * (`![](data:image/svg+xml;utf8,...)`), so the renderer just needs to
+ * convert the surrounding markdown to HTML — no separate math step.
+ */
 export interface QuestionOption {
   id: string;
   label: string;
-  /** Plain text — the renderer falls back to this if `bodyHtml` is null. */
-  body: string;
-  /**
-   * Pre-sanitised HTML from the backend's markdown → HTML pipeline
-   * (KaTeX rendered inline). Trusted; rendered via
-   * `dangerouslySetInnerHTML`. Sanitisation and math pre-render happen
-   * on the backend so mobile + web share identical output.
-   */
-  bodyHtml?: string | null;
+  /** Markdown with math already inlined as SVG data URIs. */
+  text: string;
   imageUrl?: string | null;
 }
 
 export interface QuestionStimulus {
   id: string;
+  /** Markdown with math already inlined as SVG data URIs. */
   text: string;
-  /** Same trust rules as option `bodyHtml`. */
-  textHtml?: string | null;
   imageUrl?: string | null;
 }
 
@@ -240,10 +238,8 @@ export interface Question {
   stimulusId?: string | null;
   stimulus?: QuestionStimulus | null;
   examType?: ExamType;
-  /** Plain text — the renderer falls back to this if `bodyHtml` is null. */
-  body: string;
-  /** Pre-sanitised HTML (see `QuestionOption.bodyHtml`). */
-  bodyHtml?: string | null;
+  /** Markdown with math already inlined as SVG data URIs. */
+  text: string;
   type: QuestionType;
   options: QuestionOption[];
   correctAnswer?: string | null;

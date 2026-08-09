@@ -22,6 +22,7 @@
     "clsx": "^2.1.1",
     "katex": "^0.18.2",
     "lucide-react": "^1.14.0",
+    "marked": "^18.0.9",
     "motion": "^13.0.0",
     "next": "16.2.6",
     "next-auth": "^5.0.0-beta.32",

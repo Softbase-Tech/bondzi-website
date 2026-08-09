@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { renderMarkdown } from "@/lib/markdown";
 import type { Question, QuestionOption } from "@/lib/api/types";
 
 interface Props {
@@ -45,16 +46,12 @@ export function QuestionRenderer({
           <div className="text-[11px] font-semibold uppercase tracking-widest text-ink-mute mb-2">
             Stimulus
           </div>
-          {question.stimulus.textHtml ? (
-            <div
-              className="prose-bondzi max-w-none text-[15px] leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: question.stimulus.textHtml }}
-            />
-          ) : (
-            <p className="text-[15px] leading-relaxed text-ink whitespace-pre-wrap">
-              {question.stimulus.text}
-            </p>
-          )}
+          <div
+            className="prose-bondzi max-w-none text-[15px] leading-relaxed"
+            dangerouslySetInnerHTML={{
+              __html: renderMarkdown(question.stimulus.text),
+            }}
+          />
           {question.stimulus.imageUrl ? (
             <div className="mt-3 relative w-full aspect-video">
               <Image
@@ -75,16 +72,10 @@ export function QuestionRenderer({
         </div>
       ) : null}
 
-      {question.bodyHtml ? (
-        <div
-          className="prose-bondzi max-w-none text-[17px] sm:text-[18px] leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: question.bodyHtml }}
-        />
-      ) : (
-        <p className="text-[17px] sm:text-[18px] leading-relaxed text-ink whitespace-pre-wrap">
-          {question.body}
-        </p>
-      )}
+      <div
+        className="prose-bondzi max-w-none text-[17px] sm:text-[18px] leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: renderMarkdown(question.text) }}
+      />
 
       {question.imageUrl ? (
         <div className="mt-4 relative w-full aspect-video">
@@ -192,16 +183,10 @@ function OptionTile({
         {option.label}
       </span>
       <div className="flex-1 min-w-0 pt-1">
-        {option.bodyHtml ? (
-          <div
-            className="prose-bondzi max-w-none text-[15px] leading-snug"
-            dangerouslySetInnerHTML={{ __html: option.bodyHtml }}
-          />
-        ) : (
-          <div className="text-[15px] leading-snug text-ink whitespace-pre-wrap">
-            {option.body}
-          </div>
-        )}
+        <div
+          className="prose-bondzi max-w-none text-[15px] leading-snug"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(option.text) }}
+        />
         {option.imageUrl ? (
           <div className="mt-2 relative w-full max-w-xs aspect-video">
             <Image

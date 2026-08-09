@@ -60,10 +60,10 @@ export function ReviewList({ result, questions }: Props) {
       <ul className="space-y-4">
         {rows.map(({ row, question }, index) => {
           const correctOption = question.options.find(
-            (o) => o.body === row.correctAnswer,
+            (o) => o.text === row.correctAnswer,
           );
           const yourOption = row.yourAnswer
-            ? question.options.find((o) => o.body === row.yourAnswer)
+            ? question.options.find((o) => o.text === row.yourAnswer)
             : null;
           return (
             <li key={row.questionId}>
