@@ -8,6 +8,9 @@ import {
   Flag,
   Clock,
   Check,
+  Sparkles,
+  AlertTriangle,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
@@ -22,6 +25,8 @@ import {
 } from "@/lib/api/exams";
 import type { ExamSession, Question } from "@/lib/api/types";
 import { QuestionRenderer } from "./QuestionRenderer";
+import { ExplanationSheet } from "./ExplanationSheet";
+import { ReportQuestionDialog } from "./ReportQuestionDialog";
 
 interface Props {
   session: ExamSession;
@@ -79,6 +84,10 @@ export function ExamRunner({ session }: Props) {
   const [confirmSubmitOpen, setConfirmSubmitOpen] = useState(false);
   const [confirmAbandonOpen, setConfirmAbandonOpen] = useState(false);
   const [navOpen, setNavOpen] = useState(false); // mobile-only "jump to" sheet
+  const [explanationQuestionId, setExplanationQuestionId] = useState<
+    string | null
+  >(null);
+  const [reportOpen, setReportOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number | null>(
     session.durationSeconds ?? null,
   );
@@ -114,6 +123,10 @@ export function ExamRunner({ session }: Props) {
     async (optionId: string) => {
       if (!currentQuestion) return;
       const qid = currentQuestion.id;
+      // Guard against a double-tap while the previous submit is still
+      // in flight — the option tiles are already disabled, but a
+      // programmatic call could still fire.
+      if (answers[qid]?.submitting) return;
       const idempotencyKey =
         typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
           ? crypto.randomUUID()
@@ -177,7 +190,7 @@ export function ExamRunner({ session }: Props) {
         toast.error("Couldn't submit answer", { description: message });
       }
     },
-    [currentQuestion, session.id],
+    [currentQuestion, session.id, answers],
   );
 
   const goPrev = useCallback(() => {
@@ -297,10 +310,12 @@ export function ExamRunner({ session }: Props) {
         />
       </div>
 
-      {/* The question. Once the student picks and the server responds,
-          we reveal correct/wrong inline via `correctOptionId` — same as
-          mobile. Options stay tap-able so the student can change their
-          mind; every change re-submits and re-reveals. */}
+      {/* The question. While a submit is in flight all options are
+          non-interactive, the tapped option shows a spinner in place
+          of its letter chip, and the others fade. Once the server
+          responds we reveal correct/wrong inline via
+          `correctOptionId` — same as mobile. Options stay tap-able
+          after the reveal so the student can change their mind. */}
       <QuestionRenderer
         question={currentQuestion}
         kicker={`Question ${currentIndex + 1} of ${total}`}
@@ -310,12 +325,30 @@ export function ExamRunner({ session }: Props) {
             ? (currentAnswer.correctOptionId ?? null)
             : null
         }
+        submitting={currentAnswer?.submitting ?? false}
         onSelect={handleSelect}
       />
+
+      {/* Submit-in-flight banner: reassures the student the tap
+          registered and the network is doing its thing. Sonner toasts
+          are too heavy for something that happens every question. */}
+      {currentAnswer?.submitting ? (
+        <div
+          className="mt-4 rounded-xl px-4 py-3 text-[13.5px] font-medium bg-yellow-soft/70 border border-orange/30 text-ink inline-flex items-center gap-2"
+          role="status"
+          aria-live="polite"
+        >
+          <Loader2 size={14} className="animate-spin text-orange" />
+          Checking your answer…
+        </div>
+      ) : null}
+
+      {/* Correct / wrong reveal. Only renders once the submit
+          resolved with a real isCorrect flag from the server. */}
       {currentAnswer?.finalised && currentAnswer.isCorrect != null ? (
         <div
           className={cn(
-            "mt-4 rounded-xl px-4 py-3 text-[13.5px] font-medium",
+            "mt-4 rounded-xl px-4 py-3 text-[13.5px] font-medium flex items-start gap-3 flex-wrap",
             currentAnswer.isCorrect
               ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
               : "bg-red-50 text-red-700 border border-red-200",
@@ -323,9 +356,25 @@ export function ExamRunner({ session }: Props) {
           role="status"
           aria-live="polite"
         >
-          {currentAnswer.isCorrect
-            ? "Correct — nice."
-            : "Not this one. The correct answer is highlighted in green."}
+          <div className="flex-1 min-w-0">
+            {currentAnswer.isCorrect
+              ? "Correct — nice."
+              : "Not this one. The correct answer is highlighted in green."}
+          </div>
+          {/* Explain button surfaces after a wrong pick — the
+              ExplanationSheet handles paywall gating on 402/403/429
+              so free-tier students get the upgrade prompt instead of
+              a confusing error. */}
+          {!currentAnswer.isCorrect ? (
+            <Button
+              variant="outline"
+              size="sm"
+              leftIcon={<Sparkles size={14} />}
+              onClick={() => setExplanationQuestionId(currentQuestion.id)}
+            >
+              Explain this
+            </Button>
+          ) : null}
         </div>
       ) : null}
 
@@ -358,6 +407,16 @@ export function ExamRunner({ session }: Props) {
             }
           >
             {isMarked ? "Flagged" : "Flag for review"}
+          </Button>
+          <Button
+            variant="ghost"
+            size="md"
+            onClick={() => setReportOpen(true)}
+            leftIcon={<AlertTriangle size={15} />}
+            title="Report a problem with this question — an admin will review."
+            aria-label="Report a problem with this question"
+          >
+            <span className="hidden sm:inline">Report</span>
           </Button>
         </div>
         <div className="flex items-center gap-2">
@@ -474,6 +533,27 @@ export function ExamRunner({ session }: Props) {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Explanation sheet — lazy-loads the AI explanation. Handles
+          the paywall gate internally for free-tier students. */}
+      <ExplanationSheet
+        questionId={explanationQuestionId}
+        open={explanationQuestionId != null}
+        onOpenChange={(open) => {
+          if (!open) setExplanationQuestionId(null);
+        }}
+      />
+
+      {/* Report a problem — admin-visible flag via POST
+          /questions/:id/flag. Distinct from the per-session
+          "Flag for review" bookmark; that one is only a client
+          bookmark for the student's own end-of-exam review. */}
+      <ReportQuestionDialog
+        open={reportOpen}
+        onOpenChange={setReportOpen}
+        questionId={currentQuestion.id}
+        questionNumber={currentIndex + 1}
+      />
     </div>
   );
 }

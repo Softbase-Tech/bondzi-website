@@ -34,9 +34,23 @@ export async function getQuestionDetail(id: string): Promise<Question> {
   return api<Question>(`/questions/${encodeURIComponent(id)}`);
 }
 
+/**
+ * Report a question to admins. Distinct from the client-only
+ * "Flag for review" bookmark in the exam runner — this one hits the
+ * backend `POST /questions/:id/flag` endpoint that admins triage
+ * from the internal question-review queue.
+ */
+export type FlagReason =
+  | "wrong_answer"
+  | "typo"
+  | "bad_image"
+  | "outdated"
+  | "duplicate"
+  | "other";
+
 export async function flagQuestion(
   id: string,
-  body: { reason: string; comment?: string },
+  body: { reason: FlagReason; note?: string },
 ): Promise<void> {
   await api<void>(`/questions/${encodeURIComponent(id)}/flag`, {
     method: "POST",

@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { renderMarkdown } from "@/lib/markdown";
 import type { Question, QuestionOption } from "@/lib/api/types";
@@ -20,6 +21,14 @@ interface Props {
   correctOptionId?: string | null;
   /** When true, options render as disabled radio-like tiles (review mode). */
   readOnly?: boolean;
+  /**
+   * True while an answer is being submitted to the backend. All
+   * options non-interactive during this window; the tapped option
+   * (`selectedOptionId`) shows a small spinner so the student
+   * knows their tap registered. This is a soft-lock — clicks are
+   * ignored, not swallowed with a visible error.
+   */
+  submitting?: boolean;
   /** When true, wraps the whole thing in a subtle border card. Result-review pages want this; the runner does its own framing. */
   framed?: boolean;
   onSelect?: (optionId: string) => void;
@@ -45,6 +54,7 @@ export function QuestionRenderer({
   selectedOptionId,
   correctOptionId,
   readOnly = false,
+  submitting = false,
   framed = false,
   onSelect,
   kicker,
@@ -117,6 +127,8 @@ export function QuestionRenderer({
                 selectedOptionId !== correctOptionId
               }
               readOnly={readOnly}
+              submitting={submitting}
+              isSubmittingThis={submitting && selectedOptionId === opt.id}
               onSelect={() => onSelect?.(opt.id)}
             />
           ))}
@@ -142,6 +154,8 @@ function OptionTile({
   isCorrect,
   isWrongPick,
   readOnly,
+  submitting,
+  isSubmittingThis,
   onSelect,
 }: {
   option: QuestionOption;
@@ -149,6 +163,8 @@ function OptionTile({
   isCorrect?: boolean;
   isWrongPick?: boolean;
   readOnly: boolean;
+  submitting?: boolean;
+  isSubmittingThis?: boolean;
   onSelect: () => void;
 }) {
   // Colour resolution priority:
@@ -164,6 +180,14 @@ function OptionTile({
         ? "border-orange bg-yellow-soft/60"
         : "border-rule-strong bg-paper hover:border-ink-soft";
 
+  // Non-tapped options fade slightly during a submit so the state
+  // shift reads clearly. The tapped option keeps full opacity and
+  // shows a spinner in place of its letter chip.
+  const disabledClass =
+    submitting && !isSubmittingThis
+      ? "opacity-60 cursor-not-allowed"
+      : "";
+
   const commonProps = {
     className: cn(
       "w-full text-left rounded-xl border-2 transition-colors motion-reduce:transition-none",
@@ -172,8 +196,10 @@ function OptionTile({
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
       stateClass,
       readOnly && "cursor-default",
+      disabledClass,
     ),
     "aria-pressed": selected,
+    "aria-busy": isSubmittingThis || undefined,
   } as const;
 
   const label = (
@@ -190,7 +216,11 @@ function OptionTile({
                 : "bg-yellow-soft text-ink",
         )}
       >
-        {option.label}
+        {isSubmittingThis ? (
+          <Loader2 size={14} className="animate-spin" aria-hidden="true" />
+        ) : (
+          option.label
+        )}
       </span>
       <div className="flex-1 min-w-0 pt-1">
         <div
@@ -217,7 +247,12 @@ function OptionTile({
   }
 
   return (
-    <button type="button" onClick={onSelect} {...commonProps}>
+    <button
+      type="button"
+      onClick={onSelect}
+      disabled={submitting}
+      {...commonProps}
+    >
       {label}
     </button>
   );
