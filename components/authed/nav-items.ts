@@ -6,6 +6,8 @@ import {
   Sparkles,
   Timer,
   GraduationCap,
+  Trophy,
+  Gift,
 } from "lucide-react";
 
 /**
@@ -66,6 +68,24 @@ export const AUTHED_NAV: NavItem[] = [
     href: "/level-tests",
     label: "Level test",
     Icon: GraduationCap,
+    mobileTab: false,
+  },
+  {
+    href: "/leaderboard",
+    label: "Leaderboard",
+    Icon: Trophy,
     mobileTab: true,
+  },
+  {
+    href: "/winners",
+    label: "Winners",
+    Icon: Sparkles,
+    mobileTab: false,
+  },
+  {
+    href: "/referral",
+    label: "Refer",
+    Icon: Gift,
+    mobileTab: false,
   },
 ];

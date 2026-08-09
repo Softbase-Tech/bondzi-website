@@ -333,3 +333,122 @@ export interface SyllabusTopic {
   sortOrder: number;
   isActive: boolean;
 }
+
+// --- Leaderboard -----------------------------------------------------------
+
+export type LeaderboardPeriodType = "weekly" | "monthly";
+
+/**
+ * Row on the backend `/leaderboard` array response. Backend caps at 100
+ * rows per period, ordered by `score DESC`. `username` takes precedence
+ * over `fullName` for display; treat `Student` as the ultimate fallback.
+ */
+export interface LeaderboardRow {
+  userId: string;
+  username: string | null;
+  fullName: string;
+  score: number;
+  rank: number;
+}
+
+/**
+ * Backend `/leaderboard/my-rank` response. Never called by mobile (it
+ * derives from the list) but useful for the "not on the list yet"
+ * empty-state message when the list itself is at capacity.
+ */
+export interface MyRankResponse {
+  userId: string;
+  rank: number | null;
+  weeklyXp: number;
+  total: number;
+  periodStart: string;
+  periodType: LeaderboardPeriodType;
+  scope: string;
+  examType: ExamType;
+}
+
+// --- Winners / Hall of Fame ------------------------------------------------
+
+/**
+ * Row from `/leaderboard/winners`. Winners are admin-selected (not
+ * automatic) — rank gaps can occur when anti-cheat rules disqualify a
+ * user, so never re-number the array client-side.
+ */
+export interface WinnerRow {
+  id: string;
+  userId: string;
+  userName: string;
+  username: string | null;
+  examType: ExamType;
+  periodType: LeaderboardPeriodType;
+  periodStart: string;
+  rank: number;
+  xpEarned: number;
+  xpIssued: boolean;
+  xpIssuedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  selectedAt: string | null;
+}
+
+/**
+ * Row from `/leaderboard/winners/all-time`. Aggregates lifetime wins per
+ * user — the actual "Hall of Fame" spine. Only rows with issued XP are
+ * counted so unclaimed selections don't inflate the board.
+ */
+export interface AllTimeWinnerRow {
+  userId: string;
+  fullName: string;
+  username: string | null;
+  examType: ExamType;
+  totalWins: number;
+  totalXpFromPrizes: number;
+}
+
+// --- Referrals -------------------------------------------------------------
+
+/**
+ * `/referrals/me` — the raw backend shape. Web presents derived fields
+ * (`pending`, share message, hardcoded rates) at the component layer
+ * instead of duplicating mobile's "massage into stats object" step.
+ */
+export interface ReferralStats {
+  referralCode: string;
+  referredCount: number;
+  qualifiedCount: number;
+  pendingCount: number;
+  referralQualified: boolean;
+}
+
+/**
+ * `/referrals/events` — a single referral event log entry. Backend does
+ * NOT return the referred user's name (privacy + no cheap join); web
+ * displays "Friend" the same way mobile does today.
+ */
+export interface ReferralEvent {
+  id: string;
+  referrerId: string;
+  referredId: string;
+  referralCode: string;
+  signupXpIssued: boolean;
+  qualifyXpIssued: boolean;
+  qualifiedAt: string | null;
+  createdAt: string;
+}
+
+// --- Notifications ---------------------------------------------------------
+
+/**
+ * `/notifications` — the shape the mobile client sees, synthesised by
+ * the backend controller so `readAt` is derived from `is_read=true` and
+ * `type` falls back from `data.type` to the channel string.
+ */
+export interface AppNotification {
+  id: string;
+  type: string;
+  title: string;
+  body: string;
+  data: Record<string, unknown>;
+  readAt: string | null;
+  createdAt: string;
+}

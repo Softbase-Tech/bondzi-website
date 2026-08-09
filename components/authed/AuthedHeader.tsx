@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { marketingPath, POST_LOGOUT_DEFAULT_PATH } from "@/lib/urls";
 import { logout as apiLogout } from "@/lib/api/auth";
 import { AUTHED_NAV } from "./nav-items";
+import { NotificationBell } from "./NotificationBell";
 import { cn } from "@/lib/utils";
 
 /**
@@ -70,12 +71,16 @@ export function AuthedHeader() {
           </span>
         </Link>
 
-        {/* Desktop nav — hidden on mobile (mobile uses BottomTabBar). */}
+        {/*
+          Desktop nav — primary destinations only (same 5 as the mobile
+          bottom bar). Secondary items are surfaced inside the profile
+          dropdown so we don't have to fit 10 pills in one row.
+        */}
         <nav
           aria-label="Primary"
           className="hidden md:flex items-center gap-0.5 flex-1 justify-center"
         >
-          {AUTHED_NAV.map(({ href, label, Icon }) => {
+          {AUTHED_NAV.filter((i) => i.mobileTab).map(({ href, label, Icon }) => {
             const isActive = pathname === href || pathname?.startsWith(`${href}/`);
             return (
               <Link
@@ -96,6 +101,8 @@ export function AuthedHeader() {
           })}
         </nav>
 
+        <div className="flex items-center gap-1">
+        <NotificationBell />
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button
@@ -134,6 +141,21 @@ export function AuthedHeader() {
                 Settings
               </MenuItem>
               <DropdownMenu.Separator className="my-1 h-px bg-rule" />
+              <div className="px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-widest text-ink-mute">
+                More
+              </div>
+              {AUTHED_NAV.filter((i) => !i.mobileTab).map(
+                ({ href, label, Icon }) => (
+                  <MenuItem
+                    key={href}
+                    href={href}
+                    icon={<Icon size={15} />}
+                  >
+                    {label}
+                  </MenuItem>
+                ),
+              )}
+              <DropdownMenu.Separator className="my-1 h-px bg-rule" />
               <DropdownMenu.Item
                 onSelect={(e) => {
                   e.preventDefault();
@@ -149,6 +171,7 @@ export function AuthedHeader() {
             </DropdownMenu.Content>
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
+        </div>
       </div>
     </header>
   );
