@@ -424,14 +424,22 @@ export function RegisterFlow() {
 
                 <Input
                   label="Referral code (optional)"
-                  placeholder="PM-XXXX-XXX"
+                  placeholder="e.g. A1B2CJO"
                   autoCapitalize="characters"
                   autoCorrect="off"
                   spellCheck={false}
                   enterKeyHint="go"
                   value={referralCode}
                   onChange={(e) =>
-                    setReferralCode(e.target.value.toUpperCase())
+                    // Strip legacy formatting on the way in so a
+                    // student pasting a pre-migration `PM-XXXX-YYY`
+                    // still resolves against the new stored codes.
+                    setReferralCode(
+                      e.target.value
+                        .toUpperCase()
+                        .replace(/^PM-/, "")
+                        .replace(/-/g, ""),
+                    )
                   }
                 />
 
