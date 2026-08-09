@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/config";
 import { listSubjects } from "@/lib/api/subjects";
+import { getSelectedSubjectIds } from "@/lib/api/user";
+import { intersectWithSelected, hasSelection } from "@/lib/subjects/selected";
+import {
+  NoSelectedSubjectsCta,
+  AddMoreSubjectsLink,
+} from "@/components/subjects/SubjectSelectionCta";
 import { createExam } from "@/lib/api/exams";
 import { PracticeSetup } from "./PracticeSetup";
 
@@ -33,10 +39,16 @@ export default async function PracticePage({
 
   const { subjectId, topicId } = await searchParams;
 
-  const subjects = await listSubjects(
-    session.accessToken,
-    session.profile.examType,
-  ).catch(() => []);
+  const [subjectsRes, selectedRes] = await Promise.allSettled([
+    listSubjects(session.accessToken, session.profile.examType),
+    getSelectedSubjectIds(session.accessToken),
+  ]);
+  const allSubjects =
+    subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
+  const selectedIdList =
+    selectedRes.status === "fulfilled" ? selectedRes.value : [];
+  const studentPicked = hasSelection(selectedIdList);
+  const subjects = intersectWithSelected(allSubjects, selectedIdList);
 
   async function start(input: {
     subjectId: string;
@@ -73,12 +85,19 @@ export default async function PracticePage({
           untimed — answer at your own pace.
         </p>
       </div>
-      <PracticeSetup
-        subjects={subjects}
-        initialSubjectId={subjectId ?? null}
-        initialTopicId={topicId ?? null}
-        onStart={start}
-      />
+      {!studentPicked ? (
+        <NoSelectedSubjectsCta />
+      ) : (
+        <>
+          <PracticeSetup
+            subjects={subjects}
+            initialSubjectId={subjectId ?? null}
+            initialTopicId={topicId ?? null}
+            onStart={start}
+          />
+          {subjects.length > 0 ? <AddMoreSubjectsLink /> : null}
+        </>
+      )}
     </div>
   );
 }

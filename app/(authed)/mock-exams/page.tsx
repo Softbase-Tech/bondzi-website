@@ -5,6 +5,12 @@ import { Sparkles, Timer, ChevronRight, LockKeyhole } from "lucide-react";
 import { auth } from "@/lib/auth/config";
 import { listSubjects } from "@/lib/api/subjects";
 import { getMySubscription, isPro } from "@/lib/api/subscription";
+import { getSelectedSubjectIds } from "@/lib/api/user";
+import { intersectWithSelected, hasSelection } from "@/lib/subjects/selected";
+import {
+  NoSelectedSubjectsCta,
+  AddMoreSubjectsLink,
+} from "@/components/subjects/SubjectSelectionCta";
 import { Card } from "@/components/ui/Card";
 
 export const metadata: Metadata = {
@@ -24,11 +30,17 @@ export default async function MockExamsPage() {
   if (!session?.accessToken || !session.profile) redirect("/login");
   const profile = session.profile;
 
-  const [subjectsRes, subRes] = await Promise.allSettled([
+  const [subjectsRes, subRes, selectedRes] = await Promise.allSettled([
     listSubjects(session.accessToken, profile.examType),
     getMySubscription(session.accessToken),
+    getSelectedSubjectIds(session.accessToken),
   ]);
-  const subjects = subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
+  const allSubjects =
+    subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
+  const selectedIdList =
+    selectedRes.status === "fulfilled" ? selectedRes.value : [];
+  const studentPicked = hasSelection(selectedIdList);
+  const subjects = intersectWithSelected(allSubjects, selectedIdList);
   const proTier = isPro(subRes.status === "fulfilled" ? subRes.value : null);
 
   return (
@@ -50,6 +62,9 @@ export default async function MockExamsPage() {
         </div>
       </section>
 
+      {!studentPicked ? (
+        <NoSelectedSubjectsCta />
+      ) : (
       <section className="grid gap-3 sm:grid-cols-2">
         {subjects.length === 0 ? (
           <Card className="p-8 text-center sm:col-span-2">
@@ -97,6 +112,8 @@ export default async function MockExamsPage() {
           ))
         )}
       </section>
+      )}
+      {studentPicked && subjects.length > 0 ? <AddMoreSubjectsLink /> : null}
     </div>
   );
 }

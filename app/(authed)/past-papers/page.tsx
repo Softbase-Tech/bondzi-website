@@ -5,6 +5,12 @@ import { BookOpenText, ArrowUpRight } from "lucide-react";
 import { auth } from "@/lib/auth/config";
 import { Card } from "@/components/ui/Card";
 import { listSubjects } from "@/lib/api/subjects";
+import { getSelectedSubjectIds } from "@/lib/api/user";
+import { intersectWithSelected, hasSelection } from "@/lib/subjects/selected";
+import {
+  NoSelectedSubjectsCta,
+  AddMoreSubjectsLink,
+} from "@/components/subjects/SubjectSelectionCta";
 
 export const metadata: Metadata = {
   title: "Past papers",
@@ -41,10 +47,17 @@ export default async function PastPapersPage({
     redirect(`/past-papers/${encodeURIComponent(subjectId)}`);
   }
 
-  const subjects = await listSubjects(accessToken, profile.examType).catch(
-    () => [],
-  );
-  const sorted = subjects.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const [subjectsRes, selectedRes] = await Promise.allSettled([
+    listSubjects(accessToken, profile.examType),
+    getSelectedSubjectIds(accessToken),
+  ]);
+  const subjects = subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
+  const selectedIdList =
+    selectedRes.status === "fulfilled" ? selectedRes.value : [];
+  const studentPicked = hasSelection(selectedIdList);
+  const sorted = intersectWithSelected(subjects, selectedIdList)
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="space-y-8">
@@ -62,7 +75,9 @@ export default async function PastPapersPage({
         </p>
       </section>
 
-      {sorted.length === 0 ? (
+      {!studentPicked ? (
+        <NoSelectedSubjectsCta />
+      ) : sorted.length === 0 ? (
         <Card className="p-8 text-center">
           <div className="mx-auto inline-flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-soft text-orange mb-3">
             <BookOpenText size={22} />
@@ -75,41 +90,44 @@ export default async function PastPapersPage({
           </p>
         </Card>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {sorted.map((subject) => (
-            <Link
-              key={subject.id}
-              href={`/past-papers/${subject.id}`}
-              className="group"
-            >
-              <Card
-                interactive
-                className="p-5 h-full flex flex-col justify-between"
+        <>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {sorted.map((subject) => (
+              <Link
+                key={subject.id}
+                href={`/past-papers/${subject.id}`}
+                className="group"
               >
-                <div>
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-yellow-soft text-orange mb-3">
-                    <BookOpenText size={18} />
+                <Card
+                  interactive
+                  className="p-5 h-full flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-yellow-soft text-orange mb-3">
+                      <BookOpenText size={18} />
+                    </div>
+                    <div className="font-display text-[19px] leading-tight text-ink group-hover:text-orange-deep transition-colors">
+                      {subject.name}
+                    </div>
+                    <div className="text-[12px] text-ink-mute mt-0.5">
+                      {subject.code}
+                    </div>
                   </div>
-                  <div className="font-display text-[19px] leading-tight text-ink group-hover:text-orange-deep transition-colors">
-                    {subject.name}
+                  <div className="mt-4 flex items-center justify-between text-[12px] text-ink-mute">
+                    <span>
+                      {(subject.questionCount ?? 0).toLocaleString()} questions
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-ink-soft group-hover:text-orange transition-colors font-semibold">
+                      Pick a year
+                      <ArrowUpRight size={13} />
+                    </span>
                   </div>
-                  <div className="text-[12px] text-ink-mute mt-0.5">
-                    {subject.code}
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center justify-between text-[12px] text-ink-mute">
-                  <span>
-                    {(subject.questionCount ?? 0).toLocaleString()} questions
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-ink-soft group-hover:text-orange transition-colors font-semibold">
-                    Pick a year
-                    <ArrowUpRight size={13} />
-                  </span>
-                </div>
-              </Card>
-            </Link>
-          ))}
-        </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+          <AddMoreSubjectsLink />
+        </>
       )}
     </div>
   );

@@ -6,6 +6,11 @@ import { auth } from "@/lib/auth/config";
 import { Card } from "@/components/ui/Card";
 import { listSubjects } from "@/lib/api/subjects";
 import { getSelectedSubjectIds } from "@/lib/api/user";
+import { intersectWithSelected, hasSelection } from "@/lib/subjects/selected";
+import {
+  NoSelectedSubjectsCta,
+  AddMoreSubjectsLink,
+} from "@/components/subjects/SubjectSelectionCta";
 import type { Subject } from "@/lib/api/types";
 
 export const metadata: Metadata = {
@@ -38,15 +43,16 @@ export default async function SubjectsPage() {
   ]);
 
   const subjects = subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
-  const selectedIds =
-    selectedRes.status === "fulfilled" ? new Set(selectedRes.value) : new Set<string>();
+  const selectedIdList =
+    selectedRes.status === "fulfilled" ? selectedRes.value : [];
+  const studentPicked = hasSelection(selectedIdList);
 
-  const ordered = subjects.slice().sort((a, b) => {
-    const aFav = selectedIds.has(a.id) ? 0 : 1;
-    const bFav = selectedIds.has(b.id) ? 0 : 1;
-    if (aFav !== bFav) return aFav - bFav;
-    return a.name.localeCompare(b.name);
-  });
+  // Narrow to the student's picked subjects. Alphabetical inside each
+  // category — no more favourite/rest split since every row here is a
+  // "favourite" by definition.
+  const ordered = intersectWithSelected(subjects, selectedIdList)
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   // Group under category headings when the backend provides them.
   // Falls back to a flat list when every row's `category` is empty.
@@ -68,7 +74,9 @@ export default async function SubjectsPage() {
         </p>
       </section>
 
-      {ordered.length === 0 ? (
+      {!studentPicked ? (
+        <NoSelectedSubjectsCta />
+      ) : ordered.length === 0 ? (
         <Card className="p-8 text-center">
           <div className="mx-auto inline-flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-soft text-orange mb-3">
             <BookOpenText size={22} />
@@ -80,31 +88,30 @@ export default async function SubjectsPage() {
             The subject list didn&apos;t load. Refresh the page shortly.
           </p>
         </Card>
-      ) : hasCategories ? (
-        <div className="space-y-8">
-          {Object.entries(grouped).map(([category, list]) => (
-            <section key={category}>
-              <h2 className="font-display text-[18px] sm:text-[20px] text-ink mb-3">
-                {category === "__uncategorised__" ? "Other" : category}
-              </h2>
-              <SubjectGrid subjects={list} selectedIds={selectedIds} />
-            </section>
-          ))}
-        </div>
       ) : (
-        <SubjectGrid subjects={ordered} selectedIds={selectedIds} />
+        <>
+          {hasCategories ? (
+            <div className="space-y-8">
+              {Object.entries(grouped).map(([category, list]) => (
+                <section key={category}>
+                  <h2 className="font-display text-[18px] sm:text-[20px] text-ink mb-3">
+                    {category === "__uncategorised__" ? "Other" : category}
+                  </h2>
+                  <SubjectGrid subjects={list} />
+                </section>
+              ))}
+            </div>
+          ) : (
+            <SubjectGrid subjects={ordered} />
+          )}
+          <AddMoreSubjectsLink />
+        </>
       )}
     </div>
   );
 }
 
-function SubjectGrid({
-  subjects,
-  selectedIds,
-}: {
-  subjects: Subject[];
-  selectedIds: Set<string>;
-}) {
+function SubjectGrid({ subjects }: { subjects: Subject[] }) {
   return (
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {subjects.map((subject) => (
@@ -125,11 +132,6 @@ function SubjectGrid({
                 >
                   <BookOpenText size={18} />
                 </div>
-                {selectedIds.has(subject.id) ? (
-                  <span className="inline-flex items-center px-2 h-6 rounded-full bg-orange text-paper text-[10.5px] font-semibold uppercase tracking-wider">
-                    Favourite
-                  </span>
-                ) : null}
               </div>
               <div className="mt-3 font-display text-[19px] leading-tight text-ink group-hover:text-orange-deep transition-colors">
                 {subject.name}

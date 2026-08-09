@@ -5,6 +5,12 @@ import { auth } from "@/lib/auth/config";
 import { listPmTestSubjects } from "@/lib/api/pm-test";
 import { createExam } from "@/lib/api/exams";
 import { getMySubscription, isPro } from "@/lib/api/subscription";
+import { getSelectedSubjectIds } from "@/lib/api/user";
+import { hasSelection } from "@/lib/subjects/selected";
+import {
+  NoSelectedSubjectsCta,
+  AddMoreSubjectsLink,
+} from "@/components/subjects/SubjectSelectionCta";
 import { QuizPicker } from "./QuizPicker";
 
 export const metadata: Metadata = {
@@ -28,12 +34,23 @@ export default async function QuizPage() {
   if (!session?.accessToken || !session.profile) redirect("/login");
   const profile = session.profile;
 
-  const [subjectsRes, subRes] = await Promise.allSettled([
+  const [subjectsRes, subRes, selectedRes] = await Promise.allSettled([
     listPmTestSubjects(session.accessToken),
     getMySubscription(session.accessToken),
+    getSelectedSubjectIds(session.accessToken),
   ]);
 
-  const subjects = subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
+  const allSubjects =
+    subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
+  const selectedIdList =
+    selectedRes.status === "fulfilled" ? selectedRes.value : [];
+  const studentPicked = hasSelection(selectedIdList);
+  // pm-test subjects use `subjectId` (not `id`) — intersect against
+  // the user's selection so the picker only shows what they study.
+  const selectedSet = new Set(selectedIdList);
+  const subjects = studentPicked
+    ? allSubjects.filter((s) => selectedSet.has(s.subjectId))
+    : allSubjects;
   const subscription = subRes.status === "fulfilled" ? subRes.value : null;
   const proTier = isPro(subscription);
 
@@ -76,12 +93,19 @@ export default async function QuizPage() {
         </div>
       </section>
 
-      <QuizPicker
-        subjects={subjects}
-        pro={proTier}
-        examType={profile.examType}
-        onStart={start}
-      />
+      {!studentPicked ? (
+        <NoSelectedSubjectsCta />
+      ) : (
+        <>
+          <QuizPicker
+            subjects={subjects}
+            pro={proTier}
+            examType={profile.examType}
+            onStart={start}
+          />
+          {subjects.length > 0 ? <AddMoreSubjectsLink /> : null}
+        </>
+      )}
     </div>
   );
 }

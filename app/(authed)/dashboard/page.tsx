@@ -8,6 +8,11 @@ import { Button } from "@/components/ui/Button";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { getUserStats, getSelectedSubjectIds } from "@/lib/api/user";
 import { listSubjects } from "@/lib/api/subjects";
+import { intersectWithSelected, hasSelection } from "@/lib/subjects/selected";
+import {
+  NoSelectedSubjectsCta,
+  AddMoreSubjectsLink,
+} from "@/components/subjects/SubjectSelectionCta";
 import { StreakDots } from "./StreakDots";
 
 export const metadata: Metadata = {
@@ -45,8 +50,8 @@ export default async function DashboardPage() {
 
   const stats = statsRes.status === "fulfilled" ? statsRes.value : null;
   const subjects = subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
-  const selectedIds =
-    selectedRes.status === "fulfilled" ? new Set(selectedRes.value) : new Set<string>();
+  const selectedIdList =
+    selectedRes.status === "fulfilled" ? selectedRes.value : [];
 
   const firstName = profile.fullName?.split(" ")[0] ?? "there";
   const streakDays = stats?.streakDays ?? profile.streakDays ?? 0;
@@ -59,15 +64,13 @@ export default async function DashboardPage() {
   const dailyProgress = stats?.dailyGoalProgress ?? 0;
   const dailyFraction = dailyGoal > 0 ? Math.min(1, dailyProgress / dailyGoal) : 0;
 
-  // Sort so favourite subjects come first, then everything else
-  // alphabetically. On a fresh account with no favourites this is
-  // just alphabetical.
-  const orderedSubjects = subjects.slice().sort((a, b) => {
-    const aFav = selectedIds.has(a.id) ? 0 : 1;
-    const bFav = selectedIds.has(b.id) ? 0 : 1;
-    if (aFav !== bFav) return aFav - bFav;
-    return a.name.localeCompare(b.name);
-  });
+  // Narrow to the student's picked subjects only. On accounts with no
+  // selection we fall through to the empty-state CTA below; the grid
+  // no longer renders every subject "just in case".
+  const selectedSubjects = intersectWithSelected(subjects, selectedIdList)
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const studentPicked = hasSelection(selectedIdList);
 
   return (
     <div className="space-y-8 sm:space-y-10">
@@ -222,68 +225,77 @@ export default async function DashboardPage() {
         </Card>
       </section>
 
-      {/* Subjects list */}
+      {/* Subjects list — only the ones the student picked. */}
       <section>
         <div className="flex items-baseline justify-between mb-4">
           <h2 className="font-display text-[22px] sm:text-[26px] text-ink">
             Your subjects
           </h2>
-          <Link
-            href="/subjects"
-            className="text-[13px] font-semibold text-orange hover:text-orange-deep transition-colors"
-          >
-            See all
-          </Link>
+          {studentPicked ? (
+            <Link
+              href="/subjects"
+              className="text-[13px] font-semibold text-orange hover:text-orange-deep transition-colors"
+            >
+              See all
+            </Link>
+          ) : null}
         </div>
-        {orderedSubjects.length === 0 ? (
+        {!studentPicked ? (
+          <NoSelectedSubjectsCta />
+        ) : selectedSubjects.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {orderedSubjects.slice(0, 6).map((subject) => (
-              <Link
-                key={subject.id}
-                href={`/subjects/${subject.id}`}
-                className="group"
-              >
-                <Card
-                  interactive
-                  className="p-5 h-full flex flex-col justify-between"
+          <>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {selectedSubjects.slice(0, 6).map((subject) => (
+                <Link
+                  key={subject.id}
+                  href={`/subjects/${subject.id}`}
+                  className="group"
                 >
-                  <div>
-                    <div className="flex items-start gap-3">
-                      <div
-                        className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-yellow-soft text-orange shrink-0"
-                        aria-hidden="true"
-                      >
-                        <BookOpenText size={18} />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-display text-[18px] leading-tight text-ink group-hover:text-orange-deep transition-colors truncate">
-                          {subject.name}
+                  <Card
+                    interactive
+                    className="p-5 h-full flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-yellow-soft text-orange shrink-0"
+                          aria-hidden="true"
+                        >
+                          <BookOpenText size={18} />
                         </div>
-                        <div className="text-[12px] text-ink-mute mt-0.5">
-                          {subject.code}
+                        <div className="min-w-0">
+                          <div className="font-display text-[18px] leading-tight text-ink group-hover:text-orange-deep transition-colors truncate">
+                            {subject.name}
+                          </div>
+                          <div className="text-[12px] text-ink-mute mt-0.5">
+                            {subject.code}
+                          </div>
                         </div>
                       </div>
+                      {subject.category ? (
+                        <div className="mt-3 inline-flex items-center px-2 h-6 rounded-full bg-rule/50 text-[11px] font-medium text-ink-soft uppercase tracking-wider">
+                          {subject.category}
+                        </div>
+                      ) : null}
                     </div>
-                    {subject.category ? (
-                      <div className="mt-3 inline-flex items-center px-2 h-6 rounded-full bg-rule/50 text-[11px] font-medium text-ink-soft uppercase tracking-wider">
-                        {subject.category}
-                      </div>
-                    ) : null}
-                  </div>
-                  <div className="mt-4 flex items-center justify-between text-[12px] text-ink-mute">
-                    <span>
-                      {(subject.topicCount ?? 0).toLocaleString()} topics
-                    </span>
-                    <span>
-                      {(subject.questionCount ?? 0).toLocaleString()} questions
-                    </span>
-                  </div>
-                </Card>
-              </Link>
-            ))}
-          </div>
+                    <div className="mt-4 flex items-center justify-between text-[12px] text-ink-mute">
+                      <span>
+                        {(subject.topicCount ?? 0).toLocaleString()} topics
+                      </span>
+                      <span>
+                        {(subject.questionCount ?? 0).toLocaleString()} questions
+                      </span>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-4">
+              <AddMoreSubjectsLink />
+            </div>
+          </>
         )}
       </section>
 
