@@ -9,17 +9,14 @@ import { appPath } from "@/lib/urls";
 /**
  * Watches `session.error` and reacts to auth failures the NextAuth
  * jwt callback surfaces (DEVICE_KICKED from another sign-in,
- * refresh-token expiry, generic refresh failures). Behaviour matches
- * mobile's DeviceKickedSheet + unauthorizedHandler:
+ * refresh-token expiry, generic refresh failures).
  *
- *   - DeviceKicked      → tear-down sign-out + descriptive toast so
- *                          the student understands what happened.
- *   - RefreshTokenExpired → silent sign-out; the toast reads as a
- *                          normal "session expired" rather than
- *                          something scary.
- *   - RefreshFailed      → generic sign-out + neutral toast (usually a
- *                          network hiccup during rotation).
- *   - MissingTokens      → same as RefreshFailed.
+ * Copy stays deliberately neutral. The backend returns DEVICE_KICKED
+ * whenever the refresh-JTI stops matching the current session row —
+ * that includes cases the student caused themselves (opened the same
+ * account in a second tab / signed in on a fresh device / a race
+ * between two refresh cycles). Blaming "another device" reads as
+ * accusatory when it might just be them across two tabs.
  *
  * `firedRef` prevents the effect from firing multiple times if a
  * session update flickers the error flag while sign-out is in flight.
@@ -36,11 +33,9 @@ export function SessionErrorGuard() {
     firedRef.current = true;
 
     const description =
-      error === "DeviceKicked"
-        ? "You were signed in on another device."
-        : error === "RefreshTokenExpired"
-          ? "For your security, please sign in again."
-          : "Please sign in again to continue.";
+      error === "RefreshTokenExpired"
+        ? "For your security, please sign in again."
+        : "Sign back in to continue where you left off.";
 
     toast.info("Session ended", { description });
     void signOut({
