@@ -113,3 +113,67 @@ export interface ApiErrorBody {
   timestamp?: string;
   requestId?: string;
 }
+
+// --- Subjects & topics -----------------------------------------------------
+
+export interface Subject {
+  id: string;
+  name: string;
+  code: string;
+  examType: ExamType;
+  category?: string | null;
+  topicCount?: number;
+  questionCount?: number;
+  iconSlug?: string | null;
+}
+
+export interface Topic {
+  id: string;
+  subjectId: string;
+  title: string;
+  description?: string | null;
+  /** Question count for this topic, when the backend has it precomputed. */
+  questionCount?: number;
+}
+
+// --- User stats / progress -------------------------------------------------
+
+/**
+ * Shape the backend produces at `GET /users/me/stats`. Mirrors mobile's
+ * `UserStats`. `accuracy` normalised to 0..1 on the client (backend
+ * currently ships 0..100).
+ */
+export interface UserStats {
+  totalQuestionsAttempted: number;
+  accuracy: number;
+  streakDays: number;
+  longestStreak: number;
+  /** 7-element array, monday..sunday of the user's local (Accra) week. */
+  activeDaysLast7: boolean[];
+  /** Index into `activeDaysLast7` for "today" — 0 = Monday. */
+  todayIndex: number;
+  streakAtRisk: boolean;
+  streakBroken: boolean;
+  lastStudyDate: string | null;
+  xp: number;
+  level: number;
+  xpToNextLevel: number;
+  questionsThisWeek: number;
+  dailyGoal: number;
+  dailyGoalProgress: number;
+  studyMinutesToday: number;
+}
+
+export interface SubjectProgress {
+  subjectId: string;
+  subjectName: string;
+  /** 0..1 */
+  accuracy: number;
+  questionsAnswered: number;
+  lastStudiedAt: string | null;
+  weakTopics: {
+    topicId: string;
+    topicName: string;
+    accuracy: number;
+  }[];
+}
