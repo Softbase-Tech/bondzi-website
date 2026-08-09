@@ -90,7 +90,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Who builds Bondzi?",
-    a: "Bondzi is built in Accra by Softbase Tech. We started from frustration with the photocopied past-paper prep market and a belief that a student in Wa should get the same prep tools as a student in East Legon.",
+    a: "Bondzi is built in Accra by Cliffbase Tech. We started from frustration with the photocopied past-paper prep market and a belief that a student in Wa should get the same prep tools as a student in East Legon.",
   },
 ];
 
@@ -1006,7 +1006,7 @@ function SiteFooter() {
             info@bondzi.online
           </a>
           <span className="text-ink-mute py-1">© 2026 Bondzi</span>
-          <span className="text-ink-mute py-1">Softbase Tech, Ghana</span>
+          <span className="text-ink-mute py-1">Cliffbase Tech, Ghana</span>
         </div>
       </div>
     </footer>

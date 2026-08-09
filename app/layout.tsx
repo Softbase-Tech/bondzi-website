@@ -92,9 +92,9 @@ export const metadata: Metadata = {
     "Bondzi",
     "Bondzi app",
   ],
-  authors: [{ name: "Softbase Tech", url: SITE_URL }],
-  creator: "Softbase Tech",
-  publisher: "Softbase Tech",
+  authors: [{ name: "Cliffbase Tech", url: SITE_URL }],
+  creator: "Cliffbase Tech",
+  publisher: "Cliffbase Tech",
   category: "education",
   alternates: {
     canonical: "/",
@@ -186,8 +186,8 @@ const organizationJsonLd = {
   description: DESCRIPTION,
   email: "info@bondzi.online",
   foundingDate: "2026",
-  founder: { "@type": "Organization", name: "Softbase Tech" },
-  parentOrganization: { "@type": "Organization", name: "Softbase Tech" },
+  founder: { "@type": "Organization", name: "Cliffbase Tech" },
+  parentOrganization: { "@type": "Organization", name: "Cliffbase Tech" },
   areaServed: {
     "@type": "Country",
     name: "Ghana",
@@ -206,7 +206,7 @@ const websiteJsonLd = {
   name: SITE_NAME,
   url: SITE_URL,
   inLanguage: "en-GH",
-  publisher: { "@type": "Organization", name: "Softbase Tech" },
+  publisher: { "@type": "Organization", name: "Cliffbase Tech" },
 };
 
 const mobileAppJsonLd = {
@@ -232,7 +232,7 @@ const mobileAppJsonLd = {
     availability: "https://schema.org/InStock",
     eligibleRegion: { "@type": "Country", name: "Ghana" },
   },
-  publisher: { "@type": "Organization", name: "Softbase Tech" },
+  publisher: { "@type": "Organization", name: "Cliffbase Tech" },
   downloadUrl: "https://expo.dev/artifacts/eas/oA5ZFub4WNxKkYEg5Wn2yn.apk",
   installUrl: "https://expo.dev/artifacts/eas/oA5ZFub4WNxKkYEg5Wn2yn.apk",
   about: [

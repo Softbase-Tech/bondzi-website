@@ -3,7 +3,7 @@ import type { PostMeta } from "./posts";
 const SITE_URL = "https://bondzi.online";
 const PUBLISHER = {
   "@type": "Organization",
-  name: "Softbase Tech",
+  name: "Cliffbase Tech",
   logo: {
     "@type": "ImageObject",
     url: `${SITE_URL}/brand/icon.png`,

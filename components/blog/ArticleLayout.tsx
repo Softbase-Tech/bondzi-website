@@ -107,7 +107,7 @@ export function ArticleLayout({ post, children }: Props) {
             <span className="display text-[22px] font-medium">Bondzi</span>
           </Link>
           <div className="text-[13px] text-ink-mute">
-            © 2026 Bondzi · Softbase Tech, Ghana
+            © 2026 Bondzi · Cliffbase Tech, Ghana
           </div>
         </div>
       </footer>
