@@ -47,7 +47,12 @@ export function ExplanationSheet({ questionId, open, onOpenChange }: Props) {
         if (!cancelled) setData(explanation);
       } catch (err) {
         if (cancelled) return;
-        if (err instanceof ApiError && err.status === 402) {
+        // Backend uses 403 for entitlement missing and 429 for
+        // daily-quota exhaustion — both mean "needs upgrade" here.
+        if (
+          err instanceof ApiError &&
+          (err.status === 402 || err.status === 403 || err.status === 429)
+        ) {
           onOpenChange(false);
           setPaywallOpen(true);
           return;

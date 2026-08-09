@@ -77,17 +77,44 @@ export type PlanTier =
   | "annual"
   | "xp_credit";
 
+/**
+ * `GET /subscriptions/me` and `GET /auth/me`'s embedded subscription
+ * both return this exact shape. `plan` is the legacy PlanTier we
+ * historically shipped in older responses — the backend still emits
+ * `planId` (uuid) as the source of truth. Keep both so future callers
+ * can migrate off the collapsed enum without a client-side type break.
+ *
+ * Cancellation notes: backend flips `status='cancelled'` on cancel
+ * but preserves `expiresAt` so the user keeps access through the
+ * paid-for window. There is NO `cancelledAt` timestamp — the UI
+ * infers "cancelled — access ends {expiresAt}" from the two fields.
+ */
 export interface Subscription {
   id: string;
-  plan: PlanTier;
+  userId?: string;
+  planId?: string | null;
+  billingInterval?: BillingInterval | null;
+  provider?: "paystack" | "xp_credit" | null;
+  providerReference?: string | null;
+  providerSubscriptionId?: string | null;
+  providerCustomerId?: string | null;
+  xpRedemptionId?: string | null;
+  amountGhs?: number | null;
+  countryCode?: string;
   status: SubscriptionStatus;
-  currentPeriodEnd: string | null;
-  startedAt: string | null;
-  cancelledAt: string | null;
-  source: "paystack" | "xp_credit";
+  startsAt?: string | null;
+  expiresAt?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
   account?: AccountType;
-  level?: ExamType;
+  level?: ExamType | null;
+  paymentKind?: PaymentKind | null;
+  /** Legacy — retained for older components that still branch on it. */
+  plan?: PlanTier;
 }
+
+export type BillingInterval = "monthly" | "six_month" | "annual";
+export type PaymentKind = "one_time" | "recurring";
 
 /**
  * Backend response envelope from `TransformInterceptor` — every controller
@@ -451,4 +478,125 @@ export interface AppNotification {
   data: Record<string, unknown>;
   readAt: string | null;
   createdAt: string;
+}
+
+// --- Plans + subscriptions -------------------------------------------------
+
+/**
+ * One cadence of a plan. `available` = "a Paystack plan_code has been
+ * seeded for this cadence" — Plus rows never have any (they're
+ * one-time), so `available` is false on all three cadences and the UI
+ * uses `pricing.monthly.price` as the single lifetime headline.
+ */
+export interface PlanPricing {
+  price: number;
+  durationDays: number;
+  available: boolean;
+}
+
+/**
+ * Row from `GET /plans` — one per (account, level) combination. Six
+ * total in Ghana today: {plus, pro} × {bece, wassce, novdec}. Web
+ * groups by level for the current student's examType first, then
+ * shows other levels below.
+ */
+export interface PublicPlan {
+  id: string;
+  name: string;
+  description: string | null;
+  account: AccountType;
+  level: ExamType;
+  paymentKind: PaymentKind;
+  vatRatePct: number;
+  countryCode: string;
+  currency: string;
+  isDefault: boolean;
+  pricing: {
+    monthly: PlanPricing;
+    sixMonth: PlanPricing;
+    annual: PlanPricing;
+  };
+}
+
+/**
+ * Row from `GET /subscriptions/entitlements` — a per-level view of
+ * what the student is entitled to right now, including grace windows
+ * for cancelled-but-not-yet-expired rows.
+ */
+export interface SubscriptionEntitlement {
+  level: ExamType;
+  account: AccountType | "free";
+  expiresAt: string | null;
+  subscriptionId: string | null;
+  /** Row is CANCELLED but still in prepaid grace (expiresAt > now). */
+  cancelled: boolean;
+  /**
+   * A separate active Plus row exists below the Pro entitlement on
+   * the same level — matters when we display cancel copy for Pro
+   * ("Plus access continues after Pro ends").
+   */
+  dormantPlusOnLevel: boolean;
+}
+
+/**
+ * Response from `POST /subscriptions/initiate`. `reference` is
+ * server-issued and passed verbatim to Paystack Inline JS + backend
+ * verify. `authorizationUrl` is the Paystack hosted-checkout URL —
+ * we use it only as a fallback when Inline JS fails to load.
+ */
+export interface InitiateSubscriptionResponse {
+  authorizationUrl: string;
+  reference: string;
+  promoApplied?: {
+    code: string;
+    discountAmount: number;
+  };
+}
+
+/**
+ * Structured 409 body the backend returns when the user has a
+ * PENDING attempt from the last 5 minutes. UI should recover this
+ * reference and re-open the checkout instead of starting a fresh one.
+ */
+export interface CheckoutInProgressError {
+  code: "CHECKOUT_IN_PROGRESS";
+  message: string;
+  reference: string;
+}
+
+// --- XP economy ------------------------------------------------------------
+
+/** Row from `GET /xp/tiers` — admin-editable in the DB. */
+export interface XpRedemptionTier {
+  id: string;
+  tierKey: string;
+  label: string;
+  xpCost: number;
+  creditDays: number;
+  isActive: boolean;
+}
+
+/**
+ * Actual shape of the `POST /xp/redeem` response — matches the backend,
+ * NOT the mobile's (out-of-date) type definition.
+ */
+export interface XpRedeemResult {
+  success: true;
+  tierKey: string;
+  xpSpent: number;
+  creditDays: number;
+  newSpendableXp: number;
+  subscriptionExpiresAt: string;
+}
+
+export interface XpWalletSnapshot {
+  levelXp: number;
+  spendableXp: number;
+  currentLevel: number;
+  xpIntoLevel: number;
+  xpToNextLevel: number;
+  streakDays: number;
+  longestStreak: number;
+  tiers: XpRedemptionTier[];
+  rates: unknown[];
 }

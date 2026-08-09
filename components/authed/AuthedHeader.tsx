@@ -10,6 +10,7 @@ import {
   LogOut,
   User as UserIcon,
   Settings,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 import { marketingPath, POST_LOGOUT_DEFAULT_PATH } from "@/lib/urls";
@@ -136,6 +137,12 @@ export function AuthedHeader() {
               </div>
               <MenuItem href="/profile" icon={<UserIcon size={15} />}>
                 Profile
+              </MenuItem>
+              <MenuItem
+                href="/subscription/manage"
+                icon={<Sparkles size={15} />}
+              >
+                Subscription
               </MenuItem>
               <MenuItem href="/settings" icon={<Settings size={15} />}>
                 Settings

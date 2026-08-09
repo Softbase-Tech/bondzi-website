@@ -7,6 +7,7 @@ import { api } from "@/lib/api/client";
 import type { ExamSession } from "@/lib/api/types";
 import { Button } from "@/components/ui/Button";
 import { PaywallDialog } from "@/components/exam/PaywallDialog";
+import { handlePaywallError } from "@/lib/paywall";
 
 const MOCK_EXAM_DURATION_S = 3 * 60 * 60;
 const MOCK_EXAM_COUNT = 50;
@@ -50,6 +51,9 @@ export function MockExamLauncher({ subjectId, subjectName, pro }: Props) {
         });
         router.push(`/exam/${exam.id}`);
       } catch (err) {
+        if (handlePaywallError(err, (href) => router.push(href), "/mock-exams")) {
+          return;
+        }
         setError(
           err instanceof Error
             ? err.message

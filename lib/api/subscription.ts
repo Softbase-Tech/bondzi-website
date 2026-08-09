@@ -1,30 +1,122 @@
-import { apiServer } from "./client";
-import type { Subscription } from "./types";
+import { api, apiServer, ApiError } from "./client";
+import type {
+  BillingInterval,
+  CheckoutInProgressError,
+  InitiateSubscriptionResponse,
+  Subscription,
+  SubscriptionEntitlement,
+} from "./types";
 
 /**
- * Read-only subscription surface. Phase 6 adds the write side (initiate
- * Paystack, verify, cancel); Phase 4 only needs to *know* the current
- * tier so Quiz / Mock exam / Level test paywalls can be shown at the
- * right moment.
+ * Subscription reads + writes. The backend is the source of truth for
+ * pricing, activation, and expiry — client never mutates plan/expiry
+ * fields directly.
+ *
+ * Payment flow (Phase 6):
+ *   1. initiateSubscription → { authorizationUrl, reference }
+ *   2. Paystack Inline JS popup with the same reference
+ *   3. verifySubscription(reference) — backend re-verifies with
+ *      Paystack server-to-server and activates. Webhook is a full
+ *      fallback if the client's verify call never lands.
  */
+
 export async function getMySubscription(
   accessToken: string,
 ): Promise<Subscription | null> {
-  // The backend returns `null` (as a JSON literal) for free-tier users
-  // rather than a 404 — the fetch helper unwraps `{ data: null }` to
-  // `null` naturally so the branch below is symbolic more than
-  // functional, but explicit is friendly to future readers.
   try {
     return await apiServer<Subscription | null>(
       accessToken,
       "/subscriptions/me",
     );
   } catch {
-    // Any read failure degrades to "unknown" — callers treat that as
-    // free tier so the paywall shows. Never lock a paid user out over
-    // a transient 5xx.
     return null;
   }
+}
+
+/** Client-side variant — used after verify to refresh the current view. */
+export async function getMySubscriptionClient(): Promise<Subscription | null> {
+  try {
+    return await api<Subscription | null>("/subscriptions/me");
+  } catch {
+    return null;
+  }
+}
+
+export async function listEntitlementsServer(
+  accessToken: string,
+): Promise<SubscriptionEntitlement[]> {
+  return apiServer<SubscriptionEntitlement[]>(
+    accessToken,
+    "/subscriptions/entitlements",
+  );
+}
+
+export async function listEntitlements(): Promise<SubscriptionEntitlement[]> {
+  return api<SubscriptionEntitlement[]>("/subscriptions/entitlements");
+}
+
+/**
+ * `POST /subscriptions/initiate` — creates a PENDING payment_attempts
+ * row server-side and returns a Paystack authorization URL + the
+ * reference we'll pass to Inline JS.
+ *
+ * `interval` MUST be omitted for Plus (one_time) and MUST be present
+ * for Pro. Backend 400s on wrong combo.
+ */
+export interface InitiatePayload {
+  planId: string;
+  interval?: BillingInterval;
+  promoCode?: string;
+}
+
+export async function initiateSubscription(
+  payload: InitiatePayload,
+): Promise<InitiateSubscriptionResponse> {
+  return api<InitiateSubscriptionResponse>("/subscriptions/initiate", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+/**
+ * `POST /subscriptions/verify` — idempotent; if the webhook has
+ * already activated, this returns the resolved subscription.
+ * Amount cross-check runs server-side.
+ */
+export async function verifySubscription(
+  reference: string,
+): Promise<Subscription> {
+  return api<Subscription>("/subscriptions/verify", {
+    method: "POST",
+    body: { reference },
+  });
+}
+
+/**
+ * `POST /subscriptions/cancel` — cancels the active Pro on the JWT's
+ * current level. Plus rows return 400 (they're lifetime, not
+ * cancellable).
+ */
+export async function cancelSubscription(): Promise<Subscription> {
+  return api<Subscription>("/subscriptions/cancel", {
+    method: "POST",
+    body: {},
+  });
+}
+
+/**
+ * Detects the CHECKOUT_IN_PROGRESS structured 409 so callers can
+ * surface a "resume the checkout you started" affordance instead of
+ * a generic "already have one" toast.
+ */
+export function checkoutInProgressFrom(
+  err: unknown,
+): CheckoutInProgressError | null {
+  if (!(err instanceof ApiError)) return null;
+  if (err.status !== 409) return null;
+  const body = err.body as unknown as CheckoutInProgressError | null;
+  if (!body || body.code !== "CHECKOUT_IN_PROGRESS") return null;
+  return body;
 }
 
 /**
@@ -46,5 +138,5 @@ export function isPro(subscription: Subscription | null): boolean {
   if (subscription.account === "plus" || subscription.account === "pro") {
     return true;
   }
-  return subscription.plan !== "free";
+  return subscription.plan !== undefined && subscription.plan !== "free";
 }

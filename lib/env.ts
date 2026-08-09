@@ -33,6 +33,15 @@ export const ENV = {
       | "development"
       | "preview"
       | "production") ?? "development",
+  /**
+   * Paystack public key for Ghana — safe to embed. Used by the Inline
+   * JS popup on the Plans page. Backend re-verifies every transaction
+   * against Paystack server-to-server with the SECRET key, so a
+   * tampered public key just fails backend's amount/status check.
+   *
+   * Value should match the mobile app's EXPO_PUBLIC_PAYSTACK_KEY_GH.
+   */
+  PAYSTACK_PUBLIC_KEY_GH: process.env.NEXT_PUBLIC_PAYSTACK_KEY_GH ?? "",
 };
 
 /**

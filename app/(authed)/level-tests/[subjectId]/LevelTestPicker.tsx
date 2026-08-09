@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { GraduationCap, ListChecks } from "lucide-react";
 import { api } from "@/lib/api/client";
 import type { ExamSession, SyllabusTopic } from "@/lib/api/types";
+import { handlePaywallError } from "@/lib/paywall";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { PaywallDialog } from "@/components/exam/PaywallDialog";
@@ -82,6 +83,9 @@ export function LevelTestPicker({
         });
         router.push(`/exam/${exam.id}`);
       } catch (err) {
+        if (handlePaywallError(err, (href) => router.push(href), "/level-tests")) {
+          return;
+        }
         setError(
           err instanceof Error
             ? err.message
