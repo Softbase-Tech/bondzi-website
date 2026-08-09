@@ -6,6 +6,13 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   row: LeaderboardRow;
+  /**
+   * 1-indexed position in the sorted-by-score leaderboard. Trumps
+   * whatever `row.rank` the backend sends — some rows arrive with a
+   * missing or off-by-one rank field and using the array position is
+   * always correct given the client's already-sorted view.
+   */
+  position: number;
   currentUserId?: string;
 }
 
@@ -14,7 +21,11 @@ interface Props {
  * every row when the current user's XP ticks. Highlights the current
  * user with the yellow-soft band + " · You" suffix.
  */
-export const LeaderRow = memo(function LeaderRow({ row, currentUserId }: Props) {
+export const LeaderRow = memo(function LeaderRow({
+  row,
+  position,
+  currentUserId,
+}: Props) {
   const isYou = row.userId === currentUserId;
   const displayName = row.username ?? row.fullName ?? "Student";
   return (
@@ -30,7 +41,7 @@ export const LeaderRow = memo(function LeaderRow({ row, currentUserId }: Props) 
           isYou ? "text-orange" : "text-ink",
         )}
       >
-        #{row.rank}
+        #{position}
       </span>
       <span
         className={cn(
@@ -50,7 +61,7 @@ export const LeaderRow = memo(function LeaderRow({ row, currentUserId }: Props) 
         ) : null}
       </span>
       <span className="shrink-0 text-[13.5px] font-semibold text-ink">
-        {row.score.toLocaleString()} XP
+        {(row.score ?? 0).toLocaleString()} XP
       </span>
     </li>
   );

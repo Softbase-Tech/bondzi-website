@@ -18,11 +18,20 @@ interface Props {
  * All derivation is client-side (from the list we already fetched) so
  * we skip the extra `/leaderboard/my-rank` call when the user is
  * inside the top-100 window.
+ *
+ * Rank is computed from the position in the score-sorted array —
+ * `row.rank` from the backend is treated as a display hint only,
+ * since some rows arrive with null/off-by-one ranks.
  */
 export function MyRankBanner({ rows, currentUserId, periodLabel }: Props) {
-  const mine = rows.find((r) => r.userId === currentUserId) ?? null;
+  // Sort locally so position is deterministic regardless of backend
+  // ordering guarantees.
+  const sorted = rows.slice().sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+  const mineIndex = sorted.findIndex((r) => r.userId === currentUserId);
+  const mine = mineIndex >= 0 ? sorted[mineIndex] : null;
+  const minePosition = mineIndex >= 0 ? mineIndex + 1 : null;
 
-  if (!mine) {
+  if (!mine || minePosition === null) {
     return (
       <Card className="p-4 border-orange/40 bg-yellow-soft/50">
         <div className="flex items-start gap-3">
@@ -43,10 +52,14 @@ export function MyRankBanner({ rows, currentUserId, periodLabel }: Props) {
     );
   }
 
-  const above = rows.find((r) => r.rank === mine.rank - 1) ?? null;
-  const xpGap = above ? Math.max(0, above.score - mine.score + 1) : 0;
+  const above = minePosition > 1 ? sorted[minePosition - 2] : null;
+  const mineScore = mine.score ?? 0;
+  const aboveScore = above?.score ?? 0;
+  const xpGap = above ? Math.max(0, aboveScore - mineScore + 1) : 0;
   const topPercentile =
-    rows.length > 0 ? Math.max(1, Math.round((mine.rank / rows.length) * 100)) : null;
+    sorted.length > 0
+      ? Math.max(1, Math.round((minePosition / sorted.length) * 100))
+      : null;
 
   return (
     <Card className="p-4 border-orange/40 bg-yellow-soft/50">
@@ -56,15 +69,15 @@ export function MyRankBanner({ rows, currentUserId, periodLabel }: Props) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="font-display text-[16.5px] text-ink">
-            You&apos;re #{mine.rank}{" "}
+            You&apos;re #{minePosition}{" "}
             <span className="text-ink-soft font-normal text-[13.5px]">
-              {periodLabel} · {mine.score.toLocaleString()} XP
+              {periodLabel} · {mineScore.toLocaleString()} XP
             </span>
           </div>
           {above ? (
             <div className="mt-0.5 text-[12.5px] text-ink-soft inline-flex items-center gap-1">
               <TrendingUp size={12} />
-              {xpGap.toLocaleString()} XP to reach #{mine.rank - 1}
+              {xpGap.toLocaleString()} XP to reach #{minePosition - 1}
             </div>
           ) : (
             <div className="mt-0.5 text-[12.5px] font-medium text-orange">

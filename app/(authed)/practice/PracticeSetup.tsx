@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { api } from "@/lib/api/client";
-import type { Subject, Topic } from "@/lib/api/types";
+import { handlePaywallError } from "@/lib/paywall";
+import type { ExamSession, Subject, Topic } from "@/lib/api/types";
 
 type Difficulty = "easy" | "medium" | "hard" | "mixed";
 const DIFFICULTIES: { key: Difficulty; label: string }[] = [
@@ -20,29 +22,21 @@ interface Props {
   subjects: Subject[];
   initialSubjectId: string | null;
   initialTopicId: string | null;
-  onStart: (input: {
-    subjectId: string;
-    topicId?: string;
-    difficulty: Difficulty;
-    questionCount: number;
-  }) => Promise<void>;
 }
 
 /**
- * Client-side setup form. Fetches topics on-demand when the student
- * picks a subject — no reason to prefetch every subject's topics.
- *
- * Deliberately keeps things few: subject, topic (optional),
- * difficulty, count. Anything more (time limit, focus-weak, exclude
- * seen, etc.) belongs on a later "advanced" panel and would clutter
- * this first-pass surface.
+ * Client-side setup form. Fires `POST /exams` directly (not through
+ * a server action) so 403 / 429 responses can be caught and routed
+ * to the paywall via `handlePaywallError` instead of surfacing a
+ * redacted "Server Components render" error the student can't act
+ * on. Fetches topics on-demand when the student picks a subject.
  */
 export function PracticeSetup({
   subjects,
   initialSubjectId,
   initialTopicId,
-  onStart,
 }: Props) {
+  const router = useRouter();
   const [subjectId, setSubjectId] = useState<string | null>(initialSubjectId);
   const [topicId, setTopicId] = useState<string | null>(initialTopicId);
   const [difficulty, setDifficulty] = useState<Difficulty>("mixed");
@@ -213,13 +207,29 @@ export function PracticeSetup({
             setError(null);
             startTransition(async () => {
               try {
-                await onStart({
-                  subjectId,
-                  topicId: topicId ?? undefined,
-                  difficulty,
-                  questionCount: count,
+                const exam = await api<ExamSession>("/exams", {
+                  method: "POST",
+                  body: {
+                    mode: topicId ? "topic_drill" : "practice",
+                    subjectFilter: {
+                      subjectIds: [subjectId],
+                      ...(topicId ? { topicIds: [topicId] } : {}),
+                    },
+                    questionCount: count,
+                    difficulty,
+                  },
                 });
+                router.push(`/exam/${exam.id}`);
               } catch (err) {
+                // 403 (elective locked for free tier) / 429 (daily
+                // quota exhausted) → route to /subscription/plans so
+                // the student can upgrade instead of seeing a
+                // redacted server-render error.
+                if (
+                  handlePaywallError(err, (href) => router.push(href), "/practice")
+                ) {
+                  return;
+                }
                 setError(
                   err instanceof Error
                     ? err.message

@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { auth } from "@/lib/auth/config";
 import { listPmTestSubjects } from "@/lib/api/pm-test";
-import { createExam } from "@/lib/api/exams";
 import { getMySubscription, isPro } from "@/lib/api/subscription";
 import { getSelectedSubjectIds } from "@/lib/api/user";
 import { hasSelection } from "@/lib/subjects/selected";
@@ -54,26 +53,6 @@ export default async function QuizPage() {
   const subscription = subRes.status === "fulfilled" ? subRes.value : null;
   const proTier = isPro(subscription);
 
-  async function start(input: {
-    subjectId: string;
-    questionCount: number;
-    difficulty: "easy" | "medium" | "hard" | "mixed";
-  }): Promise<void> {
-    "use server";
-    const s = await auth();
-    if (!s?.accessToken) redirect("/login");
-    const exam = await createExam(s.accessToken, {
-      mode: "pm_test",
-      subjectFilter: {
-        subjectIds: [input.subjectId],
-      },
-      questionCount: input.questionCount,
-      // Backend accepts difficulty only when explicit; omit 'mixed'.
-      ...(input.difficulty === "mixed" ? {} : { difficulty: input.difficulty }),
-    });
-    redirect(`/exam/${exam.id}`);
-  }
-
   return (
     <div className="max-w-[880px] mx-auto space-y-8">
       <section className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -101,7 +80,6 @@ export default async function QuizPage() {
             subjects={subjects}
             pro={proTier}
             examType={profile.examType}
-            onStart={start}
           />
           {subjects.length > 0 ? <AddMoreSubjectsLink /> : null}
         </>

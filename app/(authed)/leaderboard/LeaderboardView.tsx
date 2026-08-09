@@ -63,8 +63,16 @@ export function LeaderboardView({ currentUserId, initialWeekly }: Props) {
   const isLoading =
     period === "weekly" ? weekly.isPending && !weekly.data : monthly.isPending;
   const isEmpty = !isLoading && rows.length === 0;
-  const top3 = rows.filter((r) => r.rank <= 3).sort((a, b) => a.rank - b.rank);
-  const rest = rows.filter((r) => r.rank > 3);
+  // Sort by score descending and take first three. Position-based
+  // instead of matching `rank === 1/2/3` because the backend's `rank`
+  // field can be null/missing/off-by-one for early-period rows, which
+  // used to leave the podium rendering three empty "—" columns even
+  // when real students had answered questions.
+  const sortedByScore = rows
+    .slice()
+    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+  const top3 = sortedByScore.slice(0, 3);
+  const rest = sortedByScore.slice(3);
   const periodLabel = period === "weekly" ? "this week" : "this month";
 
   return (
@@ -102,10 +110,14 @@ export function LeaderboardView({ currentUserId, initialWeekly }: Props) {
                 </div>
               </div>
               <ul className="space-y-2">
-                {rest.map((row) => (
+                {rest.map((row, i) => (
                   <LeaderRow
                     key={row.userId}
                     row={row}
+                    // rest starts at index 3 in the sortedByScore
+                    // array; display positions are 1-indexed so the
+                    // first non-podium row is #4.
+                    position={i + 4}
                     currentUserId={currentUserId}
                   />
                 ))}

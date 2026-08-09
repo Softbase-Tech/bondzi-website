@@ -11,20 +11,46 @@ interface Props {
 
 /**
  * Top-3 podium. Gold column is tallest and centered on all breakpoints;
- * silver and bronze flank it. Visual is deliberately sparse (no
- * gradients or shadows) to keep the paper/cream feel — the win is
- * conveyed by the rank crown + column height.
+ * silver and bronze flank it.
+ *
+ * Position-based: `top[0]` is gold, `top[1]` silver, `top[2]` bronze —
+ * we don't rely on the backend `rank` field being exactly 1/2/3 (which
+ * used to leave the podium rendering three empty "—" columns whenever
+ * ranks were null or off-by-one). The parent already sorts by score
+ * desc; the podium just displays what it's given.
+ *
+ * When fewer than three entries exist, missing columns collapse to
+ * `null` and render an empty column so the layout doesn't shift.
  */
 export function PodiumCard({ top, currentUserId }: Props) {
-  const gold = top.find((r) => r.rank === 1) ?? null;
-  const silver = top.find((r) => r.rank === 2) ?? null;
-  const bronze = top.find((r) => r.rank === 3) ?? null;
+  const gold = top[0] ?? null;
+  const silver = top[1] ?? null;
+  const bronze = top[2] ?? null;
 
   return (
     <div className="grid grid-cols-3 items-end gap-3 sm:gap-4">
-      <Column entry={silver} tone="silver" height={92} currentUserId={currentUserId} />
-      <Column entry={gold} tone="gold" height={124} currentUserId={currentUserId} showCrown />
-      <Column entry={bronze} tone="bronze" height={78} currentUserId={currentUserId} />
+      <Column
+        entry={silver}
+        placeRank={2}
+        tone="silver"
+        height={92}
+        currentUserId={currentUserId}
+      />
+      <Column
+        entry={gold}
+        placeRank={1}
+        tone="gold"
+        height={124}
+        currentUserId={currentUserId}
+        showCrown
+      />
+      <Column
+        entry={bronze}
+        placeRank={3}
+        tone="bronze"
+        height={78}
+        currentUserId={currentUserId}
+      />
     </div>
   );
 }
@@ -49,12 +75,14 @@ const TONES = {
 
 function Column({
   entry,
+  placeRank,
   tone,
   height,
   currentUserId,
   showCrown = false,
 }: {
   entry: LeaderboardRow | null;
+  placeRank: 1 | 2 | 3;
   tone: keyof typeof TONES;
   height: number;
   currentUserId?: string;
@@ -101,7 +129,7 @@ function Column({
         )}
         style={{ height }}
       >
-        {entry ? `#${entry.rank}` : ""}
+        {entry ? `#${placeRank}` : ""}
       </div>
     </div>
   );

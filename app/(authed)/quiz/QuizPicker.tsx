@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Sparkles, Clock } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { PaywallDialog } from "@/components/exam/PaywallDialog";
 import { cn } from "@/lib/utils";
-import type { ExamType, PmTestSubjectSummary } from "@/lib/api/types";
+import { api } from "@/lib/api/client";
+import { handlePaywallError } from "@/lib/paywall";
+import type { ExamSession, ExamType, PmTestSubjectSummary } from "@/lib/api/types";
 
 type Difficulty = "easy" | "medium" | "hard" | "mixed";
 const DIFFICULTIES: { key: Difficulty; label: string }[] = [
@@ -21,11 +24,6 @@ interface Props {
   subjects: PmTestSubjectSummary[];
   pro: boolean;
   examType: ExamType;
-  onStart: (input: {
-    subjectId: string;
-    questionCount: number;
-    difficulty: Difficulty;
-  }) => Promise<void>;
 }
 
 /**
@@ -36,12 +34,13 @@ interface Props {
  *     with feature="quiz". Preview stays available so the student sees
  *     exactly what they'd unlock.
  *
- * `startTransition` around the server action gives the button a
- * loading state while the pm_test exam is being generated — this
- * can take a couple of seconds since the backend hydrates a fresh
- * pool from the AI pipeline.
+ * Fires `POST /exams` directly (not through a server action) so
+ * 403 / 429 responses can be caught and routed to /subscription/plans
+ * via handlePaywallError instead of leaking a redacted "Server
+ * Components render" error the student can't act on.
  */
-export function QuizPicker({ subjects, pro, examType, onStart }: Props) {
+export function QuizPicker({ subjects, pro, examType }: Props) {
+  const router = useRouter();
   const [subjectId, setSubjectId] = useState<string | null>(null);
   const [count, setCount] = useState<number>(20);
   const [difficulty, setDifficulty] = useState<Difficulty>("mixed");
@@ -165,12 +164,30 @@ export function QuizPicker({ subjects, pro, examType, onStart }: Props) {
                   setError(null);
                   startTransition(async () => {
                     try {
-                      await onStart({
-                        subjectId,
-                        questionCount: count,
-                        difficulty,
+                      const exam = await api<ExamSession>("/exams", {
+                        method: "POST",
+                        body: {
+                          mode: "pm_test",
+                          subjectFilter: { subjectIds: [subjectId] },
+                          questionCount: count,
+                          // Backend accepts difficulty only when
+                          // explicit; omit 'mixed'.
+                          ...(difficulty === "mixed"
+                            ? {}
+                            : { difficulty }),
+                        },
                       });
+                      router.push(`/exam/${exam.id}`);
                     } catch (err) {
+                      if (
+                        handlePaywallError(
+                          err,
+                          (href) => router.push(href),
+                          "/quiz",
+                        )
+                      ) {
+                        return;
+                      }
                       setError(
                         err instanceof Error
                           ? err.message
