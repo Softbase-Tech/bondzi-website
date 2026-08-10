@@ -129,28 +129,40 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   // surface grows.
   // -----------------------------------------------------------------
   if (isPartnerHost) {
-    const PARTNER_PUBLIC_PATHS = new Set<string>(["/partner/signed-out"]);
-    // Bare "/" lands on the partner dashboard (authed) or hands off to
-    // the app host's login (public). Auth-related routes (login /
-    // register / verify) live on the app host — we don't duplicate
-    // them under partners.bondzi.online.
+    // Public partner routes — reachable without a session so we
+    // don't infinite-loop a signed-out visitor. `signin` is the
+    // partner-branded login; `signed-out` is the post-logout
+    // landing. Both live in the (partner-public) route group with
+    // no auth guard in their layout.
+    const PARTNER_PUBLIC_PATHS = new Set<string>([
+      "/partner/signin",
+      "/partner/signed-out",
+    ]);
+    // Bare "/" lands on the partner dashboard (authed) or on the
+    // partner-branded sign-in page (public). Everything stays on
+    // the partner host — no cross-subdomain roundtrip means no
+    // cookie-scoping dependency at all.
     if (pathname === "/") {
-      if (isAuthed) {
-        return NextResponse.redirect(new URL("/partner/dashboard", req.url));
-      }
       return NextResponse.redirect(
         new URL(
-          `https://app.bondzi.online/login?returnTo=${encodeURIComponent(
-            `https://${host}/partner/dashboard`,
-          )}`,
+          isAuthed ? "/partner/dashboard" : "/partner/signin",
+          req.url,
         ),
       );
     }
     // Public partner pages are reachable without a session.
     if (PARTNER_PUBLIC_PATHS.has(pathname)) {
+      // If an already-authed user hits /partner/signin, send them
+      // straight to the dashboard — no reason to re-render a login
+      // they don't need.
+      if (pathname === "/partner/signin" && isAuthed) {
+        return NextResponse.redirect(new URL("/partner/dashboard", req.url));
+      }
       return NextResponse.next();
     }
-    // /login etc. on the partner host → app host.
+    // Student auth routes (/login, /register, /forgot-password, …)
+    // canonicalise to the app host — students shouldn't sign in on
+    // the partner subdomain, and this keeps SEO clean.
     if (isAuthPath(pathname)) {
       return NextResponse.redirect(
         new URL(`https://app.bondzi.online${pathname}${search}`),
@@ -166,12 +178,14 @@ export default auth((req: NextRequest & { auth: unknown }) => {
       );
     }
     if (!isAuthed) {
+      // Same-host redirect — bounce to the partner-branded signin
+      // and preserve where they were going via returnTo. Keeping
+      // the user on partners.bondzi.online means the cookie the
+      // browser writes on login is on the same host they're
+      // browsing, eliminating cross-subdomain scoping risk.
+      const returnTo = encodeURIComponent(`${pathname}${search}`);
       return NextResponse.redirect(
-        new URL(
-          `https://app.bondzi.online/login?returnTo=${encodeURIComponent(
-            `https://${host}${pathname}${search}`,
-          )}`,
-        ),
+        new URL(`/partner/signin?returnTo=${returnTo}`, req.url),
       );
     }
     return NextResponse.next();

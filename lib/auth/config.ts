@@ -39,11 +39,39 @@ const STUDENT_CSRF_COOKIE_NAME =
  * different host — dev must leave `domain` unset so the cookie is
  * scoped to `localhost` implicitly.
  *
+ * Detection is deliberately belt-and-braces because if this misfires
+ * the session cookie is host-only, which breaks cross-subdomain
+ * flows (app.bondzi.online login handing off to
+ * partners.bondzi.online) in a way that presents as an infinite
+ * redirect loop after login. Three independent signals — any one is
+ * enough to trip production:
+ *
+ *   1. `NEXT_PUBLIC_APP_ENV=production` — the deliberate flag.
+ *   2. `VERCEL_ENV=production` — Vercel sets this automatically for
+ *      the production deployment; guaranteed present on prod
+ *      without any manual config.
+ *   3. NEXTAUTH_URL contains `bondzi.online` — a final fallback in
+ *      case the two above are absent but the deployment is clearly
+ *      pointing at the production host.
+ *
  * `__Host-` prefix on the CSRF cookie forbids a `Domain` attribute
  * per RFC 6265bis, so its scope stays implicit even in prod.
  */
-const isProd = ENV.APP_ENV === "production";
+const authUrl = process.env.NEXTAUTH_URL ?? process.env.AUTH_URL ?? "";
+const isProd =
+  ENV.APP_ENV === "production" ||
+  process.env.VERCEL_ENV === "production" ||
+  /(^|\.)bondzi\.online$/i.test(safeUrlHost(authUrl));
 const COOKIE_DOMAIN = isProd ? ".bondzi.online" : undefined;
+
+function safeUrlHost(u: string): string {
+  if (!u) return "";
+  try {
+    return new URL(u).hostname;
+  } catch {
+    return "";
+  }
+}
 
 /**
  * Access-token TTL is 15 minutes on the backend. We refresh a couple

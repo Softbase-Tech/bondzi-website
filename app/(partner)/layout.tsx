@@ -28,7 +28,11 @@ export default async function PartnerLayout({
 }) {
   const session = await auth();
   if (!session?.user) {
-    redirect("/login?returnTo=%2Fpartner%2Fdashboard");
+    // Same-host redirect — the partner-branded signin lives at
+    // /partner/signin on this host. The proxy also gates unauthed
+    // /partner/* traffic to the same target, so this is defence-
+    // in-depth against a mis-scoped proxy rule.
+    redirect("/partner/signin?returnTo=%2Fpartner%2Fdashboard");
   }
   // Read the partner status once so the nav can decide whether to
   // surface the Appeals tab on mobile. Non-fatal — if the request

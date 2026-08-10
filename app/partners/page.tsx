@@ -604,7 +604,7 @@ function CTA() {
               <ArrowUpRight size={16} strokeWidth={2.25} />
             </Link>
             <Link
-              href="https://partners.bondzi.online"
+              href="https://partners.bondzi.online/partner/signin"
               className="inline-flex items-center gap-2 px-6 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[15px] whitespace-nowrap"
             >
               I&apos;m already a partner — sign in

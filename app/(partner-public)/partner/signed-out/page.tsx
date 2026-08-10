@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
 
@@ -8,24 +7,13 @@ import { Card, CardBody } from "@/components/ui/Card";
  * subdomain so a partner logging out never lands on the student-app
  * login and gets confused about which surface they're on.
  *
- * Sign-in still lives on the app host (single source of truth for
- * credentials). We build the CTA URL server-side so we can compute
- * a `returnTo` that bounces the user back to whatever partner host
- * they were on (bare vs www — same convention as the proxy).
+ * Sign-in link points at `/partner/signin` (same host) so the
+ * partner never leaves partners.bondzi.online during the sign-in
+ * loop. Same-host login also means the browser writes the session
+ * cookie on the host we're browsing, sidestepping any cookie-
+ * domain-scoping concerns entirely.
  */
-export default async function PartnerSignedOutPage() {
-  const h = await headers();
-  const host =
-    (
-      h.get("x-forwarded-host") ??
-      h.get("host") ??
-      "partners.bondzi.online"
-    )
-      .toLowerCase()
-      .split(":")[0];
-  const returnTo = `https://${host}/partner/dashboard`;
-  const loginUrl = `https://app.bondzi.online/login?returnTo=${encodeURIComponent(returnTo)}`;
-
+export default function PartnerSignedOutPage() {
   return (
     <div className="flex-1 flex items-center justify-center px-4 sm:px-6 py-16">
       <div className="max-w-lg w-full text-center">
@@ -44,13 +32,13 @@ export default async function PartnerSignedOutPage() {
               Signing in uses your same Bondzi account (email or
               phone).
             </p>
-            <Button href={loginUrl} block external>
+            <Button href="/partner/signin" block>
               Sign in to partner portal
             </Button>
             <p className="text-[12.5px] text-ink-mute">
               Don&apos;t have a partner account yet?{" "}
               <Link
-                href="https://bondzi.online"
+                href="https://bondzi.online/partners"
                 className="font-medium text-orange hover:text-orange-deep"
               >
                 Learn about the programme
