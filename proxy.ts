@@ -121,8 +121,15 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   // (www.partners.bondzi.online) enter this branch; the returnTo
   // preserves whichever host the user actually landed on so we don't
   // bounce them across subdomains during login.
+  //
+  // Public partner routes — paths under /partner/* that must remain
+  // reachable without a session. `signed-out` is the post-logout
+  // landing page; a user who just cleared their cookie must be able
+  // to render it. Add more here (e.g. a public terms preview) as the
+  // surface grows.
   // -----------------------------------------------------------------
   if (isPartnerHost) {
+    const PARTNER_PUBLIC_PATHS = new Set<string>(["/partner/signed-out"]);
     // Bare "/" lands on the partner dashboard (authed) or hands off to
     // the app host's login (public). Auth-related routes (login /
     // register / verify) live on the app host — we don't duplicate
@@ -138,6 +145,10 @@ export default auth((req: NextRequest & { auth: unknown }) => {
           )}`,
         ),
       );
+    }
+    // Public partner pages are reachable without a session.
+    if (PARTNER_PUBLIC_PATHS.has(pathname)) {
+      return NextResponse.next();
     }
     // /login etc. on the partner host → app host.
     if (isAuthPath(pathname)) {

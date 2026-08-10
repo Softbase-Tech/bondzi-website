@@ -5,7 +5,6 @@ import { signOut, useSession } from "next-auth/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ChevronDown, LogOut, ExternalLink } from "lucide-react";
 import { logout as apiLogout } from "@/lib/api/auth";
-import { marketingPath, POST_LOGOUT_DEFAULT_PATH } from "@/lib/urls";
 
 /**
  * Top bar for the partner portal. Mirrors AuthedHeader's grammar
@@ -13,6 +12,12 @@ import { marketingPath, POST_LOGOUT_DEFAULT_PATH } from "@/lib/urls";
  * kicker so the operator knows they're in the partner surface, not
  * the student app. Sign-out follows the same 3-step teardown as the
  * main app.
+ *
+ * Post-logout landing: /partner/signed-out on the SAME host. Keeps
+ * the partner branded end-to-end and avoids bouncing them onto
+ * app.bondzi.online (which would look like a student-app login).
+ * The signed-out page has a "Sign in" CTA that hands off to the
+ * app-host login when the partner wants to come back.
  */
 export function PartnerHeader() {
   const { data: session } = useSession();
@@ -29,9 +34,12 @@ export function PartnerHeader() {
         );
       }
     } finally {
+      // Same-host relative URL — NextAuth converts to an absolute
+      // URL against the current origin, so www.partners… stays on
+      // www.partners… and the bare form stays on the bare form.
       await signOut({
         redirect: true,
-        redirectTo: marketingPath(POST_LOGOUT_DEFAULT_PATH),
+        redirectTo: "/partner/signed-out",
       });
     }
   }
