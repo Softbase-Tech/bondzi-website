@@ -117,6 +117,10 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   // -----------------------------------------------------------------
   // Partner host: rewrites bare paths onto the /partner/* surface and
   // sends unauthed traffic to the app-host login with a returnTo.
+  // Both bare (partners.bondzi.online) and www-prefixed
+  // (www.partners.bondzi.online) enter this branch; the returnTo
+  // preserves whichever host the user actually landed on so we don't
+  // bounce them across subdomains during login.
   // -----------------------------------------------------------------
   if (isPartnerHost) {
     // Bare "/" lands on the partner dashboard (authed) or hands off to
@@ -130,7 +134,7 @@ export default auth((req: NextRequest & { auth: unknown }) => {
       return NextResponse.redirect(
         new URL(
           `https://app.bondzi.online/login?returnTo=${encodeURIComponent(
-            "https://partners.bondzi.online/partner/dashboard",
+            `https://${host}/partner/dashboard`,
           )}`,
         ),
       );
@@ -154,7 +158,7 @@ export default auth((req: NextRequest & { auth: unknown }) => {
       return NextResponse.redirect(
         new URL(
           `https://app.bondzi.online/login?returnTo=${encodeURIComponent(
-            `https://partners.bondzi.online${pathname}${search}`,
+            `https://${host}${pathname}${search}`,
           )}`,
         ),
       );

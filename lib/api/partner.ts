@@ -2,6 +2,7 @@ import { api, apiServer, ApiError } from "./client";
 import type {
   CreateReferralCodePayload,
   PartnerAppeal,
+  PartnerBanner,
   PartnerCommission,
   PartnerPayout,
   PartnerPayoutPreview,
@@ -190,6 +191,16 @@ export async function submitAppeal(
     method: "POST",
     body: payload,
   });
+}
+
+// ---------------------------------------------------------------------------
+// Banners
+// ---------------------------------------------------------------------------
+
+export async function listBanners(
+  accessToken: string,
+): Promise<PartnerBanner[]> {
+  return apiServer<PartnerBanner[]>(accessToken, "/partner/banners");
 }
 
 // ---------------------------------------------------------------------------

@@ -21,7 +21,7 @@ export function PartnerBottomTabBar({
 }) {
   const pathname = usePathname();
   const items = PARTNER_NAV.filter(
-    (i) => !i.whenSuspended || showAppeals,
+    (i) => i.mobileTab && (!i.whenSuspended || showAppeals),
   );
   return (
     <nav

@@ -766,3 +766,20 @@ export interface SubmitAppealPayload {
   body: string;
   attachments?: string[];
 }
+
+export type PartnerBannerAspect = "square" | "story" | "landscape";
+
+export interface PartnerBanner {
+  id: string;
+  label: string;
+  description: string | null;
+  imageUrl: string;
+  aspect: PartnerBannerAspect;
+  widthPx: number | null;
+  heightPx: number | null;
+  sortOrder: number;
+  isActive: boolean;
+  createdBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

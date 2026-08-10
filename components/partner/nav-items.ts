@@ -4,32 +4,60 @@ import {
   Wallet,
   User as UserIcon,
   ShieldAlert,
+  Image as ImageIcon,
 } from "lucide-react";
 
 /**
- * Single source of truth for partner-portal nav. Four primary
- * destinations always visible; the Appeals tab only surfaces when
- * the partner needs it (suspended state) via the `whenSuspended`
- * flag — that keeps the mobile tab bar at four icons for the happy
- * path and expands to five only when it matters.
+ * Single source of truth for partner-portal nav. Sidebar (md+) shows
+ * every entry; the mobile bottom-tab bar filters to `mobileTab: true`
+ * so the row stays scannable at thumb distance — the header
+ * dropdown covers Profile and other overflow.
+ *
+ * The Appeals entry uses `whenSuspended: true` so the tab only
+ * surfaces when the partner needs it; everywhere else the sidebar
+ * lists it as a discoverable link.
  */
 export interface PartnerNavItem {
   href: string;
   label: string;
   Icon: typeof LayoutDashboard;
+  /** Include in the mobile bottom-tab bar. */
+  mobileTab: boolean;
   /** Show ONLY when the signed-in partner is currently suspended. */
   whenSuspended?: boolean;
 }
 
 export const PARTNER_NAV: PartnerNavItem[] = [
-  { href: "/partner/dashboard", label: "Home", Icon: LayoutDashboard },
-  { href: "/partner/codes", label: "Codes", Icon: Tag },
-  { href: "/partner/payouts", label: "Payouts", Icon: Wallet },
+  {
+    href: "/partner/dashboard",
+    label: "Home",
+    Icon: LayoutDashboard,
+    mobileTab: true,
+  },
+  { href: "/partner/codes", label: "Codes", Icon: Tag, mobileTab: true },
+  {
+    href: "/partner/banners",
+    label: "Banners",
+    Icon: ImageIcon,
+    mobileTab: true,
+  },
+  {
+    href: "/partner/payouts",
+    label: "Payouts",
+    Icon: Wallet,
+    mobileTab: true,
+  },
   {
     href: "/partner/appeals",
     label: "Appeals",
     Icon: ShieldAlert,
+    mobileTab: true,
     whenSuspended: true,
   },
-  { href: "/partner/profile", label: "Profile", Icon: UserIcon },
+  {
+    href: "/partner/profile",
+    label: "Profile",
+    Icon: UserIcon,
+    mobileTab: false,
+  },
 ];
