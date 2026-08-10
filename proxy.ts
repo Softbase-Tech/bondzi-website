@@ -25,9 +25,14 @@ import { auth } from "@/lib/auth/config";
  *                                       (authed)   → /dashboard
  *                            redirects /blog/*  → bondzi.online/blog/*
  *
- *   partners.bondzi.online → future: mirrors app-host behaviour with a
- *                            second NextAuth cookie. Nothing to do here
- *                            yet — the branch is a Phase-8+ addition.
+ *   partners.bondzi.online → mirrors app-host behaviour: `/` lands the
+ *                            user on /partner/dashboard, unauthed requests
+ *                            bounce to /login on the app host with a
+ *                            returnTo. Uses the same session cookie as
+ *                            the app host — cookies are scoped to
+ *                            `.bondzi.online` in prod so signing in on
+ *                            app.bondzi.online also signs in on
+ *                            partners.bondzi.online.
  *
  * On localhost or a Vercel preview URL, the host-split branch is
  * skipped (`isMarketingHost` and `isAppHost` both false) so every
@@ -91,6 +96,11 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   // app-host branch below so the routing works either way round.
   const isAppHost =
     host === "app.bondzi.online" || host === "www.app.bondzi.online";
+  // Partner portal subdomain — carries the same NextAuth cookie as the
+  // app host (`.bondzi.online`-scoped) so a signed-in user on either
+  // subdomain is signed in on both.
+  const isPartnerHost =
+    host === "partners.bondzi.online" || host === "www.partners.bondzi.online";
 
   // -----------------------------------------------------------------
   // Marketing host: only marketing routes served here.
@@ -102,6 +112,54 @@ export default auth((req: NextRequest & { auth: unknown }) => {
     // Everything else on marketing → forward to the app host.
     const target = new URL(`https://app.bondzi.online${pathname}${search}`);
     return NextResponse.redirect(target, 308);
+  }
+
+  // -----------------------------------------------------------------
+  // Partner host: rewrites bare paths onto the /partner/* surface and
+  // sends unauthed traffic to the app-host login with a returnTo.
+  // -----------------------------------------------------------------
+  if (isPartnerHost) {
+    // Bare "/" lands on the partner dashboard (authed) or hands off to
+    // the app host's login (public). Auth-related routes (login /
+    // register / verify) live on the app host — we don't duplicate
+    // them under partners.bondzi.online.
+    if (pathname === "/") {
+      if (isAuthed) {
+        return NextResponse.redirect(new URL("/partner/dashboard", req.url));
+      }
+      return NextResponse.redirect(
+        new URL(
+          `https://app.bondzi.online/login?returnTo=${encodeURIComponent(
+            "https://partners.bondzi.online/partner/dashboard",
+          )}`,
+        ),
+      );
+    }
+    // /login etc. on the partner host → app host.
+    if (isAuthPath(pathname)) {
+      return NextResponse.redirect(
+        new URL(`https://app.bondzi.online${pathname}${search}`),
+        308,
+      );
+    }
+    if (!pathname.startsWith("/partner")) {
+      // Anything not under /partner belongs on the app host —
+      // shuttle the request there instead of 404ing.
+      return NextResponse.redirect(
+        new URL(`https://app.bondzi.online${pathname}${search}`),
+        308,
+      );
+    }
+    if (!isAuthed) {
+      return NextResponse.redirect(
+        new URL(
+          `https://app.bondzi.online/login?returnTo=${encodeURIComponent(
+            `https://partners.bondzi.online${pathname}${search}`,
+          )}`,
+        ),
+      );
+    }
+    return NextResponse.next();
   }
 
   // -----------------------------------------------------------------

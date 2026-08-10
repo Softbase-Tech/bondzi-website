@@ -596,3 +596,153 @@ export interface XpWalletSnapshot {
   tiers: XpRedemptionTier[];
   rates: unknown[];
 }
+
+// ============================================================================
+// Partner portal
+// ----------------------------------------------------------------------------
+// Consumed by lib/api/partner.ts + every screen under app/(partner)/*. Shape
+// mirrors backend `src/modules/partners/entities/*.entity.ts` — keep in sync
+// with `common/types/enums.ts` on the backend when new statuses land.
+// ============================================================================
+
+export type PartnerStatus = "pending" | "active" | "suspended" | "banned";
+export type MomoProvider = "mtn" | "airteltigo" | "telecel" | "other";
+
+export interface PartnerProfile {
+  id: string;
+  userId: string | null;
+  email: string;
+  phone: string;
+  fullName: string;
+  countryCode: string;
+  momoProvider: MomoProvider;
+  momoNumber: string;
+  momoAccountName: string;
+  status: PartnerStatus;
+  agreedTermsVersionId: string;
+  fraudFlagCount: number;
+  approvedAt: string | null;
+  approvedBy: string | null;
+  suspendedAt: string | null;
+  bannedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PartnerReferralCode {
+  id: string;
+  partnerId: string;
+  code: string;
+  label: string;
+  isDefault: boolean;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface PartnerTerms {
+  id: string;
+  version: number;
+  title: string;
+  bodyMd: string;
+  plusWassce: string;
+  plusNovdec: string;
+  plusBece: string;
+  signupBatchSize: number;
+  signupBatchAmountGhs: string;
+  signupMinCompletedAnswers: number;
+  answersBonusThreshold: number;
+  answersBonusAmountGhs: string;
+  attributionWindowDays: number;
+  maxFraudFlagsBeforeBlock: number;
+  maxAppeals: number;
+  effectiveFrom: string;
+  createdAt: string;
+}
+
+export type PartnerCommissionType =
+  | "plus_subscription"
+  | "signup_batch"
+  | "answers_bonus"
+  | "plus_subscription_clawback";
+
+export type PartnerCommissionStatus =
+  | "pending"
+  | "approved"
+  | "flagged"
+  | "clawed_back"
+  | "paid";
+
+export interface PartnerCommission {
+  id: string;
+  partnerId: string;
+  type: PartnerCommissionType;
+  amountGhs: string;
+  currency: string;
+  status: PartnerCommissionStatus;
+  earnedAt: string;
+  paidOutId: string | null;
+  termsVersionId: string;
+  subscriptionId: string | null;
+  userId: string | null;
+  batchUserIds: string[] | null;
+  flagReason: string | null;
+  flaggedAt: string | null;
+  dedupKey: string;
+  eligibilityMeta: Record<string, unknown>;
+  createdAt: string;
+}
+
+export type PartnerPayoutStatus = "pending" | "paid" | "failed";
+
+export interface PartnerPayout {
+  id: string;
+  partnerId: string;
+  weekOf: string;
+  amountGhs: string;
+  status: PartnerPayoutStatus;
+  invoiceNumber: string;
+  invoicePdfUrl: string | null;
+  momoProvider: MomoProvider;
+  momoNumber: string;
+  momoReference: string | null;
+  markedPaidBy: string | null;
+  markedPaidAt: string | null;
+  notes: string | null;
+  createdAt: string;
+}
+
+/**
+ * `GET /partner/payouts/preview` — envelope the backend returns for
+ * "what would you pay right now" queries. Same shape whether admin or
+ * partner-side.
+ */
+export interface PartnerPayoutPreview {
+  partnerId: string;
+  totalGhs: string;
+  commissionCount: number;
+  commissions: PartnerCommission[];
+}
+
+/**
+ * `POST /partner/register` body. Backend enforces GH-only for MoMo
+ * providers; we surface the same enum here so the picker can't select
+ * something the server rejects.
+ */
+export interface RegisterPartnerPayload {
+  email: string;
+  phone: string;
+  fullName: string;
+  momoProvider: MomoProvider;
+  momoNumber: string;
+  momoAccountName: string;
+}
+
+export interface UpdatePartnerMomoPayload {
+  momoProvider?: MomoProvider;
+  momoNumber?: string;
+  momoAccountName?: string;
+}
+
+export interface CreateReferralCodePayload {
+  label: string;
+}
