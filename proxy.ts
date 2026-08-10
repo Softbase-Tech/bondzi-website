@@ -49,7 +49,7 @@ const AUTH_PATHS = new Set([
 
 // Marketing-only surfaces. Everything else on the marketing host that
 // isn't in this set redirects to the app host.
-const MARKETING_PUBLIC_PATHS = new Set(["/"]);
+const MARKETING_PUBLIC_PATHS = new Set(["/", "/partners"]);
 const MARKETING_PUBLIC_PREFIXES = ["/blog"];
 
 // Public prefixes that stay reachable everywhere (NextAuth's own
@@ -181,9 +181,9 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   // App host: authed area + auth screens.
   // -----------------------------------------------------------------
   if (isAppHost) {
-    // Blog on the app host → canonicalise to the marketing host so
-    // SEO doesn't split rank between the two.
-    if (pathname.startsWith("/blog")) {
+    // Blog + Partners landing on the app host → canonicalise to the
+    // marketing host so SEO doesn't split rank between the two.
+    if (pathname.startsWith("/blog") || pathname === "/partners") {
       return NextResponse.redirect(
         new URL(`https://bondzi.online${pathname}${search}`),
         308,

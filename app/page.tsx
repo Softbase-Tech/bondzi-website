@@ -16,11 +16,14 @@ import {
   ShieldCheck,
   Quote,
   Plus,
+  Handshake,
+  Wallet,
 } from "lucide-react";
 
 const NAV = [
   { label: "Inside", href: "#inside" },
   { label: "Subjects", href: "#subjects" },
+  { label: "Partners", href: "/partners" },
   { label: "FAQ", href: "#faq" },
   { label: "Blog", href: "/blog" },
 ];
@@ -226,6 +229,7 @@ export default function Home() {
       <Subjects />
       <Goals />
       <Voices />
+      <Partners />
       <Faq />
       <GetTheApp />
       <SiteFooter />
@@ -805,6 +809,119 @@ function Voices() {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Partners                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Landing-page teaser for the partner programme. Kept short — the
+ * details live on /partners. Three tiles for the three commission
+ * streams, one CTA that jumps to the dedicated page.
+ *
+ * Layout matches the Goals / Voices / Built rhythm: kicker + display
+ * headline on the left, three-column grid on the right at lg+,
+ * stacked below md. Uses the yellow-soft background so it visually
+ * anchors as a distinct offer from the core exam-prep story.
+ */
+function Partners() {
+  return (
+    <section id="partners" className="border-t border-rule bg-bg">
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-10 py-14 sm:py-20 lg:py-28">
+        <div className="grid grid-cols-12 gap-6 sm:gap-10 items-start">
+          <div className="col-span-12 lg:col-span-5">
+            <div className="kicker flex items-center gap-3">
+              <Handshake size={14} strokeWidth={2} />
+              For creators & tutors
+            </div>
+            <h2 className="display mt-3 text-[32px] sm:text-[44px] lg:text-[60px] font-medium leading-[1.02]">
+              Earn cash
+              <br />
+              for every student
+              <br />
+              <span className="relative inline-block">
+                <span className="relative z-10">you send us.</span>
+                <span
+                  aria-hidden
+                  className="absolute left-0 right-0 bottom-1 h-2 sm:h-2.5 lg:h-3 bg-orange/25 z-0"
+                />
+              </span>
+            </h2>
+            <p className="mt-6 max-w-md text-[15px] sm:text-[16px] leading-[1.6] text-ink-soft">
+              Share your code with the students you already reach on
+              WhatsApp, Instagram, or in a study group. When they sign
+              up, study, and upgrade, you earn — paid weekly to your
+              MTN, AirtelTigo, or Telecel Cash.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Link
+                href="/partners"
+                className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
+              >
+                See how it works
+                <ArrowRight size={16} strokeWidth={2.25} />
+              </Link>
+              <Link
+                href="https://partners.bondzi.online/partner/register"
+                className="inline-flex items-center gap-2 px-5 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[15px] whitespace-nowrap"
+              >
+                Sign up as a partner
+                <ArrowUpRight size={16} strokeWidth={2.25} />
+              </Link>
+            </div>
+          </div>
+
+          <ul className="col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <PartnerTile
+              amount="GHS 30"
+              stream="Plus subscription"
+              body="Every WASSCE or NOVDEC student who buys Plus using your code, within 90 days of signing up."
+              sub="GHS 15 for BECE Plus"
+            />
+            <PartnerTile
+              amount="GHS 20"
+              stream="Every 10 signups"
+              body="Paid as a batch when ten of your referrals each hit 40+ answered questions."
+              sub="Rewards active users, not sign-ups"
+            />
+            <PartnerTile
+              amount="GHS 2"
+              stream="Answers bonus"
+              body="Bonus per paid-Plus student who crosses 100 completed answers — the moment they're a real user."
+              sub="One-time, on top of Plus"
+            />
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PartnerTile({
+  amount,
+  stream,
+  body,
+  sub,
+}: {
+  amount: string;
+  stream: string;
+  body: string;
+  sub: string;
+}) {
+  return (
+    <li className="rounded-2xl border border-rule bg-paper p-5 flex flex-col gap-3 min-h-[180px]">
+      <div className="flex items-center gap-2 text-ink-mute">
+        <Wallet size={14} strokeWidth={2} />
+        <span className="kicker !text-[10.5px]">{stream}</span>
+      </div>
+      <p className="display text-[28px] sm:text-[32px] leading-none font-medium text-ink">
+        {amount}
+      </p>
+      <p className="text-[13.5px] leading-[1.55] text-ink-soft">{body}</p>
+      <p className="mt-auto text-[11.5px] text-ink-mute">{sub}</p>
+    </li>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /* FAQ                                                                        */
 /* -------------------------------------------------------------------------- */
 
@@ -1026,6 +1143,12 @@ function SiteFooter() {
           <a href="#goals" className="hover:text-ink py-1">
             Goals
           </a>
+          <Link href="/partners" className="hover:text-ink py-1">
+            Partners
+          </Link>
+          <Link href="/blog" className="hover:text-ink py-1">
+            Blog
+          </Link>
           <a
             href="mailto:info@bondzi.online"
             className="hover:text-ink py-1 col-span-2 sm:col-span-1 truncate"

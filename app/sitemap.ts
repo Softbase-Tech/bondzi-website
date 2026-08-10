@@ -34,6 +34,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   };
 
+  const partners: MetadataRoute.Sitemap[number] = {
+    url: `${SITE_URL}/partners`,
+    lastModified: buildTime,
+    changeFrequency: "monthly",
+    priority: 0.7,
+    alternates: {
+      languages: { "en-GH": `${SITE_URL}/partners` },
+    },
+  };
+
   const blogPosts: MetadataRoute.Sitemap = POSTS.map((p) => ({
     url: `${SITE_URL}/blog/${p.slug}`,
     lastModified: new Date(p.updatedAt ?? p.publishedAt),
@@ -44,5 +54,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   }));
 
-  return [home, blogIndex, ...blogPosts];
+  return [home, blogIndex, partners, ...blogPosts];
 }
