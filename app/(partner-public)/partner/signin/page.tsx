@@ -47,12 +47,12 @@ export default function PartnerSigninPage() {
           </CardBody>
         </Card>
         <p className="mt-6 text-center text-[13px] text-ink-mute">
-          Not a partner yet?{" "}
+          New here?{" "}
           <Link
-            href="https://bondzi.online/partners"
+            href="/partner/register"
             className="font-medium text-orange hover:text-orange-deep"
           >
-            Learn about the programme
+            Create a partner account
           </Link>
         </p>
       </div>

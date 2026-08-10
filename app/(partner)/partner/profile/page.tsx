@@ -10,7 +10,7 @@ import { EditMomoForm } from "./EditMomoForm";
 export default async function PartnerProfilePage() {
   const session = await auth();
   const accessToken = session?.accessToken ?? null;
-  if (!accessToken) redirect("/login?returnTo=%2Fpartner%2Fprofile");
+  if (!accessToken) redirect("/partner/signin?returnTo=%2Fpartner%2Fprofile");
 
   const partner = await getMyPartner(accessToken);
   if (!partner) redirect("/partner/register");

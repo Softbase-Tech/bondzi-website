@@ -12,7 +12,7 @@ import { BannerGrid } from "./BannerGrid";
 export default async function PartnerBannersPage() {
   const session = await auth();
   const accessToken = session?.accessToken ?? null;
-  if (!accessToken) redirect("/login?returnTo=%2Fpartner%2Fbanners");
+  if (!accessToken) redirect("/partner/signin?returnTo=%2Fpartner%2Fbanners");
   const partner = await getMyPartner(accessToken);
   if (!partner) redirect("/partner/register");
 

@@ -6,7 +6,7 @@ import { CodesClient } from "./CodesClient";
 export default async function PartnerCodesPage() {
   const session = await auth();
   const accessToken = session?.accessToken ?? null;
-  if (!accessToken) redirect("/login?returnTo=%2Fpartner%2Fcodes");
+  if (!accessToken) redirect("/partner/signin?returnTo=%2Fpartner%2Fcodes");
 
   const partner = await getMyPartner(accessToken);
   if (!partner) redirect("/partner/register");

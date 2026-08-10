@@ -8,70 +8,44 @@ import type { SafeUser } from "../api/types";
 assertServerEnv();
 
 /**
- * The Bondzi web project will eventually host TWO signed-in surfaces:
- *   - app.bondzi.online       — students (this config)
- *   - partners.bondzi.online  — partners (a second NextAuth instance,
- *                                added in a later phase)
+ * The Bondzi web project hosts two signed-in surfaces served from the
+ * same codebase:
  *
- * Both cookies share the `.bondzi.online` domain so the marketing
- * host can peek at either to decide CTAs. They MUST have different
- * names so a user can be signed in as both simultaneously (e.g. a
- * teacher with their own student account). Explicit naming today —
- * zero-cost — spares us a forced re-login for every student when the
- * partner phase ships.
+ *   - app.bondzi.online       — students
+ *   - partners.bondzi.online  — partners
+ *
+ * Isolation rule (deliberate): the session cookies are HOST-SCOPED,
+ * not `.bondzi.online`-scoped. Signing in on one subdomain does not
+ * leak a session to the other. One Bondzi account still — the
+ * backend is one identity system — but two independent web sessions
+ * per user. This eliminates every cross-subdomain redirect quirk and
+ * lets us reason about each host as a self-contained application.
+ *
+ * The distinct cookie names (`student-…`) are historical; there's no
+ * cross-host collision to avoid now that cookies are host-scoped,
+ * but renaming would force every existing session to re-login. The
+ * partner surface uses the same cookie name because it's running the
+ * same NextAuth config — the browser scopes it to the partner host
+ * automatically.
+ *
+ * `__Secure-` prefix in production is a browser-enforced flag that
+ * requires the cookie to be set over HTTPS with the Secure attribute.
+ * `__Host-` on the CSRF cookie additionally requires no Domain
+ * attribute + Path=/ — both of which we satisfy — so its scope is
+ * always implicit.
  */
-const STUDENT_SESSION_COOKIE_NAME =
-  ENV.APP_ENV === "production"
-    ? "__Secure-authjs.student-session-token"
-    : "authjs.student-session-token";
-const STUDENT_CALLBACK_COOKIE_NAME =
-  ENV.APP_ENV === "production"
-    ? "__Secure-authjs.student-callback-url"
-    : "authjs.student-callback-url";
-const STUDENT_CSRF_COOKIE_NAME =
-  ENV.APP_ENV === "production"
-    ? "__Host-authjs.student-csrf-token"
-    : "authjs.student-csrf-token";
-
-/**
- * Only apply `.bondzi.online` cookie scoping in production. On
- * localhost the browser rejects cookies with `Domain=...` set to a
- * different host — dev must leave `domain` unset so the cookie is
- * scoped to `localhost` implicitly.
- *
- * Detection is deliberately belt-and-braces because if this misfires
- * the session cookie is host-only, which breaks cross-subdomain
- * flows (app.bondzi.online login handing off to
- * partners.bondzi.online) in a way that presents as an infinite
- * redirect loop after login. Three independent signals — any one is
- * enough to trip production:
- *
- *   1. `NEXT_PUBLIC_APP_ENV=production` — the deliberate flag.
- *   2. `VERCEL_ENV=production` — Vercel sets this automatically for
- *      the production deployment; guaranteed present on prod
- *      without any manual config.
- *   3. NEXTAUTH_URL contains `bondzi.online` — a final fallback in
- *      case the two above are absent but the deployment is clearly
- *      pointing at the production host.
- *
- * `__Host-` prefix on the CSRF cookie forbids a `Domain` attribute
- * per RFC 6265bis, so its scope stays implicit even in prod.
- */
-const authUrl = process.env.NEXTAUTH_URL ?? process.env.AUTH_URL ?? "";
 const isProd =
   ENV.APP_ENV === "production" ||
-  process.env.VERCEL_ENV === "production" ||
-  /(^|\.)bondzi\.online$/i.test(safeUrlHost(authUrl));
-const COOKIE_DOMAIN = isProd ? ".bondzi.online" : undefined;
-
-function safeUrlHost(u: string): string {
-  if (!u) return "";
-  try {
-    return new URL(u).hostname;
-  } catch {
-    return "";
-  }
-}
+  process.env.VERCEL_ENV === "production";
+const STUDENT_SESSION_COOKIE_NAME = isProd
+  ? "__Secure-authjs.student-session-token"
+  : "authjs.student-session-token";
+const STUDENT_CALLBACK_COOKIE_NAME = isProd
+  ? "__Secure-authjs.student-callback-url"
+  : "authjs.student-callback-url";
+const STUDENT_CSRF_COOKIE_NAME = isProd
+  ? "__Host-authjs.student-csrf-token"
+  : "authjs.student-csrf-token";
 
 /**
  * Access-token TTL is 15 minutes on the backend. We refresh a couple
@@ -120,6 +94,9 @@ export const authConfig: NextAuthConfig = {
     error: "/login",
   },
   cookies: {
+    // No `domain` on any of these — cookies are host-scoped. A
+    // session set on partners.bondzi.online never becomes visible on
+    // app.bondzi.online, and vice versa.
     sessionToken: {
       name: STUDENT_SESSION_COOKIE_NAME,
       options: {
@@ -127,7 +104,6 @@ export const authConfig: NextAuthConfig = {
         sameSite: "lax",
         path: "/",
         secure: isProd,
-        ...(COOKIE_DOMAIN ? { domain: COOKIE_DOMAIN } : {}),
       },
     },
     callbackUrl: {
@@ -136,13 +112,9 @@ export const authConfig: NextAuthConfig = {
         sameSite: "lax",
         path: "/",
         secure: isProd,
-        ...(COOKIE_DOMAIN ? { domain: COOKIE_DOMAIN } : {}),
       },
     },
     csrfToken: {
-      // `__Host-` prefix is required for cross-subdomain CSRF safety
-      // per NextAuth docs; per RFC 6265bis, __Host- cookies MUST NOT
-      // set a Domain attribute, so leave that off deliberately.
       name: STUDENT_CSRF_COOKIE_NAME,
       options: {
         httpOnly: true,

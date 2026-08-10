@@ -15,7 +15,7 @@ import { getMyPartner } from "@/lib/api/partner";
 export default async function PartnerIndexPage() {
   const session = await auth();
   const accessToken = session?.accessToken ?? null;
-  if (!accessToken) redirect("/login?returnTo=%2Fpartner%2Fdashboard");
+  if (!accessToken) redirect("/partner/signin?returnTo=%2Fpartner%2Fdashboard");
   const partner = await getMyPartner(accessToken);
   if (!partner) redirect("/partner/register");
   redirect("/partner/dashboard");

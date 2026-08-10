@@ -18,7 +18,7 @@ import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 export default async function PartnerPayoutsPage() {
   const session = await auth();
   const accessToken = session?.accessToken ?? null;
-  if (!accessToken) redirect("/login?returnTo=%2Fpartner%2Fpayouts");
+  if (!accessToken) redirect("/partner/signin?returnTo=%2Fpartner%2Fpayouts");
 
   const partner = await getMyPartner(accessToken);
   if (!partner) redirect("/partner/register");

@@ -153,7 +153,7 @@ export function PartnerSigninForm() {
         />
         <div className="flex justify-end">
           <Link
-            href="https://app.bondzi.online/forgot-password"
+            href="/partner/forgot-password"
             className="text-[13px] font-medium text-orange hover:text-orange-deep transition-colors"
           >
             Forgot password?

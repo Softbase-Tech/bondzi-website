@@ -7,19 +7,16 @@ import { PartnerBottomTabBar } from "@/components/partner/PartnerBottomTabBar";
 import { PartnerSidebar } from "@/components/partner/PartnerSidebar";
 
 /**
- * Layout for the entire `/partner/*` surface.
+ * Layout for the authed `/partner/*` surface.
  *
- * Auth gate: `auth()` reads the encrypted NextAuth cookie server-side;
- * an unsigned request is redirected to /login with a returnTo so the
- * user lands back on the same page after signing in. The proxy also
- * guards the (partner) group — this is defence in depth.
+ * Auth gate: `auth()` reads the host-scoped NextAuth cookie; an
+ * unsigned request is redirected to /partner/signin. This is
+ * defence-in-depth on top of the proxy which already gates unauthed
+ * /partner/* traffic on the partner host.
  *
  * Layout shape:
  *   Mobile (< md)  →  Header + main + BottomTabBar (footer)
  *   Tablet (md+)   →  Header + [Sidebar | main] two-column
- *
- * The main pane is bottom-padded on mobile to clear the fixed tab
- * bar (respecting the iOS safe area) and returns to normal on md+.
  */
 export default async function PartnerLayout({
   children,
@@ -28,10 +25,6 @@ export default async function PartnerLayout({
 }) {
   const session = await auth();
   if (!session?.user) {
-    // Same-host redirect — the partner-branded signin lives at
-    // /partner/signin on this host. The proxy also gates unauthed
-    // /partner/* traffic to the same target, so this is defence-
-    // in-depth against a mis-scoped proxy rule.
     redirect("/partner/signin?returnTo=%2Fpartner%2Fdashboard");
   }
   // Read the partner status once so the nav can decide whether to

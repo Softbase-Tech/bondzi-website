@@ -16,74 +16,24 @@ import { getWebDeviceId, getWebDeviceName } from "@/lib/device";
  * component detects the mode live and switches keyboard type + autocomplete
  * hints. Same UX as the mobile app.
  *
- * Post-login routing:
- *   - `?returnTo=/foo` (same-origin path) → router.replace(returnTo)
- *   - `?returnTo=https://partners.bondzi.online/…` (allow-listed
- *     Bondzi sibling subdomain, e.g. the partner portal handing
- *     off login) → window.location.assign() so the browser does a
- *     full document nav to the sibling origin. router.replace()
- *     would silently no-op on cross-origin URLs.
- *   - anything else → /dashboard (defensive fallback — never
- *     redirect to an unknown host).
- *
- * Errors:
- *   - Bad credentials / rate-limits / non-student role → generic
- *     "Sign in failed" toast (NextAuth swallows the specific reason
- *     to prevent enumeration).
- *   - NextAuth session `error === "DeviceKicked"` on the destination
- *     page is handled elsewhere; here we just show the toast.
+ * `returnTo` is same-host relative paths only. Cross-subdomain sign-in
+ * hand-offs don't happen anymore — the partner surface has its own
+ * signin at partners.bondzi.online/partner/signin — so any absolute or
+ * protocol-relative returnTo is treated as a bogus / open-redirect
+ * smell and falls back to /dashboard.
  */
 
-/**
- * Absolute-URL allow-list for cross-subdomain login handoffs. Only
- * Bondzi-owned hosts are accepted; anything else falls through to
- * the safe default. Kept in sync with `proxy.ts`.
- */
-const ALLOWED_ABSOLUTE_HOSTS = new Set<string>([
-  "partners.bondzi.online",
-  "www.partners.bondzi.online",
-]);
-
-/**
- * Turn the raw `returnTo` query param into a safe navigation
- * target. Returns:
- *   - a relative path when the input is a same-origin path
- *   - an absolute URL string when the input is an allow-listed
- *     Bondzi sibling subdomain
- *   - null when the input is missing, malformed, or points at an
- *     untrusted host (caller falls back to /dashboard)
- */
-function sanitizeReturnTo(raw: string | null): {
-  target: string;
-  external: boolean;
-} {
-  const FALLBACK = { target: "/dashboard", external: false };
+function sanitizeReturnTo(raw: string | null): string {
+  const FALLBACK = "/dashboard";
   if (!raw) return FALLBACK;
-  // Relative path: must start with a single "/" and never a
-  // protocol-relative "//host/…" (that's a same-scheme absolute
-  // that browsers navigate cross-origin on).
-  if (raw.startsWith("/") && !raw.startsWith("//")) {
-    return { target: raw, external: false };
-  }
-  // Absolute URL — parse + check the host.
-  try {
-    const url = new URL(raw);
-    if (
-      url.protocol === "https:" &&
-      ALLOWED_ABSOLUTE_HOSTS.has(url.host.toLowerCase())
-    ) {
-      return { target: url.toString(), external: true };
-    }
-  } catch {
-    // Malformed URL — fall through.
-  }
-  return FALLBACK;
+  if (!raw.startsWith("/") || raw.startsWith("//")) return FALLBACK;
+  return raw;
 }
 
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const returnToResolved = sanitizeReturnTo(searchParams.get("returnTo"));
+  const returnTo = sanitizeReturnTo(searchParams.get("returnTo"));
   const externalError = searchParams.get("error");
 
   const [identifier, setIdentifier] = useState("");
@@ -140,21 +90,9 @@ export function LoginForm() {
         // Success — clear form state so a "back" tap doesn't leak the
         // last-typed password into a re-mount.
         setPassword("");
-        if (returnToResolved.external) {
-          // Cross-origin (partners.bondzi.online → app.bondzi.online
-          // login → back to partners) needs a full document
-          // navigation. router.replace() silently no-ops on cross-
-          // origin URLs, which was the "loads and does nothing"
-          // bug we saw when the partner portal handoff first
-          // shipped. window.location.assign() also creates a
-          // bounceable history entry, so use `.replace()` to keep
-          // /login out of history.
-          window.location.replace(returnToResolved.target);
-        } else {
-          // Prefer router.replace to avoid a bounceable /login entry
-          // in history.
-          router.replace(returnToResolved.target);
-        }
+        // Prefer router.replace to avoid a bounceable /login entry
+        // in history.
+        router.replace(returnTo);
       } else {
         // NextAuth returns `error: "CredentialsSignin"` on any failure
         // from our authorize() (bad password, unknown user, non-

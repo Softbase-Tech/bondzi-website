@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ChevronDown, LogOut, ExternalLink } from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 import { logout as apiLogout } from "@/lib/api/auth";
 
 /**
@@ -13,11 +13,11 @@ import { logout as apiLogout } from "@/lib/api/auth";
  * the student app. Sign-out follows the same 3-step teardown as the
  * main app.
  *
- * Post-logout landing: /partner/signed-out on the SAME host. Keeps
- * the partner branded end-to-end and avoids bouncing them onto
- * app.bondzi.online (which would look like a student-app login).
- * The signed-out page has a "Sign in" CTA that hands off to the
- * app-host login when the partner wants to come back.
+ * Post-logout landing: /partner/signed-out on the SAME host. The
+ * partner surface is completely self-contained on partners.bondzi.
+ * online — sign-in, register, forgot-password, session expiry all
+ * live here, and the session cookie is host-scoped so there's no
+ * cross-subdomain state leak.
  */
 export function PartnerHeader() {
   const { data: session } = useSession();
@@ -58,13 +58,6 @@ export function PartnerHeader() {
           </span>
         </Link>
         <div className="flex items-center gap-2">
-          <Link
-            href="/dashboard"
-            className="hidden sm:inline-flex items-center gap-1.5 text-[13px] text-ink-soft hover:text-ink"
-          >
-            <ExternalLink size={14} />
-            Student app
-          </Link>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <button
@@ -93,14 +86,6 @@ export function PartnerHeader() {
                     className="block rounded-lg px-3 py-2 text-[14px] text-ink hover:bg-yellow-soft/60 cursor-pointer"
                   >
                     Profile & MoMo
-                  </Link>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item asChild>
-                  <Link
-                    href="/dashboard"
-                    className="block rounded-lg px-3 py-2 text-[14px] text-ink hover:bg-yellow-soft/60 cursor-pointer sm:hidden"
-                  >
-                    Switch to student app
                   </Link>
                 </DropdownMenu.Item>
                 <DropdownMenu.Separator className="my-1 h-px bg-rule" />

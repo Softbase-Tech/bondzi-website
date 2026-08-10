@@ -24,7 +24,7 @@ import { AppealsClient } from "./AppealsClient";
 export default async function PartnerAppealsPage() {
   const session = await auth();
   const accessToken = session?.accessToken ?? null;
-  if (!accessToken) redirect("/login?returnTo=%2Fpartner%2Fappeals");
+  if (!accessToken) redirect("/partner/signin?returnTo=%2Fpartner%2Fappeals");
 
   const partner = await getMyPartner(accessToken);
   if (!partner) redirect("/partner/register");
