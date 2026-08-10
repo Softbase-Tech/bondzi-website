@@ -9,9 +9,20 @@ import { cn } from "@/lib/utils";
  * Bottom tab bar for the partner portal on mobile. Same visual
  * grammar as the main-app BottomTabBar so a student who's also a
  * partner switches contexts without re-learning navigation.
+ *
+ * Filters `whenSuspended` items so the 4-icon happy-path row stays
+ * scannable at thumb distance; the Appeals tab only slides in when
+ * the partner is currently suspended.
  */
-export function PartnerBottomTabBar() {
+export function PartnerBottomTabBar({
+  showAppeals,
+}: {
+  showAppeals: boolean;
+}) {
   const pathname = usePathname();
+  const items = PARTNER_NAV.filter(
+    (i) => !i.whenSuspended || showAppeals,
+  );
   return (
     <nav
       aria-label="Partner navigation"
@@ -20,10 +31,10 @@ export function PartnerBottomTabBar() {
       <ul
         className="grid text-[11px] font-medium"
         style={{
-          gridTemplateColumns: `repeat(${PARTNER_NAV.length}, minmax(0, 1fr))`,
+          gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))`,
         }}
       >
-        {PARTNER_NAV.map(({ href, label, Icon }) => {
+        {items.map(({ href, label, Icon }) => {
           const isActive =
             pathname === href || pathname?.startsWith(`${href}/`);
           return (

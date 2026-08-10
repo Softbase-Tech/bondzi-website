@@ -1,6 +1,7 @@
 import { api, apiServer, ApiError } from "./client";
 import type {
   CreateReferralCodePayload,
+  PartnerAppeal,
   PartnerCommission,
   PartnerPayout,
   PartnerPayoutPreview,
@@ -8,6 +9,7 @@ import type {
   PartnerReferralCode,
   PartnerTerms,
   RegisterPartnerPayload,
+  SubmitAppealPayload,
   UpdatePartnerMomoPayload,
 } from "./types";
 
@@ -165,6 +167,29 @@ export async function reactivateReferralCode(
     `/partner/codes/${encodeURIComponent(id)}/reactivate`,
     { method: "PATCH" },
   );
+}
+
+// ---------------------------------------------------------------------------
+// Appeals
+// ---------------------------------------------------------------------------
+
+export async function listMyAppeals(
+  accessToken: string,
+): Promise<PartnerAppeal[]> {
+  return apiServer<PartnerAppeal[]>(accessToken, "/partner/appeals");
+}
+
+export async function listMyAppealsClient(): Promise<PartnerAppeal[]> {
+  return api<PartnerAppeal[]>("/partner/appeals");
+}
+
+export async function submitAppeal(
+  payload: SubmitAppealPayload,
+): Promise<PartnerAppeal> {
+  return api<PartnerAppeal>("/partner/appeals", {
+    method: "POST",
+    body: payload,
+  });
 }
 
 // ---------------------------------------------------------------------------

@@ -10,9 +10,22 @@ import { cn } from "@/lib/utils";
  * viewport so scrolling the main pane doesn't lose the nav. Mobile
  * gets the BottomTabBar instead — mounted alongside in the layout,
  * hidden past md.
+ *
+ * The sidebar always shows every entry on md+ — screen real estate
+ * is cheap on tablets and desktop. The Appeals link is present but
+ * the layout only surfaces it visually as a state-of-account nudge
+ * when suspended (via `showAppeals`). Everywhere else it's a
+ * discoverable "just in case" link.
  */
-export function PartnerSidebar() {
+export function PartnerSidebar({
+  showAppeals,
+}: {
+  showAppeals: boolean;
+}) {
   const pathname = usePathname();
+  const items = PARTNER_NAV.filter(
+    (i) => !i.whenSuspended || showAppeals,
+  );
   return (
     <aside
       aria-label="Partner navigation"
@@ -22,7 +35,7 @@ export function PartnerSidebar() {
         <p className="kicker">Partner portal</p>
       </div>
       <ul className="flex flex-col gap-0.5">
-        {PARTNER_NAV.map(({ href, label, Icon }) => {
+        {items.map(({ href, label, Icon }) => {
           const isActive =
             pathname === href || pathname?.startsWith(`${href}/`);
           return (

@@ -746,3 +746,23 @@ export interface UpdatePartnerMomoPayload {
 export interface CreateReferralCodePayload {
   label: string;
 }
+
+export type PartnerAppealStatus = "open" | "upheld" | "denied";
+
+export interface PartnerAppeal {
+  id: string;
+  partnerId: string;
+  appealNumber: number;
+  openedAt: string;
+  body: string;
+  attachments: string[];
+  status: PartnerAppealStatus;
+  resolvedAt: string | null;
+  resolvedBy: string | null;
+  resolutionNote: string | null;
+}
+
+export interface SubmitAppealPayload {
+  body: string;
+  attachments?: string[];
+}

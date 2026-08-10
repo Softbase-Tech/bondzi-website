@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/config";
+import { getMyPartner } from "@/lib/api/partner";
 import { PartnerHeader } from "@/components/partner/PartnerHeader";
 import { PartnerBottomTabBar } from "@/components/partner/PartnerBottomTabBar";
 import { PartnerSidebar } from "@/components/partner/PartnerSidebar";
@@ -29,11 +30,19 @@ export default async function PartnerLayout({
   if (!session?.user) {
     redirect("/login?returnTo=%2Fpartner%2Fdashboard");
   }
+  // Read the partner status once so the nav can decide whether to
+  // surface the Appeals tab on mobile. Non-fatal — if the request
+  // errors (e.g. backend down) the tab just stays hidden until the
+  // next reload.
+  const accessToken = session.accessToken ?? null;
+  const partner = accessToken ? await getMyPartner(accessToken).catch(() => null) : null;
+  const isSuspended = partner?.status === "suspended";
+
   return (
     <div className="min-h-dvh flex flex-col bg-bg">
       <PartnerHeader />
       <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-10 flex-1 flex flex-col md:flex-row gap-0 md:gap-8">
-        <PartnerSidebar />
+        <PartnerSidebar showAppeals={isSuspended} />
         <main
           id="main"
           className="flex-1 min-w-0 py-6 sm:py-8 pb-[calc(env(safe-area-inset-bottom)+80px)] md:pb-10"
@@ -41,7 +50,7 @@ export default async function PartnerLayout({
           {children}
         </main>
       </div>
-      <PartnerBottomTabBar />
+      <PartnerBottomTabBar showAppeals={isSuspended} />
     </div>
   );
 }

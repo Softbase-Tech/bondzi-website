@@ -97,15 +97,21 @@ export default async function PartnerDashboardPage() {
               size={20}
               className="text-orange-deep shrink-0 mt-0.5"
             />
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="font-semibold text-ink">
                 Account under review
               </p>
               <p className="mt-1 text-[13px] text-ink-soft leading-relaxed">
                 Your account is temporarily suspended while we review
-                recent activity. Earnings continue to accrue but payouts
-                are paused. You&apos;ll hear from us soon.
+                recent activity. Payouts are paused. If you believe
+                this was in error, open an appeal.
               </p>
+              <Link
+                href="/partner/appeals"
+                className="mt-2 inline-flex items-center gap-1 text-[13px] font-medium text-orange hover:text-orange-deep"
+              >
+                Open an appeal <ArrowRight size={14} />
+              </Link>
             </div>
           </CardBody>
         </Card>
