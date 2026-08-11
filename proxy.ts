@@ -82,20 +82,6 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   const session = req.auth as { user?: unknown } | null;
   const isAuthed = Boolean(session?.user);
 
-  // IMPORTANT: use `req.nextUrl` — never `req.url` — as the base for
-  // relative-URL redirects.
-  //
-  // When the middleware is wrapped by NextAuth's `auth(...)` (line ~80
-  // above), `req.url` on Vercel gets normalised to whichever host
-  // NEXTAUTH_URL points at (`app.bondzi.online` for us). That silently
-  // rewrites every same-origin redirect on the partner subdomain onto
-  // the app host — user goes to partners.bondzi.online/ and lands on
-  // app.bondzi.online/partner/signin.
-  //
-  // `req.nextUrl` is the resolved incoming URL that respects
-  // x-forwarded-host, so `new URL(path, req.nextUrl)` keeps the user
-  // on the host they're actually browsing.
-
   if (isAlwaysPublic(pathname)) return NextResponse.next();
 
   // Vercel populates `x-forwarded-host`; on localhost it's just the
@@ -104,6 +90,26 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   const forwardedHost =
     req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
   const host = forwardedHost.toLowerCase().split(":")[0];
+  const proto = req.headers.get("x-forwarded-proto") ?? "https";
+  const originHere = `${proto}://${host}`;
+
+  // CRITICAL — build every redirect Location as a plain absolute
+  // string, NEVER pass a URL object.
+  //
+  // Why: this middleware is wrapped by NextAuth's `auth(...)`. On
+  // Vercel, when NEXTAUTH_URL is set (ours points at app.bondzi.
+  // online), NextAuth normalises BOTH `req.url` and `req.nextUrl` to
+  // that host. Every `new URL("/partner/signin", req.nextUrl)` we
+  // fed to NextResponse.redirect() silently produced
+  // https://app.bondzi.online/partner/signin — even when the actual
+  // browser was on partners.bondzi.online. Cost us hours.
+  //
+  // `x-forwarded-host` is set by Vercel Edge from the real incoming
+  // request BEFORE NextAuth sees it, so it always reflects the
+  // browsing host. Building `${proto}://${host}${path}` sidesteps
+  // NextAuth's URL normalisation entirely.
+  const redirectTo = (path: string): NextResponse =>
+    NextResponse.redirect(`${originHere}${path}`);
 
   const isMarketingHost =
     host === "bondzi.online" || host === "www.bondzi.online";
@@ -127,8 +133,10 @@ export default auth((req: NextRequest & { auth: unknown }) => {
       return NextResponse.next();
     }
     // Everything else on marketing → forward to the app host.
-    const target = new URL(`https://app.bondzi.online${pathname}${search}`);
-    return NextResponse.redirect(target, 308);
+    return NextResponse.redirect(
+      `https://app.bondzi.online${pathname}${search}`,
+      308,
+    );
   }
 
   // -----------------------------------------------------------------
@@ -161,11 +169,8 @@ export default auth((req: NextRequest & { auth: unknown }) => {
     // Bare "/" lands on the partner dashboard (authed) or the
     // partner-branded sign-in page.
     if (pathname === "/") {
-      return NextResponse.redirect(
-        new URL(
-          isAuthed ? "/partner/dashboard" : "/partner/signin",
-          req.nextUrl,
-        ),
+      return redirectTo(
+        isAuthed ? "/partner/dashboard" : "/partner/signin",
       );
     }
 
@@ -185,7 +190,7 @@ export default auth((req: NextRequest & { auth: unknown }) => {
         isAuthed &&
         (pathname === "/partner/signin" || pathname === "/partner/register")
       ) {
-        return NextResponse.redirect(new URL("/partner/dashboard", req.nextUrl));
+        return redirectTo("/partner/dashboard");
       }
       return NextResponse.next();
     }
@@ -193,9 +198,7 @@ export default auth((req: NextRequest & { auth: unknown }) => {
     // Authed area — the app-facing /partner/* routes.
     if (!isAuthed) {
       const returnTo = encodeURIComponent(`${pathname}${search}`);
-      return NextResponse.redirect(
-        new URL(`/partner/signin?returnTo=${returnTo}`, req.nextUrl),
-      );
+      return redirectTo(`/partner/signin?returnTo=${returnTo}`);
     }
     return NextResponse.next();
   }
@@ -208,29 +211,25 @@ export default auth((req: NextRequest & { auth: unknown }) => {
     // marketing host so SEO doesn't split rank between the two.
     if (pathname.startsWith("/blog") || pathname === "/partners") {
       return NextResponse.redirect(
-        new URL(`https://bondzi.online${pathname}${search}`),
+        `https://bondzi.online${pathname}${search}`,
         308,
       );
     }
     // Marketing "/" on the app host → land on /dashboard (authed) or
     // /login (public).
     if (pathname === "/") {
-      return NextResponse.redirect(
-        new URL(isAuthed ? "/dashboard" : "/login", req.nextUrl),
-      );
+      return redirectTo(isAuthed ? "/dashboard" : "/login");
     }
     // Signed-in user tries to hit /login etc. → send them to app.
     if (isAuthed && isAuthPath(pathname)) {
-      return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+      return redirectTo("/dashboard");
     }
     // Auth screens — public.
     if (isAuthPath(pathname)) return NextResponse.next();
     // Everything else on app host is authed area.
     if (!isAuthed) {
       const returnTo = encodeURIComponent(`${pathname}${search}`);
-      return NextResponse.redirect(
-        new URL(`/login?returnTo=${returnTo}`, req.nextUrl),
-      );
+      return redirectTo(`/login?returnTo=${returnTo}`);
     }
     return NextResponse.next();
   }
@@ -240,16 +239,14 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   // (marketing + app) so dev sees every route without needing DNS.
   // -----------------------------------------------------------------
   if (isAuthed && isAuthPath(pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+    return redirectTo("/dashboard");
   }
   if (isMarketingPath(pathname) || isAuthPath(pathname)) {
     return NextResponse.next();
   }
   if (isAppPath(pathname) && !isAuthed) {
     const returnTo = encodeURIComponent(`${pathname}${search}`);
-    return NextResponse.redirect(
-      new URL(`/login?returnTo=${returnTo}`, req.nextUrl),
-    );
+    return redirectTo(`/login?returnTo=${returnTo}`);
   }
   return NextResponse.next();
 });
