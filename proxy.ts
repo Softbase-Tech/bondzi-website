@@ -183,13 +183,17 @@ export default auth((req: NextRequest & { auth: unknown }) => {
     }
 
     if (PARTNER_PUBLIC_PATHS.has(pathname)) {
-      // Authed users hitting signin / register don't need the
-      // signed-out flow — send them to the dashboard so they don't
-      // get a stale form back.
-      if (
-        isAuthed &&
-        (pathname === "/partner/signin" || pathname === "/partner/register")
-      ) {
+      // Authed users hitting /partner/signin don't need to see a
+      // signin form — send them to the dashboard.
+      //
+      // /partner/register is deliberately NOT auto-redirected here:
+      // a signed-in user without a partner row needs to reach the
+      // register page to become a partner, and the dashboard page
+      // sends them here when `partner` is null. Auto-redirecting
+      // register → dashboard produced ERR_TOO_MANY_REDIRECTS.
+      // The register page's own server-side code short-circuits to
+      // /partner/dashboard when the user already has a partner row.
+      if (isAuthed && pathname === "/partner/signin") {
         return redirectTo("/partner/dashboard");
       }
       return NextResponse.next();
