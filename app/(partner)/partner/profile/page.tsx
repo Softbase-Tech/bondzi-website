@@ -5,6 +5,7 @@ import {
   getMyPartner,
 } from "@/lib/api/partner";
 import { Card, CardBody, CardHeader } from "@/components/ui/Card";
+import { MarkdownBody } from "@/components/partner/MarkdownBody";
 import { EditMomoForm } from "./EditMomoForm";
 
 export default async function PartnerProfilePage() {
@@ -81,12 +82,12 @@ export default async function PartnerProfilePage() {
               This is the version of the partner agreement that governs
               your commissions.
             </p>
-            <details className="rounded-lg border border-rule bg-yellow-soft/30 p-3">
+            <details className="rounded-lg border border-rule bg-yellow-soft/30 p-3 sm:p-4">
               <summary className="cursor-pointer text-[13px] font-medium text-ink-soft">
                 Read the current terms
               </summary>
-              <div className="mt-3 whitespace-pre-wrap text-[13px] leading-relaxed text-ink-soft">
-                {terms.bodyMd}
+              <div className="mt-4">
+                <MarkdownBody md={terms.bodyMd} />
               </div>
             </details>
           </CardBody>

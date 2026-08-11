@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/config";
 import { getCurrentPartnerTerms, getMyPartner } from "@/lib/api/partner";
+import { MarkdownBody } from "@/components/partner/MarkdownBody";
 import { PartnerOnboardingFlow } from "./PartnerOnboardingFlow";
 
 /**
@@ -58,7 +59,7 @@ export default async function PartnerRegisterPage() {
             session?.profile?.fullName ?? session?.user?.name ?? "",
           phone: session?.profile?.phone ?? "",
         }}
-        termsBodyMd={terms?.bodyMd ?? null}
+        termsBody={terms?.bodyMd ? <MarkdownBody md={terms.bodyMd} /> : null}
         termsVersion={terms?.version ?? null}
       />
     </div>

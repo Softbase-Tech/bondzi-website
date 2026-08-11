@@ -52,12 +52,18 @@ type Step = "email" | "verify" | "details";
 export function PartnerOnboardingFlow({
   isSignedIn,
   prefill,
-  termsBodyMd,
+  termsBody,
   termsVersion,
 }: {
   isSignedIn: boolean;
   prefill: { email: string; fullName: string; phone: string };
-  termsBodyMd: string | null;
+  /**
+   * Pre-rendered markdown body from the server (via MarkdownBody).
+   * Client components can't safely run `marked` at render time —
+   * pulling the parser into the client bundle blows up the JS
+   * payload — so the server renders it once and we slot it in.
+   */
+  termsBody: React.ReactNode | null;
   termsVersion: number | null;
 }) {
   const router = useRouter();
@@ -310,15 +316,13 @@ export function PartnerOnboardingFlow({
               </span>
             </div>
           </CardHeader>
-          {termsBodyMd ? (
+          {termsBody ? (
             <CardBody>
-              <details className="rounded-lg border border-rule bg-yellow-soft/30 p-3">
+              <details className="rounded-lg border border-rule bg-yellow-soft/30 p-3 sm:p-4">
                 <summary className="cursor-pointer text-[13px] font-medium text-ink-soft">
                   Read the full terms
                 </summary>
-                <div className="mt-3 whitespace-pre-wrap text-[13px] leading-relaxed text-ink-soft">
-                  {termsBodyMd}
-                </div>
+                <div className="mt-4">{termsBody}</div>
               </details>
             </CardBody>
           ) : null}
