@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Tag,
+  Users,
   Wallet,
   User as UserIcon,
   ShieldAlert,
@@ -35,6 +36,12 @@ export const PARTNER_NAV: PartnerNavItem[] = [
     mobileTab: true,
   },
   { href: "/partner/codes", label: "Codes", Icon: Tag, mobileTab: true },
+  {
+    href: "/partner/referrals",
+    label: "Referrals",
+    Icon: Users,
+    mobileTab: true,
+  },
   {
     href: "/partner/banners",
     label: "Banners",

@@ -8,6 +8,8 @@ import type {
   PartnerPayoutPreview,
   PartnerProfile,
   PartnerReferralCode,
+  PartnerReferralSort,
+  PartnerReferralsResult,
   PartnerTerms,
   RegisterPartnerPayload,
   SubmitAppealPayload,
@@ -119,6 +121,40 @@ export async function listMyCommissionsClient(): Promise<PartnerCommission[]> {
     if (err instanceof ApiError && err.status === 404) return [];
     throw err;
   }
+}
+
+// ---------------------------------------------------------------------------
+// Referrals
+// ---------------------------------------------------------------------------
+
+/**
+ * `GET /partner/referrals` — every user attributed to the signed-in
+ * partner with per-user engagement, paid-Plus, and commission summary.
+ * Optional `codeId` filter and `sort` (recent | engaged | earning).
+ */
+export async function listMyReferrals(
+  accessToken: string,
+  opts: { codeId?: string; sort?: PartnerReferralSort } = {},
+): Promise<PartnerReferralsResult> {
+  const path = buildReferralsPath(opts);
+  return apiServer<PartnerReferralsResult>(accessToken, path);
+}
+
+export async function listMyReferralsClient(
+  opts: { codeId?: string; sort?: PartnerReferralSort } = {},
+): Promise<PartnerReferralsResult> {
+  return api<PartnerReferralsResult>(buildReferralsPath(opts));
+}
+
+function buildReferralsPath(opts: {
+  codeId?: string;
+  sort?: PartnerReferralSort;
+}): string {
+  const params = new URLSearchParams();
+  if (opts.codeId) params.set("codeId", opts.codeId);
+  if (opts.sort) params.set("sort", opts.sort);
+  const q = params.toString();
+  return q ? `/partner/referrals?${q}` : "/partner/referrals";
 }
 
 // ---------------------------------------------------------------------------
