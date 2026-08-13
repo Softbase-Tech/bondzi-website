@@ -1149,6 +1149,15 @@ function SiteFooter() {
           <Link href="/blog" className="hover:text-ink py-1">
             Blog
           </Link>
+          <Link href="/privacy-policy" className="hover:text-ink py-1">
+            Privacy
+          </Link>
+          <Link href="/terms-of-service" className="hover:text-ink py-1">
+            Terms
+          </Link>
+          <Link href="/account-deletion" className="hover:text-ink py-1">
+            Delete account
+          </Link>
           <a
             href="mailto:info@bondzi.online"
             className="hover:text-ink py-1 col-span-2 sm:col-span-1 truncate"

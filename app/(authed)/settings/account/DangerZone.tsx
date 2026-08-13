@@ -15,9 +15,9 @@ import { marketingPath, POST_LOGOUT_DEFAULT_PATH } from "@/lib/urls";
  * Two irreversible actions grouped so they read as "danger" together:
  *
  *   - Sign out of every device — POST /auth/logout-all + local signOut.
- *   - Delete account — DELETE /users/me (soft delete, 30-day reversal
- *     window). Confirm via typing DELETE so accidental submits don't
- *     wipe the account.
+ *   - Delete account — DELETE /users/me (schedules deletion, 90-day
+ *     reversal window via re-login). Confirm via typing DELETE so
+ *     accidental submits don't wipe the account.
  */
 export function DangerZone() {
   const [signOutOpen, setSignOutOpen] = useState(false);
@@ -52,7 +52,7 @@ export function DangerZone() {
         return;
       }
       toast.success(
-        "Account scheduled for deletion. Sign in within 30 days to cancel.",
+        "Account scheduled for deletion. Sign in within 90 days to cancel.",
       );
       await signOut({
         redirect: true,
@@ -81,7 +81,7 @@ export function DangerZone() {
 
       <Row
         title="Delete account"
-        body="Soft delete — sign in within 30 days to reverse. After that, personal data is permanently anonymised."
+        body="Scheduled for deletion — sign in within 90 days to reverse. After that, personal data is permanently anonymised."
         action={
           <Button
             variant="outline"
