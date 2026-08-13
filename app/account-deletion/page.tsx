@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getLegalPage } from "../../lib/api/legal";
 import { LegalPageView } from "../../components/legal/LegalPageView";
+import { ACCOUNT_DELETION_MD } from "../../lib/legal/content";
 
 export const metadata: Metadata = {
   title: "Account & Data Deletion · Bondzi",
@@ -8,11 +8,6 @@ export const metadata: Metadata = {
     "How to delete your Bondzi account and what happens to your data.",
 };
 
-export const revalidate = 3600;
-
-export default async function AccountDeletionPage() {
-  const page = await getLegalPage("account-deletion");
-  return (
-    <LegalPageView title="Account & Data Deletion" body={page?.body ?? null} />
-  );
+export default function AccountDeletionPage() {
+  return <LegalPageView body={ACCOUNT_DELETION_MD} />;
 }

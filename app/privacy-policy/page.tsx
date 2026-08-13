@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getLegalPage } from "../../lib/api/legal";
 import { LegalPageView } from "../../components/legal/LegalPageView";
+import { PRIVACY_POLICY_MD } from "../../lib/legal/content";
 
 export const metadata: Metadata = {
   title: "Privacy Policy · Bondzi",
@@ -8,9 +8,6 @@ export const metadata: Metadata = {
     "How Bondzi collects, uses, retains and protects your personal data.",
 };
 
-export const revalidate = 3600;
-
-export default async function PrivacyPolicyPage() {
-  const page = await getLegalPage("privacy");
-  return <LegalPageView title="Privacy Policy" body={page?.body ?? null} />;
+export default function PrivacyPolicyPage() {
+  return <LegalPageView body={PRIVACY_POLICY_MD} />;
 }
