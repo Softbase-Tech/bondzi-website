@@ -13,9 +13,11 @@ import { auth } from "@/lib/auth/config";
  * Host split (production only — localhost is treated as "app host"
  * so dev sees every route):
  *
- *   bondzi.online         →  serves /, /blog/*  (marketing only)
- *                            redirects /login /register /dashboard etc.
- *                            to app.bondzi.online/…
+ *   bondzi.online         →  serves /, /blog/*, and the public legal
+ *                            pages (/privacy-policy, /terms-of-service,
+ *                            /account-deletion). Redirects /login
+ *                            /register /dashboard etc. to
+ *                            app.bondzi.online/…
  *
  *   app.bondzi.online     →  serves /login /register /dashboard etc.
  *   www.app.bondzi.online →  same behaviour — both bare and www-prefixed
@@ -50,9 +52,23 @@ const AUTH_PATHS = new Set([
   "/verify-email",
 ]);
 
+// Public legal pages — canonical on the marketing host and reachable
+// WITHOUT a session (app-store reviewers, logged-out users). Kept in one
+// list because they're referenced twice: allowlisted on the marketing host
+// below, and canonicalised marketing-ward from the app host.
+const LEGAL_PUBLIC_PATHS = [
+  "/privacy-policy",
+  "/terms-of-service",
+  "/account-deletion",
+];
+
 // Marketing-only surfaces. Everything else on the marketing host that
 // isn't in this set redirects to the app host.
-const MARKETING_PUBLIC_PATHS = new Set(["/", "/partners"]);
+const MARKETING_PUBLIC_PATHS = new Set([
+  "/",
+  "/partners",
+  ...LEGAL_PUBLIC_PATHS,
+]);
 const MARKETING_PUBLIC_PREFIXES = ["/blog"];
 
 // Public prefixes that stay reachable everywhere (NextAuth's own
@@ -211,9 +227,15 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   // App host: authed area + auth screens.
   // -----------------------------------------------------------------
   if (isAppHost) {
-    // Blog + Partners landing on the app host → canonicalise to the
-    // marketing host so SEO doesn't split rank between the two.
-    if (pathname.startsWith("/blog") || pathname === "/partners") {
+    // Blog + Partners + legal pages landing on the app host →
+    // canonicalise to the marketing host so SEO doesn't split rank
+    // between the two, and so the legal pages are served publicly (the
+    // app host would otherwise login-gate them).
+    if (
+      pathname.startsWith("/blog") ||
+      pathname === "/partners" ||
+      LEGAL_PUBLIC_PATHS.includes(pathname)
+    ) {
       return NextResponse.redirect(
         `https://bondzi.online${pathname}${search}`,
         308,
