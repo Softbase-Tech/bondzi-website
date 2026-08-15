@@ -110,3 +110,47 @@ export async function replySupportTicket(
     { method: "POST", body: payload },
   );
 }
+
+/**
+ * Uploads one image/PDF and returns the attachment descriptor the
+ * caller drops into a message payload's `attachments[]` array.
+ *
+ * The shared api() client hardcodes JSON serialization, so this
+ * helper does its own fetch with FormData. It reuses NextAuth's
+ * session to attach the same Bearer token.
+ */
+export async function uploadSupportAttachment(
+  file: File,
+): Promise<SupportAttachment> {
+  const { getSession } = await import("next-auth/react");
+  const { ENV } = await import("../env");
+  const session = await getSession();
+  const accessToken =
+    (session as unknown as { accessToken?: string } | null)?.accessToken ??
+    null;
+
+  const form = new FormData();
+  form.append("file", file, file.name);
+
+  const url = `${ENV.API_URL.replace(/\/$/, "")}/support/attachments`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: accessToken
+      ? { Authorization: `Bearer ${accessToken}` }
+      : undefined,
+    body: form,
+  });
+  const text = await res.text();
+  const parsed = text.length ? (JSON.parse(text) as unknown) : undefined;
+  if (!res.ok) {
+    const message =
+      (parsed as { message?: string } | undefined)?.message ?? "Upload failed";
+    throw new Error(message);
+  }
+  const env = parsed as { data?: SupportAttachment } | SupportAttachment | undefined;
+  const data =
+    env && "data" in (env as Record<string, unknown>)
+      ? (env as { data: SupportAttachment }).data
+      : (env as SupportAttachment);
+  return data;
+}

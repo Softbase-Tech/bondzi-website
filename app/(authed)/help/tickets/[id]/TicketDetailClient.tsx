@@ -4,8 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   replySupportTicket,
+  type SupportAttachment,
   type SupportTicketDetail,
 } from "@/lib/api/support";
+import { AttachmentPicker } from "@/components/support/AttachmentPicker";
+import { ENV } from "@/lib/env";
 import { toast } from "sonner";
 
 function relativeTime(iso: string): string {
@@ -36,6 +39,7 @@ export function TicketDetailClient({
 }) {
   const [detail, setDetail] = useState<SupportTicketDetail>(initial);
   const [reply, setReply] = useState("");
+  const [attachments, setAttachments] = useState<SupportAttachment[]>([]);
   const [sending, setSending] = useState(false);
 
   const send = async () => {
@@ -44,9 +48,11 @@ export function TicketDetailClient({
     try {
       const fresh = await replySupportTicket(detail.id, {
         body: reply.trim(),
+        attachments: attachments.length ? attachments : undefined,
       });
       setDetail(fresh);
       setReply("");
+      setAttachments([]);
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : "Could not send reply",
@@ -55,6 +61,9 @@ export function TicketDetailClient({
       setSending(false);
     }
   };
+
+  const absoluteUrl = (url: string) =>
+    url.startsWith("http") ? url : `${ENV.API_URL.replace(/\/$/, "")}${url}`;
 
   return (
     <div className="space-y-6">
@@ -106,17 +115,38 @@ export function TicketDetailClient({
                 </div>
                 {m.attachments.length > 0 ? (
                   <div className="mt-2 flex flex-wrap gap-2">
-                    {m.attachments.map((a) => (
-                      <a
-                        key={a.url}
-                        href={a.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="rounded-md bg-white/70 px-2 py-1 text-xs text-pm-navy hover:bg-white"
-                      >
-                        📎 {a.originalFilename ?? "attachment"}
-                      </a>
-                    ))}
+                    {m.attachments.map((a) => {
+                      const href = absoluteUrl(a.url);
+                      if (a.mime.startsWith("image/")) {
+                        return (
+                          <a
+                            key={a.url}
+                            href={href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="block"
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={href}
+                              alt={a.originalFilename ?? "attachment"}
+                              className="h-28 w-28 rounded-lg object-cover border border-white/60"
+                            />
+                          </a>
+                        );
+                      }
+                      return (
+                        <a
+                          key={a.url}
+                          href={href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="rounded-md bg-white/70 px-2 py-1 text-xs text-pm-navy hover:bg-white"
+                        >
+                          📎 {a.originalFilename ?? "attachment"}
+                        </a>
+                      );
+                    })}
                   </div>
                 ) : null}
                 <div className="mt-2 text-[10px] text-pm-slate-500">
@@ -139,6 +169,7 @@ export function TicketDetailClient({
             placeholder="Type your reply…"
             className="w-full min-h-32 rounded-lg border border-pm-slate-200 px-3 py-2 focus:border-pm-orange focus:outline-none"
           />
+          <AttachmentPicker value={attachments} onChange={setAttachments} />
           <button
             type="button"
             onClick={send}

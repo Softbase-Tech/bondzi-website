@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   createSupportTicket,
+  type SupportAttachment,
   type SupportCategory,
 } from "@/lib/api/support";
+import { AttachmentPicker } from "@/components/support/AttachmentPicker";
 import { toast } from "sonner";
 
 const CATEGORIES: { id: SupportCategory; label: string; subtitle: string }[] = [
@@ -52,6 +54,7 @@ export function NewTicketForm({
     questionId ? "Wrong question report" : "",
   );
   const [body, setBody] = useState("");
+  const [attachments, setAttachments] = useState<SupportAttachment[]>([]);
   const [sending, setSending] = useState(false);
 
   const canSend =
@@ -67,6 +70,7 @@ export function NewTicketForm({
         body: body.trim(),
         relatedTicketNumber: related,
         context: questionId ? { questionId } : undefined,
+        attachments: attachments.length ? attachments : undefined,
       });
       toast.success(`Ticket ${ticket.ticketNumber} opened`);
       router.push(`/help/tickets/${ticket.id}`);
@@ -152,6 +156,13 @@ export function NewTicketForm({
           placeholder="What happened? Steps, times, screenshots if you have them"
           className="w-full min-h-48 rounded-lg border border-pm-slate-200 px-3 py-2 focus:border-pm-orange focus:outline-none"
         />
+      </div>
+
+      <div className="space-y-2">
+        <div className="text-xs font-bold uppercase tracking-wider text-pm-slate-500">
+          Screenshots (optional)
+        </div>
+        <AttachmentPicker value={attachments} onChange={setAttachments} />
       </div>
 
       <p className="text-xs text-pm-slate-500 leading-relaxed">
