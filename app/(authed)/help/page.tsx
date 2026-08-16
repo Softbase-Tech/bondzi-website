@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { LifeBuoy, MessageSquare, Flag, HelpCircle } from "lucide-react";
+import { auth } from "@/lib/auth/config";
+import { listFaqEntries } from "@/lib/api/faq";
 
 export const metadata: Metadata = {
   title: "Help and feedback",
@@ -8,10 +11,20 @@ export const metadata: Metadata = {
 };
 
 /**
- * Web mirror of the mobile Help & feedback landing. Same entry
- * points, same category prefills, same backend calls.
+ * Web mirror of the mobile Help & feedback landing. Fetches the same
+ * FAQ list the mobile Help hub reads from /faq — a single admin
+ * update flows to both surfaces without a rebuild. Each row deep-
+ * links to /help/faq/:slug rendering the full markdown answer.
  */
-export default function HelpPage() {
+export default async function HelpPage() {
+  const session = await auth();
+  if (!session?.accessToken) redirect("/login");
+
+  // Best-effort: an FAQ fetch failure shouldn't take the whole
+  // help hub down — the tickets links and Actions block are still
+  // useful. Fall back to an empty list + an inline retry link.
+  const faq = await listFaqEntries(session.accessToken).catch(() => null);
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 space-y-8">
       <header className="space-y-2">
@@ -41,18 +54,27 @@ export default function HelpPage() {
           Common questions
         </h2>
         <div className="rounded-2xl border border-pm-slate-200 bg-white divide-y">
-          <FaqLink
-            question="Why is a subject locked?"
-            answer="Free lets you practise Core Mathematics, English, Integrated Science and Social Studies. Electives (Physics, Chemistry, Business, Geography…) need Pro. Upgrade from any locked subject to see the plans."
-          />
-          <FaqLink
-            question="How do I earn and spend XP?"
-            answer="You earn XP for every correct answer (10 for past paper, 15 for quiz) plus a bonus when you finish an exam — the bonus scales with your accuracy. Spend XP from your Profile → Redeem."
-          />
-          <FaqLink
-            question="Can I use Bondzi offline?"
-            answer="Not yet. Right now you need a connection to load questions and grade answers. Offline downloads are on the roadmap."
-          />
+          {faq === null ? (
+            <div className="px-4 py-6 text-sm text-pm-slate-500">
+              We couldn&apos;t load the FAQ right now.{" "}
+              <Link href="/help" className="text-pm-orange underline">
+                Try again
+              </Link>
+              , or scroll to Actions below to open a ticket.
+            </div>
+          ) : faq.length === 0 ? (
+            <div className="px-4 py-6 text-sm text-pm-slate-500">
+              No FAQ entries yet — check back soon.
+            </div>
+          ) : (
+            faq.map((entry) => (
+              <FaqLink
+                key={entry.id}
+                slug={entry.slug}
+                question={entry.question}
+              />
+            ))
+          )}
         </div>
       </section>
 
@@ -101,25 +123,15 @@ export default function HelpPage() {
   );
 }
 
-function FaqLink({
-  question,
-  answer,
-}: {
-  question: string;
-  answer: string;
-}) {
+function FaqLink({ slug, question }: { slug: string; question: string }) {
   return (
-    <details className="group">
-      <summary className="flex cursor-pointer items-center justify-between px-4 py-4 text-sm font-semibold text-pm-navy">
-        {question}
-        <span className="text-pm-slate-500 group-open:rotate-180 transition">
-          ▾
-        </span>
-      </summary>
-      <div className="px-4 pb-4 text-sm text-pm-slate-500 leading-relaxed">
-        {answer}
-      </div>
-    </details>
+    <Link
+      href={`/help/faq/${slug}`}
+      className="flex items-center justify-between gap-3 px-4 py-4 text-sm font-semibold text-pm-navy hover:bg-pm-slate-50"
+    >
+      <span className="flex-1">{question}</span>
+      <span className="text-pm-slate-500">→</span>
+    </Link>
   );
 }
 
