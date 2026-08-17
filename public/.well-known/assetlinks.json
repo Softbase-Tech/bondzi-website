@@ -1,11 +1,17 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "com.bondzi.app",
       "sha256_cert_fingerprints": [
-        "9B:EE:D0:7D:59:42:50:20:5F:47:74:EB:69:1B:AB:65:C5:36:44:12:9F:44:6C:29:3D:B2:6C:52:54:CD:5B:06"
+        "9B:EE:D0:7D:59:42:50:20:5F:47:74:EB:69:1B:AB:65:C5:36:44:12:9F:44:6C:29:3D:B2:6C:52:54:CD:5B:06",
+        "0C:40:CB:10:16:4C:82:27:33:8B:63:F4:DE:C5:26:47:10:58:D2:98:09:07:31:EA:3F:C5:DF:F5:7E:58:78:55",
+        "19:9A:14:C1:C4:C0:79:01:12:04:E3:2A:4E:04:08:CB:98:BF:0A:11:67:11:85:16:25:48:BC:A3:CD:D3:B3:FD",
+        "0A:58:36:E5:D9:30:88:1F:F8:B9:F7:71:E6:DD:C7:4D:4D:A9:EE:AD:EE:7B:65:30:E3:C8:4D:24:2B:0A:04:E5"
       ]
     }
   }
