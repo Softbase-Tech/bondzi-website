@@ -8,6 +8,8 @@ import {
   GraduationCap,
   Trophy,
   Gift,
+  Brain,
+  Target,
 } from "lucide-react";
 
 /**
@@ -68,6 +70,18 @@ export const AUTHED_NAV: NavItem[] = [
     href: "/level-tests",
     label: "Level test",
     Icon: GraduationCap,
+    mobileTab: false,
+  },
+  {
+    href: "/ai-review",
+    label: "AI Review",
+    Icon: Brain,
+    mobileTab: false,
+  },
+  {
+    href: "/weakness",
+    label: "Weak spots",
+    Icon: Target,
     mobileTab: false,
   },
   {

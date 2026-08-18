@@ -11,6 +11,11 @@ export type UserRole = "student" | "teacher" | "admin" | "superadmin";
 export type ExamType = "bece" | "wassce" | "novdec";
 export type SchoolLevel = "jhs" | "shs" | "remedial";
 export type AccountType = "free" | "plus" | "pro";
+
+export interface PaginatedResult<T> {
+  items: T[];
+  total: number;
+}
 export type Gender = "male" | "female" | "other" | "prefer_not_to_say";
 
 export interface SafeUser {
@@ -821,4 +826,100 @@ export interface PartnerBanner {
   createdBy: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+// --- AI Study Review ---
+
+export type AiReviewMode = "bootstrap" | "personalised";
+
+export interface AiReviewListItem {
+  id: string;
+  subjectScope: string; // 'all' or a subject uuid
+  summary: string;
+  mode: AiReviewMode;
+  model: string;
+  generatedAt: string; // ISO
+}
+
+export interface AiReviewFull extends AiReviewListItem {
+  content: string; // full 6-section markdown
+}
+
+export interface AiReviewQuota {
+  tier: AccountType;
+  limit: number; // monthly allowance; 0 for free
+  used: number; // personalised reviews this month
+  remaining: number;
+  canGenerate: boolean;
+  latest: AiReviewListItem | null;
+}
+
+export interface GenerateAiReviewResult {
+  review: AiReviewFull;
+  quota: AiReviewQuota;
+}
+
+// --- Weakness / progress coaching ---
+
+export interface PastPaperWeakTopic {
+  topicId: string;
+  title: string;
+  subjectId: string;
+  subjectName: string;
+  answered: number;
+  correct: number;
+  accuracy: number; // 0..1
+}
+
+export interface SyllabusWeakTopic {
+  syllabusTopicId: string;
+  title: string;
+  subjectId: string;
+  subjectName: string;
+  formLevel: number | null;
+  answered: number;
+  correct: number;
+  accuracy: number; // 0..1
+}
+
+export interface WeaknessBySource {
+  pastPaperWeakTopics: PastPaperWeakTopic[];
+  syllabusWeakTopics: SyllabusWeakTopic[];
+}
+
+export interface WeaknessNarrative {
+  narrative: string;
+  generatedAt: string;
+  mode: AiReviewMode;
+  model: string;
+  cached: boolean;
+  subjectScope: string;
+}
+
+// --- Achievements / milestones ---
+
+export type AchievementMetric =
+  | "answers_count"
+  | "streak_max"
+  | "longest_streak"
+  | "accuracy_pct"
+  | "level";
+
+export interface Achievement {
+  id: string;
+  key: string;
+  title: string;
+  description: string | null;
+  iconKey: string;
+  gradientStart: string;
+  gradientEnd: string;
+  metricKey: AchievementMetric;
+  thresholdValue: number;
+  minAnswers: number | null;
+  sortOrder: number;
+  progressCurrent: number;
+  progressTarget: number;
+  unlocked: boolean;
+  unlockedAt: string | null;
+  progressLabel: string;
 }
