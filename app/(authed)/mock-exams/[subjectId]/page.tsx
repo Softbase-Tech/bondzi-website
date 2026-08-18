@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 /**
  * Per-subject mock exam launcher. No configuration surface on purpose:
- * one button, 40 questions, 3 hours, mixed difficulty — that's what
+ * one button, 50 questions, 3 hours, mixed difficulty — that's what
  * makes it a "mock." The heavy lifting lives in `MockExamLauncher`,
  * which posts to POST /exams with mode='mock_exam' via a server action
  * and hard-redirects into the runner.
@@ -64,7 +64,7 @@ export default async function MockExamSubjectPage({
       <Card className="p-5 sm:p-6 space-y-5">
         <div className="grid grid-cols-3 gap-3">
           <Stat icon={<Timer size={16} />} label="Duration" value="3 hours" />
-          <Stat icon={<ClipboardCheck size={16} />} label="Questions" value="40" />
+          <Stat icon={<ClipboardCheck size={16} />} label="Questions" value="50" />
           <Stat
             icon={<Sparkles size={16} />}
             label="Difficulty"

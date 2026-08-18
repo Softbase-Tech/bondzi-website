@@ -22,7 +22,7 @@ export const metadata: Metadata = {
  * Mock exam entry. Lists every subject the student can sit a timed
  * mock in — the actual timer/config lives on the [subjectId] launcher.
  * Kept intentionally list-shaped (not the topic-drill setup UI) since
- * mock exams are deliberately non-configurable: 40 questions, 3 hours,
+ * mock exams are deliberately non-configurable: 50 questions, 3 hours,
  * mixed difficulty. That's the whole point.
  */
 export default async function MockExamsPage() {

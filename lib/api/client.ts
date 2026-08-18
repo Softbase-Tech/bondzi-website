@@ -98,6 +98,9 @@ async function request<T>(
   const url = buildUrl(path, opts.query);
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
+    // This app IS the web platform — send it on every request (incl. SSR)
+    // so the backend records web vs app at signup and per login.
+    "X-Platform": "web",
     ...(opts.headers ?? {}),
   };
   if (opts.accessToken) {
