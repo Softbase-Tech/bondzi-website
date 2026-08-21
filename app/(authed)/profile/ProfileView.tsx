@@ -320,6 +320,12 @@ export function ProfileView({
           hint={subStatus}
         />
         <LinkRow
+          href="/sessions"
+          Icon={History}
+          label="Session history"
+          hint=""
+        />
+        <LinkRow
           href="/settings"
           Icon={SettingsIcon}
           label="Settings"

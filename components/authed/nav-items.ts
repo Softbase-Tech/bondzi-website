@@ -1,31 +1,38 @@
 import {
+  Brain,
+  Gift,
+  GraduationCap,
   LayoutDashboard,
   BookOpen,
-  FileText,
   Sparkles,
-  Timer,
-  GraduationCap,
-  Trophy,
-  Gift,
-  Brain,
   Target,
+  Timer,
+  Trophy,
 } from "lucide-react";
 
 /**
- * Single source of truth for the authed nav — the desktop header row
- * and the mobile bottom-tab bar both derive their entries from this
- * array so a new destination lives in one place. `mobileTab: true`
- * marks the five primary destinations we surface on the bottom bar
- * (dashboard, past papers, quiz, mock exams, subjects) since a mobile
- * tab bar with more than five icons stops being scannable at thumb
- * distance.
+ * Nav shape aligned with the mobile app. Mobile has five bottom
+ * tabs: Home, Practice (= Subjects), Quiz, Rank (= Leaderboard),
+ * Profile. Web mirrors these as the primary nav across desktop and
+ * mobile.
+ *
+ * `secondary` items are surfaced under the profile dropdown / a
+ * secondary menu instead of the primary nav row — they still exist
+ * as routes and remain reachable, they just don't clutter the top
+ * bar. That matches how mobile buries Past papers / Mock / Level
+ * test / AI Review / Weak spots / Winners / Refer inside the
+ * subject-hub and profile screens.
  */
 export interface NavItem {
   href: string;
   label: string;
   Icon: typeof LayoutDashboard;
-  /** Also include in the compact 5-slot mobile bottom tab bar. */
-  mobileTab: boolean;
+  /**
+   * Show in the primary nav row (desktop top bar + mobile bottom
+   * tabs). Non-primary items are still exported so the profile
+   * dropdown / catch-all menus can list them.
+   */
+  primary: boolean;
 }
 
 export const AUTHED_NAV: NavItem[] = [
@@ -33,66 +40,68 @@ export const AUTHED_NAV: NavItem[] = [
     href: "/dashboard",
     label: "Home",
     Icon: LayoutDashboard,
-    mobileTab: true,
+    primary: true,
   },
   {
     href: "/subjects",
     label: "Subjects",
     Icon: BookOpen,
-    mobileTab: true,
-  },
-  {
-    href: "/past-papers",
-    label: "Past papers",
-    Icon: FileText,
-    mobileTab: true,
+    primary: true,
   },
   {
     href: "/quiz",
     label: "Quiz",
     Icon: Sparkles,
-    mobileTab: true,
+    primary: true,
+  },
+  {
+    href: "/leaderboard",
+    label: "Rank",
+    Icon: Trophy,
+    primary: true,
+  },
+  // Everything below is a secondary destination — surfaced via
+  // dropdowns / subject-hub / profile, not the top nav.
+  {
+    href: "/past-papers",
+    label: "Past papers",
+    Icon: BookOpen,
+    primary: false,
   },
   {
     href: "/mock-exams",
-    label: "Mock",
+    label: "Mock exam",
     Icon: Timer,
-    mobileTab: false,
+    primary: false,
   },
   {
     href: "/level-tests",
     label: "Level test",
     Icon: GraduationCap,
-    mobileTab: false,
+    primary: false,
   },
   {
     href: "/ai-review",
     label: "AI Review",
     Icon: Brain,
-    mobileTab: false,
+    primary: false,
   },
   {
     href: "/weakness",
     label: "Weak spots",
     Icon: Target,
-    mobileTab: false,
-  },
-  {
-    href: "/leaderboard",
-    label: "Leaderboard",
-    Icon: Trophy,
-    mobileTab: true,
+    primary: false,
   },
   {
     href: "/winners",
     label: "Winners",
     Icon: Sparkles,
-    mobileTab: false,
+    primary: false,
   },
   {
     href: "/referral",
     label: "Refer",
     Icon: Gift,
-    mobileTab: false,
+    primary: false,
   },
 ];

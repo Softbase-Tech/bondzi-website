@@ -70,6 +70,56 @@ export async function getExamResult(
   );
 }
 
+/**
+ * One row in the /exams/history response. Matches the backend
+ * shape; the mode literal is left as `string` since ExamMode has
+ * added values over time and pinning here would break resilience.
+ */
+export interface ExamHistoryRow {
+  id: string;
+  mode: string;
+  status: string;
+  startedAt: string;
+  completedAt: string | null;
+  durationSeconds: number | null;
+  totalQuestions: number | null;
+  score: number | null;
+  percentScore: string | null;
+  subjectIds: string[];
+}
+
+export interface ExamHistoryPage {
+  items: ExamHistoryRow[];
+  total: number;
+  nextCursor: string | null;
+}
+
+export async function listExamHistory(
+  accessToken: string,
+  query: {
+    subjectId?: string;
+    fromDate?: string;
+    toDate?: string;
+    mode?: string;
+    status?: string;
+    page?: number;
+    limit?: number;
+  } = {},
+): Promise<ExamHistoryPage> {
+  const usp = new URLSearchParams();
+  if (query.subjectId) usp.set("subjectId", query.subjectId);
+  if (query.fromDate) usp.set("fromDate", query.fromDate);
+  if (query.toDate) usp.set("toDate", query.toDate);
+  if (query.mode) usp.set("mode", query.mode);
+  if (query.status) usp.set("status", query.status);
+  if (query.page) usp.set("page", String(query.page));
+  if (query.limit) usp.set("limit", String(query.limit));
+  const path = usp.toString()
+    ? `/exams/history?${usp.toString()}`
+    : "/exams/history";
+  return apiServer<ExamHistoryPage>(accessToken, path);
+}
+
 // --- client-side runner + queue -------------------------------------------
 
 export async function submitAnswer(

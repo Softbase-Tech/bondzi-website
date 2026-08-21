@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
  */
 export function BottomTabBar() {
   const pathname = usePathname();
-  const items = AUTHED_NAV.filter((i) => i.mobileTab);
+  const items = AUTHED_NAV.filter((i) => i.primary);
 
   return (
     <nav

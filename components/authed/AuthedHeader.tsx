@@ -81,7 +81,7 @@ export function AuthedHeader() {
           aria-label="Primary"
           className="hidden md:flex items-center gap-0.5 flex-1 justify-center"
         >
-          {AUTHED_NAV.filter((i) => i.mobileTab).map(({ href, label, Icon }) => {
+          {AUTHED_NAV.filter((i) => i.primary).map(({ href, label, Icon }) => {
             const isActive = pathname === href || pathname?.startsWith(`${href}/`);
             return (
               <Link
@@ -151,7 +151,7 @@ export function AuthedHeader() {
               <div className="px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-widest text-ink-mute">
                 More
               </div>
-              {AUTHED_NAV.filter((i) => !i.mobileTab).map(
+              {AUTHED_NAV.filter((i) => !i.primary).map(
                 ({ href, label, Icon }) => (
                   <MenuItem
                     key={href}
