@@ -2,7 +2,6 @@ import {
   LayoutDashboard,
   BookOpen,
   FileText,
-  Dumbbell,
   Sparkles,
   Timer,
   GraduationCap,
@@ -47,12 +46,6 @@ export const AUTHED_NAV: NavItem[] = [
     label: "Past papers",
     Icon: FileText,
     mobileTab: true,
-  },
-  {
-    href: "/practice",
-    label: "Practice",
-    Icon: Dumbbell,
-    mobileTab: false,
   },
   {
     href: "/quiz",

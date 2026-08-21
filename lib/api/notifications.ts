@@ -49,7 +49,7 @@ export function notificationDeepLink(n: AppNotification): string {
       // the notification isn't a dead end.
       return "/dashboard";
     case "streak_at_risk":
-      return "/practice";
+      return "/subjects";
     case "level_up":
     case "streak_milestone":
       return "/profile";

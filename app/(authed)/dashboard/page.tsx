@@ -95,8 +95,8 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="hidden sm:block">
-          <Button href="/practice" size="lg" rightIcon={<ArrowUpRight size={16} />}>
-            Start practising
+          <Button href="/subjects" size="lg" rightIcon={<ArrowUpRight size={16} />}>
+            Pick a subject
           </Button>
         </div>
       </section>
@@ -308,23 +308,23 @@ export default async function DashboardPage() {
           icon={<BookOpenText size={18} />}
         />
         <QuickAction
-          href="/practice"
-          title="Practice"
-          body="Focused topic drills"
-          icon={<Target size={18} />}
-        />
-        <QuickAction
           href="/quiz"
           title="Quiz"
-          body="Fresh AI questions"
+          body="Fresh AI questions daily"
           icon={<Flame size={18} />}
+        />
+        <QuickAction
+          href="/mock-exams"
+          title="Mock exam"
+          body="50 questions · 3 hours"
+          icon={<Target size={18} />}
         />
       </section>
 
       {/* Sticky mobile CTA */}
       <div className="sm:hidden">
-        <Button href="/practice" size="lg" block rightIcon={<ArrowUpRight size={16} />}>
-          Start practising
+        <Button href="/subjects" size="lg" block rightIcon={<ArrowUpRight size={16} />}>
+          Pick a subject
         </Button>
       </div>
     </div>
