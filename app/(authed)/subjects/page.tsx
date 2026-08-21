@@ -140,8 +140,7 @@ function SubjectGrid({ subjects }: { subjects: Subject[] }) {
                 {subject.code}
               </div>
             </div>
-            <div className="mt-4 flex items-center justify-between text-[12px] text-ink-mute">
-              <span>{(subject.topicCount ?? 0).toLocaleString()} topics</span>
+            <div className="mt-4 flex items-center justify-end text-[12px] text-ink-mute">
               <span className="inline-flex items-center gap-1 text-ink-soft group-hover:text-orange transition-colors font-semibold">
                 Open
                 <ArrowUpRight size={13} />

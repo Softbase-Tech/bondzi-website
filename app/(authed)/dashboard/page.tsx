@@ -307,14 +307,6 @@ export default async function DashboardPage() {
                         </div>
                       ) : null}
                     </div>
-                    <div className="mt-4 flex items-center justify-between text-[12px] text-ink-mute">
-                      <span>
-                        {(subject.topicCount ?? 0).toLocaleString()} topics
-                      </span>
-                      <span>
-                        {(subject.questionCount ?? 0).toLocaleString()} questions
-                      </span>
-                    </div>
                   </Card>
                 </Link>
               ))}
