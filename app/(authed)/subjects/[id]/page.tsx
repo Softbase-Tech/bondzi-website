@@ -19,6 +19,7 @@ import { getSubject } from "@/lib/api/subjects";
 import { listYears } from "@/lib/api/questions";
 import { listPmTestSubjects } from "@/lib/api/pm-test";
 import { getSubjectProgress } from "@/lib/api/user";
+import { getWeaknessServer } from "@/lib/api/weakness";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -66,12 +67,13 @@ export default async function SubjectDetailPage({ params }: Props) {
   const { id } = await params;
   const { accessToken, profile } = session;
 
-  const [subjectRes, yearsRes, pmSubjectsRes, progressRes] =
+  const [subjectRes, yearsRes, pmSubjectsRes, progressRes, weaknessRes] =
     await Promise.allSettled([
       getSubject(accessToken, id),
       listYears(accessToken, id),
       listPmTestSubjects(accessToken),
       getSubjectProgress(accessToken),
+      getWeaknessServer(accessToken, id),
     ]);
 
   if (subjectRes.status !== "fulfilled") {
@@ -118,6 +120,29 @@ export default async function SubjectDetailPage({ params }: Props) {
     !isNovdec && !isJhs && (pmSummary?.activeQuestionCount ?? 0) > 0;
   const hasMock = hasPastPapers;
   const noModesAvailable = !hasPastPapers && !hasQuiz && !hasMock;
+
+  // Weakest topics rail — same source of truth the mobile subject
+  // hub uses. Merge past-paper + syllabus weak topics, sort by
+  // accuracy ASC, cap at 3. If the weakness endpoint failed or the
+  // student has no attempts yet, the section quietly drops off.
+  const weakness =
+    weaknessRes.status === "fulfilled" ? weaknessRes.value : null;
+  const weakTopics = weakness
+    ? [
+        ...weakness.pastPaperWeakTopics.map((t) => ({
+          id: t.topicId,
+          title: t.title,
+          accuracy: t.accuracy,
+        })),
+        ...weakness.syllabusWeakTopics.map((t) => ({
+          id: t.syllabusTopicId,
+          title: t.title,
+          accuracy: t.accuracy,
+        })),
+      ]
+        .sort((a, b) => a.accuracy - b.accuracy)
+        .slice(0, 3)
+    : [];
 
   return (
     <div className="space-y-8">
@@ -176,7 +201,9 @@ export default async function SubjectDetailPage({ params }: Props) {
 
       {noModesAvailable ? (
         <ComingSoonPanel subjectName={subject.name} />
-      ) : (
+      ) : null}
+
+      {!noModesAvailable ? (
         <Card className="p-0 overflow-hidden">
           <ul className="divide-y divide-rule">
             {hasPastPapers ? (
@@ -213,7 +240,60 @@ export default async function SubjectDetailPage({ params }: Props) {
             ) : null}
           </ul>
         </Card>
-      )}
+      ) : null}
+
+      {weakTopics.length > 0 ? (
+        <section>
+          <p className="text-[12px] font-medium uppercase tracking-widest text-ink-mute mb-3">
+            Weakest topics
+          </p>
+          <div className="space-y-3">
+            {weakTopics.map((t) => (
+              <WeakTopicRow
+                key={t.id}
+                title={t.title}
+                accuracy={t.accuracy}
+              />
+            ))}
+          </div>
+          <Link
+            href={`/past-papers?subjectId=${encodeURIComponent(subject.id)}&focusWeak=1`}
+            className="mt-3 inline-block text-[15px] font-nunito-bold text-orange hover:text-orange-deep"
+          >
+            Drill these {weakTopics.length} topic
+            {weakTopics.length === 1 ? "" : "s"} →
+          </Link>
+        </section>
+      ) : null}
+    </div>
+  );
+}
+
+/**
+ * Weak-topic row with a semantic bar colour, same palette as mobile
+ * subject-hub: red for accuracy < 25%, amber < 60%, muted otherwise.
+ */
+function WeakTopicRow({
+  title,
+  accuracy,
+}: {
+  title: string;
+  accuracy: number;
+}) {
+  const pct = Math.max(0, Math.min(100, Math.round(accuracy * 100)));
+  const bg =
+    accuracy < 0.25 ? "#FF4365" : accuracy < 0.6 ? "#EF9F27" : "#94A3B8";
+  return (
+    <div className="flex items-center gap-3">
+      <p className="flex-1 font-nunito-bold text-[15px] text-ink truncate">
+        {title}
+      </p>
+      <div className="w-20 h-[5px] rounded-full bg-rule overflow-hidden">
+        <div style={{ width: `${pct}%`, height: 5, background: bg }} />
+      </div>
+      <p className="w-11 text-right font-nunito-bold text-[13px] text-ink-mute">
+        {pct}%
+      </p>
     </div>
   );
 }

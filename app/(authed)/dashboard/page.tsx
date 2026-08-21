@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Flame, ArrowUpRight, Target, BookOpenText, Clock } from "lucide-react";
+import {
+  Flame,
+  ArrowUpRight,
+  Play,
+  Target,
+  BookOpenText,
+  Clock,
+} from "lucide-react";
 import { auth } from "@/lib/auth/config";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { getUserStats, getSelectedSubjectIds } from "@/lib/api/user";
 import { listSubjects } from "@/lib/api/subjects";
+import { getResumeExam } from "@/lib/api/exams";
 import { intersectWithSelected, hasSelection } from "@/lib/subjects/selected";
 import {
   NoSelectedSubjectsCta,
@@ -42,16 +50,19 @@ export default async function DashboardPage() {
   }
   const { accessToken, profile } = session;
 
-  const [statsRes, subjectsRes, selectedRes] = await Promise.allSettled([
-    getUserStats(accessToken),
-    listSubjects(accessToken, profile.examType),
-    getSelectedSubjectIds(accessToken),
-  ]);
+  const [statsRes, subjectsRes, selectedRes, resumeRes] =
+    await Promise.allSettled([
+      getUserStats(accessToken),
+      listSubjects(accessToken, profile.examType),
+      getSelectedSubjectIds(accessToken),
+      getResumeExam(accessToken),
+    ]);
 
   const stats = statsRes.status === "fulfilled" ? statsRes.value : null;
   const subjects = subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
   const selectedIdList =
     selectedRes.status === "fulfilled" ? selectedRes.value : [];
+  const resume = resumeRes.status === "fulfilled" ? resumeRes.value : null;
 
   const firstName = profile.fullName?.split(" ")[0] ?? "there";
   const streakDays = stats?.streakDays ?? profile.streakDays ?? 0;
@@ -100,6 +111,18 @@ export default async function DashboardPage() {
           </Button>
         </div>
       </section>
+
+      {resume ? (
+        <ContinueCard
+          examId={resume.id}
+          mode={resume.mode}
+          questionCount={resume.questionCount}
+          remaining={
+            resume.questions.filter((q) => q).length ||
+            resume.questionCount
+          }
+        />
+      ) : null}
 
       {/* Stat tiles */}
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -328,6 +351,52 @@ export default async function DashboardPage() {
         </Button>
       </div>
     </div>
+  );
+}
+
+/**
+ * Continue-where-you-left-off card. Same coral outline treatment as
+ * mobile — the only screen element wearing the orange accent, since
+ * a genuine resume is the strongest call to action on the home.
+ */
+function ContinueCard({
+  examId,
+  mode,
+  questionCount,
+  remaining,
+}: {
+  examId: string;
+  mode: string;
+  questionCount: number;
+  remaining: number;
+}) {
+  const label =
+    mode === "past_paper"
+      ? "Continue past paper"
+      : mode === "pm_test"
+        ? "Continue quiz"
+        : mode === "mock_exam"
+          ? "Continue mock exam"
+          : "Continue session";
+  const answered = Math.max(0, questionCount - remaining);
+  const detail = `Question ${answered + 1} of ${questionCount}`;
+  return (
+    <Link
+      href={`/exam/${encodeURIComponent(examId)}`}
+      className="block rounded-2xl border-2 border-orange bg-paper p-4 sm:p-5 hover:bg-yellow-soft/40 transition-colors motion-reduce:transition-none"
+      aria-label={label}
+    >
+      <div className="flex items-center gap-4">
+        <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-yellow-soft text-orange-deep shrink-0">
+          <Play size={20} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="font-nunito-bold text-[17px] text-ink">{label}</div>
+          <div className="text-[13px] text-ink-mute mt-0.5">{detail}</div>
+        </div>
+        <ArrowUpRight size={20} className="text-orange shrink-0" />
+      </div>
+    </Link>
   );
 }
 

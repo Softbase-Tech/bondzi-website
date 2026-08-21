@@ -71,6 +71,23 @@ export async function getExamResult(
 }
 
 /**
+ * Most-recent in-progress exam for this user — null when nothing is
+ * open. Powers the Continue-where-you-left-off card on the home
+ * screen and the equivalent affordance on the subject hub.
+ */
+export async function getResumeExam(
+  accessToken: string,
+): Promise<ExamSession | null> {
+  try {
+    return await apiServer<ExamSession | null>(accessToken, "/exams/resume");
+  } catch {
+    // Silent-fail so a transient 5xx doesn't kill the home render;
+    // the card just doesn't appear.
+    return null;
+  }
+}
+
+/**
  * One row in the /exams/history response. Matches the backend
  * shape; the mode literal is left as `string` since ExamMode has
  * added values over time and pinning here would break resilience.
