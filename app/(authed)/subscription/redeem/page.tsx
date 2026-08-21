@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Coins } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Coins,
+  Flame,
+  Sparkles,
+  Trophy,
+} from "lucide-react";
 import { auth } from "@/lib/auth/config";
 import { getXpWalletServer, listXpTiersServer } from "@/lib/api/xp";
 import type { XpRedemptionTier, XpWalletSnapshot } from "@/lib/api/types";
@@ -84,6 +91,65 @@ export default async function RedeemPage() {
         initialSpendableXp={wallet?.spendableXp ?? 0}
         tiers={tiers.filter((t) => t.isActive)}
       />
+
+      <section className="mt-2">
+        <p className="text-[12px] font-medium uppercase tracking-widest text-ink-mute mb-3">
+          How XP works
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <EarnRule
+            icon={<CheckCircle2 size={18} />}
+            title="Answer a question"
+            body="+10 XP for a past-paper correct answer, +15 XP for a Quiz correct answer. Streaks add a small daily bonus."
+          />
+          <EarnRule
+            icon={<Trophy size={18} />}
+            title="Finish an exam"
+            body="Completion XP is scaled by your accuracy on that exam. A perfect score adds a flat bonus."
+          />
+          <EarnRule
+            icon={<Flame size={18} />}
+            title="Keep your streak"
+            body="Answering at least one question a day keeps the streak alive. Longer streaks compound your earn rate."
+          />
+          <EarnRule
+            icon={<Sparkles size={18} />}
+            title="Refer a friend"
+            body="Once they answer 10 questions your referral qualifies and you both get bonus XP."
+          />
+        </div>
+        <p className="mt-4 text-[12.5px] text-ink-mute">
+          Redeeming spends from your{" "}
+          <span className="font-semibold text-ink">spendable XP</span>. It
+          does not affect your{" "}
+          <span className="font-semibold text-ink">level XP</span> — you
+          keep the streak, the level, and the leaderboard rank.
+        </p>
+      </section>
     </div>
+  );
+}
+
+function EarnRule({
+  icon,
+  title,
+  body,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  body: string;
+}) {
+  return (
+    <Card className="p-4">
+      <div className="flex items-start gap-3">
+        <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-yellow-soft text-orange-deep shrink-0">
+          {icon}
+        </div>
+        <div className="min-w-0">
+          <div className="font-nunito-bold text-[14px] text-ink">{title}</div>
+          <div className="text-[13px] text-ink-mute mt-0.5">{body}</div>
+        </div>
+      </div>
+    </Card>
   );
 }

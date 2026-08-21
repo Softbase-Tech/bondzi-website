@@ -35,10 +35,14 @@ const CATEGORIES: { id: SupportCategory; label: string; subtitle: string }[] = [
 
 export function NewTicketForm({
   initialCategory,
+  initialSubject,
+  initialBody,
   related,
   questionId,
 }: {
   initialCategory?: string;
+  initialSubject?: string;
+  initialBody?: string;
   related?: string;
   questionId?: string;
 }) {
@@ -51,9 +55,9 @@ export function NewTicketForm({
       : "general",
   );
   const [subject, setSubject] = useState(
-    questionId ? "Wrong question report" : "",
+    initialSubject ?? (questionId ? "Wrong question report" : ""),
   );
-  const [body, setBody] = useState("");
+  const [body, setBody] = useState(initialBody ?? "");
   const [attachments, setAttachments] = useState<SupportAttachment[]>([]);
   const [sending, setSending] = useState(false);
 

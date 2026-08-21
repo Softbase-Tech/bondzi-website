@@ -5,7 +5,6 @@ import {
   Flame,
   ArrowUpRight,
   Play,
-  Target,
   BookOpenText,
   Clock,
 } from "lucide-react";
@@ -331,27 +330,12 @@ export default async function DashboardPage() {
         <AchievementsStrip achievements={achievements} />
       ) : null}
 
-      {/* Quick actions */}
-      <section className="grid gap-3 sm:grid-cols-3">
-        <QuickAction
-          href="/past-papers"
-          title="Past papers"
-          body="Nine years of WAEC papers"
-          icon={<BookOpenText size={18} />}
-        />
-        <QuickAction
-          href="/quiz"
-          title="Quiz"
-          body="Fresh AI questions daily"
-          icon={<Flame size={18} />}
-        />
-        <QuickAction
-          href="/mock-exams"
-          title="Mock exam"
-          body="50 questions · 3 hours"
-          icon={<Target size={18} />}
-        />
-      </section>
+      {/* Past papers / Quiz / Mock quick-actions removed on
+          desktop. Mobile buries these under Subject → detail; the
+          home should have one clear next-action (Pick a subject),
+          not three parallel launchers competing with the subject
+          grid. Students click a subject card and land on the
+          hub where all three modes live. */}
 
       {/* Sticky mobile CTA */}
       <div className="sm:hidden">
@@ -513,43 +497,6 @@ function EmptyState() {
   );
 }
 
-function QuickAction({
-  href,
-  title,
-  body,
-  icon,
-}: {
-  href: string;
-  title: string;
-  body: string;
-  icon: React.ReactNode;
-}) {
-  return (
-    <Link href={href} className="group">
-      <Card
-        interactive
-        className="p-4 h-full flex items-center gap-3.5"
-      >
-        <div
-          className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-yellow-soft text-orange shrink-0"
-          aria-hidden="true"
-        >
-          {icon}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="text-[15px] font-semibold text-ink group-hover:text-orange-deep transition-colors">
-            {title}
-          </div>
-          <div className="text-[12.5px] text-ink-mute truncate">{body}</div>
-        </div>
-        <ArrowUpRight
-          size={16}
-          className="text-ink-mute group-hover:text-orange transition-colors shrink-0"
-        />
-      </Card>
-    </Link>
-  );
-}
 
 /**
  * Server-side "today" formatted for the greeting kicker. Kept minimal —

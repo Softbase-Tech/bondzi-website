@@ -18,6 +18,8 @@ export default async function NewTicketPage({
 }: {
   searchParams: Promise<{
     category?: string;
+    subject?: string;
+    body?: string;
     related?: string;
     questionId?: string;
   }>;
@@ -30,6 +32,8 @@ export default async function NewTicketPage({
     <div className="mx-auto max-w-2xl px-4 py-8">
       <NewTicketForm
         initialCategory={params.category}
+        initialSubject={params.subject}
+        initialBody={params.body}
         related={params.related}
         questionId={params.questionId}
       />

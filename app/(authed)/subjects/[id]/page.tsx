@@ -387,7 +387,7 @@ function ComingSoonPanel({ subjectName }: { subjectName: string }) {
               icon={<MessageSquareText size={20} />}
               title="Ask us to prioritise this subject"
               subtitle="Send a note through Support — we prioritise the ones students ask for."
-              href={`/help?subject=${encodeURIComponent(`Please add ${subjectName}`)}`}
+              href={buildPrioritiseHref(subjectName)}
               rightIcon={<Flag size={14} />}
             />
           </ul>
@@ -395,6 +395,21 @@ function ComingSoonPanel({ subjectName }: { subjectName: string }) {
       </div>
     </div>
   );
+}
+
+/**
+ * Compose the /help/tickets/new query with subject + body prefilled
+ * so the reviewer sees the specific ask without the student having
+ * to retype it. Keeps the prefill server-side so the anchor href
+ * is fully-formed at render — no client rehydration needed.
+ */
+function buildPrioritiseHref(subjectName: string): string {
+  const params = new URLSearchParams({
+    category: "general",
+    subject: `Please add ${subjectName}`,
+    body: `I'd like to study ${subjectName} on Bondzi. Any timeline you can share?`,
+  });
+  return `/help/tickets/new?${params.toString()}`;
 }
 
 function AltRow({
