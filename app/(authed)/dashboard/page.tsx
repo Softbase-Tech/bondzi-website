@@ -16,6 +16,8 @@ import { ProgressRing } from "@/components/ui/ProgressRing";
 import { getUserStats, getSelectedSubjectIds } from "@/lib/api/user";
 import { listSubjects } from "@/lib/api/subjects";
 import { getResumeExam } from "@/lib/api/exams";
+import { getAchievementsServer } from "@/lib/api/achievements";
+import type { Achievement } from "@/lib/api/types";
 import { intersectWithSelected, hasSelection } from "@/lib/subjects/selected";
 import {
   NoSelectedSubjectsCta,
@@ -50,12 +52,13 @@ export default async function DashboardPage() {
   }
   const { accessToken, profile } = session;
 
-  const [statsRes, subjectsRes, selectedRes, resumeRes] =
+  const [statsRes, subjectsRes, selectedRes, resumeRes, achievementsRes] =
     await Promise.allSettled([
       getUserStats(accessToken),
       listSubjects(accessToken, profile.examType),
       getSelectedSubjectIds(accessToken),
       getResumeExam(accessToken),
+      getAchievementsServer(accessToken),
     ]);
 
   const stats = statsRes.status === "fulfilled" ? statsRes.value : null;
@@ -63,6 +66,8 @@ export default async function DashboardPage() {
   const selectedIdList =
     selectedRes.status === "fulfilled" ? selectedRes.value : [];
   const resume = resumeRes.status === "fulfilled" ? resumeRes.value : null;
+  const achievements =
+    achievementsRes.status === "fulfilled" ? achievementsRes.value : [];
 
   const firstName = profile.fullName?.split(" ")[0] ?? "there";
   const streakDays = stats?.streakDays ?? profile.streakDays ?? 0;
@@ -322,6 +327,10 @@ export default async function DashboardPage() {
         )}
       </section>
 
+      {achievements.length > 0 ? (
+        <AchievementsStrip achievements={achievements} />
+      ) : null}
+
       {/* Quick actions */}
       <section className="grid gap-3 sm:grid-cols-3">
         <QuickAction
@@ -397,6 +406,93 @@ function ContinueCard({
         <ArrowUpRight size={20} className="text-orange shrink-0" />
       </div>
     </Link>
+  );
+}
+
+/**
+ * Achievements strip — horizontal-scroll rail of milestone chips
+ * (unlocked + next-to-unlock). Same catalogue mobile renders in
+ * MilestonesStrip. Shows the six highest-priority items ordered by
+ * (unlocked DESC within-progress) so the student sees a mix of
+ * trophies + progress hints without the whole list.
+ */
+function AchievementsStrip({ achievements }: { achievements: Achievement[] }) {
+  const sorted = achievements
+    .slice()
+    .sort((a, b) => {
+      // Unlocked first (recent unlocks feel like a win), then rows
+      // that are closest to unlocking (highest progress ratio),
+      // then the rest by sortOrder.
+      if (a.unlocked && !b.unlocked) return -1;
+      if (!a.unlocked && b.unlocked) return 1;
+      const aRatio =
+        a.progressTarget > 0 ? a.progressCurrent / a.progressTarget : 0;
+      const bRatio =
+        b.progressTarget > 0 ? b.progressCurrent / b.progressTarget : 0;
+      if (aRatio !== bRatio) return bRatio - aRatio;
+      return a.sortOrder - b.sortOrder;
+    })
+    .slice(0, 6);
+  return (
+    <section>
+      <p className="text-[12px] font-medium uppercase tracking-widest text-ink-mute mb-3">
+        Milestones
+      </p>
+      <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+        {sorted.map((a) => (
+          <AchievementChip key={a.id} a={a} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AchievementChip({ a }: { a: Achievement }) {
+  const ratio =
+    a.progressTarget > 0
+      ? Math.min(1, a.progressCurrent / a.progressTarget)
+      : 0;
+  return (
+    <div
+      className={
+        "shrink-0 w-40 rounded-2xl border p-4 flex flex-col gap-2 " +
+        (a.unlocked
+          ? "bg-yellow-soft border-orange/40"
+          : "bg-paper border-rule")
+      }
+      style={
+        a.unlocked
+          ? {
+              backgroundImage: `linear-gradient(135deg, ${a.gradientStart} 0%, ${a.gradientEnd} 100%)`,
+            }
+          : undefined
+      }
+    >
+      <div
+        className={
+          "font-nunito-bold text-[14px] leading-tight " +
+          (a.unlocked ? "text-paper" : "text-ink")
+        }
+      >
+        {a.title}
+      </div>
+      <div
+        className={
+          "text-[11.5px] " +
+          (a.unlocked ? "text-paper/85" : "text-ink-mute")
+        }
+      >
+        {a.progressLabel}
+      </div>
+      {!a.unlocked && a.progressTarget > 0 ? (
+        <div className="h-1 rounded-full bg-rule overflow-hidden mt-auto">
+          <div
+            className="h-full bg-orange"
+            style={{ width: `${Math.round(ratio * 100)}%` }}
+          />
+        </div>
+      ) : null}
+    </div>
   );
 }
 
