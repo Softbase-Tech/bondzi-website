@@ -2,10 +2,134 @@ import { api, apiServer, ApiError } from "./client";
 import type {
   BillingInterval,
   CheckoutInProgressError,
+  ExamType,
   InitiateSubscriptionResponse,
   Subscription,
   SubscriptionEntitlement,
 } from "./types";
+
+/**
+ * One row of the user-facing payment history (Settings → Subscription →
+ * Payment history). Mirrors `payment_attempts` — every checkout attempt,
+ * regardless of outcome.
+ */
+export type PaymentAttemptStatusView =
+  | "pending"
+  | "paid"
+  | "failed"
+  | "refunded"
+  | "abandoned";
+
+export interface PaymentAttemptView {
+  id: string;
+  status: PaymentAttemptStatusView;
+  amountGhs: number;
+  currency: string;
+  initiatedAt: string;
+  resolvedAt: string | null;
+  billingInterval: "monthly" | "six_month" | "annual" | null;
+  planName: string | null;
+  account: "plus" | "pro" | null;
+  level: ExamType | null;
+  reference: string;
+  failureReason: string | null;
+  /**
+   * True when the backend flagged this attempt as a duplicate Plus
+   * charge for a level the user already owned. `autoRefundOutcome`
+   * reflects Paystack's response — we surface a distinct "Refund
+   * pending" / "processing" pill so the user isn't shown two identical
+   * paid receipts.
+   */
+  alarmDuplicatePlus: boolean;
+  autoRefundOutcome: "refunded" | "pending" | "failed" | null;
+}
+
+interface BackendPaymentAttempt {
+  id: string;
+  status: PaymentAttemptStatusView;
+  amountGhs: string | number;
+  currency?: string;
+  initiatedAt: string;
+  paidAt?: string | null;
+  failedAt?: string | null;
+  refundedAt?: string | null;
+  abandonedAt?: string | null;
+  billingInterval?: "monthly" | "six_month" | "annual" | null;
+  providerReference: string;
+  failureReason?: string | null;
+  metadata?: {
+    alarmDuplicatePlus?: boolean;
+    autoRefundOutcome?: "refunded" | "pending" | "failed";
+  } | null;
+  plan?: {
+    id: string;
+    name: string;
+    account: "plus" | "pro";
+    level: ExamType;
+  } | null;
+}
+
+function mapPaymentAttempt(row: BackendPaymentAttempt): PaymentAttemptView {
+  const meta = row.metadata ?? null;
+  const alarmDuplicatePlus = meta?.alarmDuplicatePlus === true;
+  const autoRefundOutcome = alarmDuplicatePlus
+    ? meta?.autoRefundOutcome ?? null
+    : null;
+  return {
+    id: row.id,
+    status: row.status,
+    amountGhs:
+      typeof row.amountGhs === "string"
+        ? parseFloat(row.amountGhs)
+        : row.amountGhs,
+    currency: row.currency ?? "GHS",
+    initiatedAt: row.initiatedAt,
+    resolvedAt:
+      row.paidAt ?? row.failedAt ?? row.refundedAt ?? row.abandonedAt ?? null,
+    billingInterval: row.billingInterval ?? null,
+    planName: row.plan?.name ?? null,
+    account: row.plan?.account ?? null,
+    level: row.plan?.level ?? null,
+    reference: row.providerReference,
+    failureReason: row.failureReason ?? null,
+    alarmDuplicatePlus,
+    autoRefundOutcome,
+  };
+}
+
+export interface PaymentHistoryPage {
+  items: PaymentAttemptView[];
+  total: number;
+}
+
+/**
+ * `GET /payments/me?limit=&offset=` — paged list of the caller's
+ * payment attempts, newest first. Returns `{items,total}`; caller pages
+ * by summing `items.length` across loaded pages.
+ */
+export async function listMyPaymentHistoryServer(
+  accessToken: string,
+  opts: { limit?: number; offset?: number } = {},
+): Promise<PaymentHistoryPage> {
+  const limit = opts.limit ?? 25;
+  const offset = opts.offset ?? 0;
+  const raw = await apiServer<{ items: BackendPaymentAttempt[]; total: number }>(
+    accessToken,
+    `/payments/me?limit=${limit}&offset=${offset}`,
+  );
+  return { items: raw.items.map(mapPaymentAttempt), total: raw.total };
+}
+
+export async function listMyPaymentHistory(
+  opts: { limit?: number; offset?: number } = {},
+): Promise<PaymentHistoryPage> {
+  const limit = opts.limit ?? 25;
+  const offset = opts.offset ?? 0;
+  const raw = await api<{ items: BackendPaymentAttempt[]; total: number }>(
+    `/payments/me?limit=${limit}&offset=${offset}`,
+  );
+  return { items: raw.items.map(mapPaymentAttempt), total: raw.total };
+}
 
 /**
  * Subscription reads + writes. The backend is the source of truth for

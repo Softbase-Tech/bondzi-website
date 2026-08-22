@@ -138,11 +138,22 @@ export function ProfileView({
                 </span>
               ) : null}
               {profile.streakDays > 0 ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold">
+                <Link
+                  href="/streak"
+                  className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold transition-colors hover:bg-white/20 motion-reduce:transition-none"
+                >
                   <Flame size={12} className="text-orange" />
                   {profile.streakDays}
-                </span>
-              ) : null}
+                </Link>
+              ) : (
+                <Link
+                  href="/streak"
+                  className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold transition-colors hover:bg-white/20 motion-reduce:transition-none"
+                >
+                  <Flame size={12} className="text-orange" />
+                  Start a streak
+                </Link>
+              )}
             </div>
           </div>
           <Link

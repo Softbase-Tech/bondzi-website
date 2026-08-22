@@ -139,6 +139,12 @@ export interface UpdateProfilePayload {
   schoolName?: string;
   region?: string;
   avatarUrl?: string;
+  /**
+   * ISO `YYYY-MM-DD` of the student's next exam sitting, or `null` to
+   * clear a previously-set date. Backend enforces future-only, ≤5 years
+   * ahead. Undefined leaves the stored value untouched.
+   */
+  targetExamDate?: string | null;
 }
 export async function updateProfile(
   payload: UpdateProfilePayload,

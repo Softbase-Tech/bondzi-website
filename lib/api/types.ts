@@ -53,6 +53,12 @@ export interface SafeUser {
   longestStreak: number;
   lastStudyDate: string | null;
   lastActiveAt: string | null;
+  /**
+   * ISO `YYYY-MM-DD` of the student's next exam sitting, or null when
+   * unset. Backend enforces "future-only, within five years"; the
+   * profile countdown card and `/settings/exam-date` share this field.
+   */
+  targetExamDate: string | null;
   createdAt: string;
 }
 

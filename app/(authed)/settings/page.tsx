@@ -8,6 +8,8 @@ import {
   BookOpen,
   GraduationCap,
   Sparkles,
+  CalendarClock,
+  Receipt,
 } from "lucide-react";
 import { auth } from "@/lib/auth/config";
 import { Card } from "@/components/ui/Card";
@@ -24,6 +26,18 @@ export const metadata: Metadata = {
  * writes), then per-topic prefs, then subscription at the bottom for
  * discoverability.
  */
+function examDateSubtitle(iso: string): string {
+  const ts = Date.parse(`${iso}T00:00:00Z`);
+  if (Number.isNaN(ts)) return "Set the day we count down to on your profile";
+  const days = Math.max(0, Math.ceil((ts - Date.now()) / 86_400_000));
+  const label = new Date(ts).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  return `${days} day${days === 1 ? "" : "s"} away · ${label}`;
+}
+
 export default async function SettingsHubPage() {
   const session = await auth();
   if (!session?.accessToken || !session.profile) redirect("/login");
@@ -60,10 +74,24 @@ export default async function SettingsHubPage() {
       subtitle: `Currently ${profile.examType.toUpperCase()}${profile.formLevel ? ` · Form ${profile.formLevel}` : ""}`,
     },
     {
+      href: "/settings/exam-date",
+      icon: <CalendarClock size={18} />,
+      title: "Exam date",
+      subtitle: profile.targetExamDate
+        ? examDateSubtitle(profile.targetExamDate)
+        : "Set the day we count down to on your profile",
+    },
+    {
       href: "/subscription/manage",
       icon: <Sparkles size={18} />,
       title: "Subscription",
       subtitle: "Current plan, entitlements, cancellation",
+    },
+    {
+      href: "/settings/payment-history",
+      icon: <Receipt size={18} />,
+      title: "Payment history",
+      subtitle: "Every checkout attempt on your account",
     },
   ];
 

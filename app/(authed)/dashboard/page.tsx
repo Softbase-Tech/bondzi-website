@@ -131,7 +131,8 @@ export default async function DashboardPage() {
       {/* Stat tiles */}
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {/* Streak */}
-        <Card className="p-5">
+        <Link href="/streak" className="group block">
+        <Card className="p-5 h-full transition-colors motion-reduce:transition-none group-hover:border-orange/40">
           <div className="flex items-start justify-between">
             <div>
               <div className="text-[13px] font-medium uppercase tracking-widest text-ink-mute">
@@ -186,6 +187,7 @@ export default async function DashboardPage() {
             </p>
           )}
         </Card>
+        </Link>
 
         {/* XP + level */}
         <Card className="p-5">

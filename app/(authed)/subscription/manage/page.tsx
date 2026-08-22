@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, Receipt, Sparkles } from "lucide-react";
 import { auth } from "@/lib/auth/config";
 import {
   getMySubscription,
@@ -83,6 +83,27 @@ export default async function ManageSubscriptionPage() {
           </Link>
         </Card>
       )}
+
+      <Link
+        href="/settings/payment-history"
+        className="group flex items-center gap-3 p-4 rounded-2xl border border-rule bg-paper hover:bg-yellow-soft/40 transition-colors motion-reduce:transition-none"
+      >
+        <span className="shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full bg-yellow-soft text-orange">
+          <Receipt size={18} />
+        </span>
+        <span className="flex-1 min-w-0">
+          <span className="block font-display text-[15.5px] text-ink leading-tight">
+            Payment history
+          </span>
+          <span className="mt-0.5 block text-[12.5px] text-ink-soft">
+            Every checkout attempt — pending, paid, refunded
+          </span>
+        </span>
+        <ArrowLeft
+          size={16}
+          className="rotate-180 shrink-0 text-ink-mute group-hover:text-ink transition-colors motion-reduce:transition-none"
+        />
+      </Link>
 
       {entitlements.length > 0 ? (
         <Card className="p-5 sm:p-6">
