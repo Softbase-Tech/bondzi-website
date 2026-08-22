@@ -639,10 +639,10 @@ function Footer() {
             Blog
           </Link>
           <a
-            href="mailto:partners@bondzi.online"
+            href="mailto:support@bondzi.online"
             className="hover:text-ink py-1"
           >
-            partners@bondzi.online
+            support@bondzi.online
           </a>
           <span className="text-ink-mute py-1">© 2026 Bondzi</span>
           <span className="text-ink-mute py-1">Cliffbase Tech, Ghana</span>

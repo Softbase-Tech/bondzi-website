@@ -139,10 +139,10 @@ export default async function SettingsHubPage() {
       <p className="text-[12px] text-ink-mute text-center">
         Need help? Reach out at{" "}
         <a
-          href="mailto:hello@bondzi.online"
+          href="mailto:support@bondzi.online"
           className="text-orange hover:text-orange-deep underline underline-offset-4"
         >
-          hello@bondzi.online
+          support@bondzi.online
         </a>
       </p>
     </div>

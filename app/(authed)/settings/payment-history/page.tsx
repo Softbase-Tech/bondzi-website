@@ -45,10 +45,10 @@ export default async function PaymentHistoryPage() {
           Every checkout attempt on this account — pending, paid,
           refunded. Reach out at{" "}
           <a
-            href="mailto:hello@bondzi.online"
+            href="mailto:support@bondzi.online"
             className="text-orange hover:text-orange-deep underline underline-offset-4"
           >
-            hello@bondzi.online
+            support@bondzi.online
           </a>{" "}
           about any row that looks off.
         </p>
