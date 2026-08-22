@@ -683,10 +683,10 @@ function Subjects() {
           Don&apos;t see your subject? We&apos;re adding new papers monthly.
           Email{" "}
           <a
-            href="mailto:info@bondzi.online"
+            href="mailto:support@bondzi.online"
             className="text-orange hover:underline"
           >
-            info@bondzi.online
+            support@bondzi.online
           </a>{" "}
           and we&apos;ll prioritise.
         </p>
@@ -1159,10 +1159,10 @@ function SiteFooter() {
             Delete account
           </Link>
           <a
-            href="mailto:info@bondzi.online"
+            href="mailto:support@bondzi.online"
             className="hover:text-ink py-1 col-span-2 sm:col-span-1 truncate"
           >
-            info@bondzi.online
+            support@bondzi.online
           </a>
           <span className="text-ink-mute py-1">© 2026 Bondzi</span>
           <span className="text-ink-mute py-1">Cliffbase Tech, Ghana</span>

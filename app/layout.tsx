@@ -184,7 +184,7 @@ const organizationJsonLd = {
   url: SITE_URL,
   logo: `${SITE_URL}/brand/icon.png`,
   description: DESCRIPTION,
-  email: "info@bondzi.online",
+  email: "support@bondzi.online",
   foundingDate: "2026",
   founder: { "@type": "Organization", name: "Cliffbase Tech" },
   parentOrganization: { "@type": "Organization", name: "Cliffbase Tech" },

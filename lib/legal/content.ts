@@ -15,7 +15,7 @@ Bondzi ("Bondzi", "we", "us") is an exam-preparation service for BECE, WASSCE
 and NOV/DEC students in Ghana, operated by Cliffbase Tech. This policy explains
 what personal data we collect, how we use it, and the choices you have.
 
-If you have any questions, contact us at **info@bondzi.online**.
+If you have any questions, contact us at **support@bondzi.online**.
 
 ## Information we collect
 
@@ -68,7 +68,7 @@ avatar to other students — not your email, phone or real name.
 
 You can access and correct your information from within the app (Profile and
 Settings), and you can delete your account as described above. To make any other
-request, email **info@bondzi.online**.
+request, email **support@bondzi.online**.
 
 ## Children and students
 
@@ -89,7 +89,7 @@ date above and, where changes are significant, notify you in the app or by email
 
 ## Contact
 
-Cliffbase Tech · Ghana · **info@bondzi.online**
+Cliffbase Tech · Ghana · **support@bondzi.online**
 `;
 
 export const TERMS_OF_SERVICE_MD = `# Terms of Service
@@ -168,7 +168,7 @@ latest version. Continued use after changes means you accept them.
 
 ## Contact
 
-Cliffbase Tech · Ghana · **info@bondzi.online**
+Cliffbase Tech · Ghana · **support@bondzi.online**
 `;
 
 export const ACCOUNT_DELETION_MD = `# Account & Data Deletion
@@ -176,7 +176,7 @@ export const ACCOUNT_DELETION_MD = `# Account & Data Deletion
 _Last updated: ${LEGAL_LAST_UPDATED}_
 
 This page explains how to delete your Bondzi account and what happens to your
-data. Bondzi is operated by Cliffbase Tech (**info@bondzi.online**).
+data. Bondzi is operated by Cliffbase Tech (**support@bondzi.online**).
 
 ## How to delete your account
 
@@ -187,7 +187,7 @@ data. Bondzi is operated by Cliffbase Tech (**info@bondzi.online**).
 
 **On the web:** go to **Settings → Account** and choose **Delete account**.
 
-**If you can't sign in:** email **info@bondzi.online** from the email address on
+**If you can't sign in:** email **support@bondzi.online** from the email address on
 your account and ask us to delete it. We may ask a question or two to confirm
 it's really you before we proceed.
 
@@ -218,5 +218,5 @@ inactivity, if your account is dormant), unless you log back in first.
 
 ## Contact
 
-Cliffbase Tech · Ghana · **info@bondzi.online**
+Cliffbase Tech · Ghana · **support@bondzi.online**
 `;
