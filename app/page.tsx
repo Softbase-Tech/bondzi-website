@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "../components/site/SiteHeader";
+import { TrackedLink } from "../components/analytics/TrackedLink";
 import { appPath } from "../lib/urls";
 import {
   ArrowUpRight,
@@ -283,19 +284,23 @@ function Hero() {
             </p>
 
             <div className="mt-7 sm:mt-9 flex flex-wrap items-center gap-3">
-              <Link
+              <TrackedLink
                 href={appPath("/register")}
+                event="cta_click"
+                properties={{ surface: "home_hero", target: "register" }}
                 className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
               >
                 Try Bondzi free
                 <ArrowRight size={16} strokeWidth={2.25} />
-              </Link>
-              <Link
+              </TrackedLink>
+              <TrackedLink
                 href={appPath("/login")}
+                event="cta_click"
+                properties={{ surface: "home_hero", target: "signin" }}
                 className="inline-flex items-center gap-2 px-5 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[15px] whitespace-nowrap"
               >
                 Sign in
-              </Link>
+              </TrackedLink>
               <a
                 href="#get"
                 className="text-[14px] text-ink-soft hover:text-ink underline underline-offset-4"
@@ -852,20 +857,24 @@ function Partners() {
               MTN, AirtelTigo, or Telecel Cash.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
-              <Link
+              <TrackedLink
                 href="/partners"
+                event="cta_click"
+                properties={{ surface: "home", target: "partners_learn_more" }}
                 className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
               >
                 See how it works
                 <ArrowRight size={16} strokeWidth={2.25} />
-              </Link>
-              <Link
+              </TrackedLink>
+              <TrackedLink
                 href="https://partners.bondzi.online/partner/register"
+                event="cta_click"
+                properties={{ surface: "home", target: "partner_register" }}
                 className="inline-flex items-center gap-2 px-5 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[15px] whitespace-nowrap"
               >
                 Sign up as a partner
                 <ArrowUpRight size={16} strokeWidth={2.25} />
-              </Link>
+              </TrackedLink>
             </div>
           </div>
 
@@ -995,20 +1004,26 @@ function GetTheApp() {
               cheaper than a single weekend tutor session.
             </p>
             <div className="mt-7 sm:mt-9 flex flex-wrap items-center gap-3">
-              <a
+              <TrackedLink
                 href="https://expo.dev/artifacts/eas/oA5ZFub4WNxKkYEg5Wn2yn.apk"
+                external
+                event="app_download_click"
+                properties={{ platform: "android", surface: "home_get_app" }}
                 className="inline-flex items-center gap-2 bg-ink text-bg px-5 h-12 rounded-full font-medium hover:bg-orange transition-colors whitespace-nowrap text-[14px] sm:text-[15px]"
                 rel="noopener"
               >
                 Download Android APK
                 <ArrowUpRight size={16} strokeWidth={2.25} />
-              </a>
-              <a
+              </TrackedLink>
+              <TrackedLink
                 href="#"
+                external
+                event="app_download_click"
+                properties={{ platform: "ios", surface: "home_get_app" }}
                 className="inline-flex items-center gap-2 px-5 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[14px] sm:text-[15px] whitespace-nowrap"
               >
                 iOS · waitlist
-              </a>
+              </TrackedLink>
             </div>
             <p className="mt-3 text-[11.5px] sm:text-[12px] text-ink-mute leading-snug max-w-md">
               Direct APK · v1.0.0 · ~70&nbsp;MB. On Play Store soon. Enable
@@ -1018,20 +1033,24 @@ function GetTheApp() {
               <span className="text-[13px] text-ink-soft">
                 No phone handy? Study in your browser:
               </span>
-              <Link
+              <TrackedLink
                 href={appPath("/register")}
+                event="cta_click"
+                properties={{ surface: "home_get_app", target: "register" }}
                 className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-orange hover:text-orange-deep underline underline-offset-4 whitespace-nowrap"
               >
                 Create account
                 <ArrowUpRight size={14} strokeWidth={2.25} />
-              </Link>
+              </TrackedLink>
               <span className="text-ink-mute">·</span>
-              <Link
+              <TrackedLink
                 href={appPath("/login")}
+                event="cta_click"
+                properties={{ surface: "home_get_app", target: "signin" }}
                 className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-orange hover:text-orange-deep underline underline-offset-4 whitespace-nowrap"
               >
                 Sign in
-              </Link>
+              </TrackedLink>
             </div>
           </div>
           <div className="lg:col-span-5 order-1 lg:order-2">

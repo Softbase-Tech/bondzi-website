@@ -8,6 +8,7 @@ import { getWeakness, getWeaknessNarrative } from "@/lib/api/weakness";
 import { ApiError } from "@/lib/api/client";
 import type { WeaknessBySource } from "@/lib/api/types";
 import { Card } from "@/components/ui/Card";
+import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 
@@ -137,7 +138,10 @@ export function WeaknessView({ initial }: { initial: WeaknessBySource }) {
             <Button
               size="sm"
               className="mt-3"
-              onClick={() => setInsightRequested(true)}
+              onClick={() => {
+                trackEvent("ai_insight_requested");
+                setInsightRequested(true);
+              }}
             >
               Get insight
             </Button>

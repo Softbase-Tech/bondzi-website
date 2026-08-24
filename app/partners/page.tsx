@@ -14,6 +14,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
 
 /**
  * `/partners` — marketing page for the partner programme. Two
@@ -177,13 +178,15 @@ function Hero() {
               MoMo. Everything transparent on your partner dashboard.
             </p>
             <div className="mt-7 sm:mt-9 flex flex-wrap items-center gap-3">
-              <Link
+              <TrackedLink
                 href="https://partners.bondzi.online/partner/register"
+                event="cta_click"
+                properties={{ surface: "partners", target: "partner_register_hero" }}
                 className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
               >
                 Sign up as a partner
                 <ArrowUpRight size={16} strokeWidth={2.25} />
-              </Link>
+              </TrackedLink>
               <a
                 href="#rates"
                 className="inline-flex items-center gap-2 px-5 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[15px] whitespace-nowrap"
@@ -596,20 +599,24 @@ function CTA() {
             whenever you earn.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link
+            <TrackedLink
               href="https://partners.bondzi.online/partner/register"
+              event="cta_click"
+              properties={{ surface: "partners", target: "partner_register_footer" }}
               className="inline-flex items-center gap-2 bg-orange text-paper px-6 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
             >
               Sign up as a partner
               <ArrowUpRight size={16} strokeWidth={2.25} />
-            </Link>
-            <Link
+            </TrackedLink>
+            <TrackedLink
               href="https://partners.bondzi.online/partner/signin"
+              event="cta_click"
+              properties={{ surface: "partners", target: "partner_signin" }}
               className="inline-flex items-center gap-2 px-6 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[15px] whitespace-nowrap"
             >
               I&apos;m already a partner — sign in
               <ArrowRight size={16} strokeWidth={2.25} />
-            </Link>
+            </TrackedLink>
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogActions } from "@/components/ui/Dialog";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 interface Props {
   initialSpendableXp: number;
@@ -56,6 +57,9 @@ export function RedeemPanel({ initialSpendableXp, tiers }: Props) {
     startTransition(async () => {
       try {
         const res = await redeemXp(selected.tierKey);
+        // creditDays is the tier's shape (7 / 30 / 90 / 365) — a
+        // closed set, safe as a property. XP balances are not.
+        trackEvent("xp_redeemed", { creditDays: res.creditDays });
         setSpendable(res.newSpendableXp);
         setSuccessMessage({
           creditDays: res.creditDays,

@@ -17,6 +17,7 @@ import {
   passwordStrength,
   validatePasswordMin,
 } from "@/lib/password";
+import { trackEvent } from "@/lib/analytics";
 import type { ExamType, Gender } from "@/lib/api/types";
 
 /**
@@ -128,6 +129,7 @@ export function RegisterFlow() {
     setSendingOtp(true);
     try {
       await requestEmailOtp({ email: value });
+      trackEvent("auth_signup_otp_sent");
       setEmail(value);
       setStep("verify");
       toast.success("Code sent", {
@@ -152,6 +154,11 @@ export function RegisterFlow() {
       });
       return;
     }
+    // Client-side format check only — the code isn't validated against
+    // the server until `register()` consumes it as `emailOtp`. This
+    // measures "reached the profile step", which is where the real
+    // drop-off is (it's the longest form in the flow).
+    trackEvent("auth_signup_otp_verified");
     setStep("profile");
   }
 
@@ -180,6 +187,12 @@ export function RegisterFlow() {
         ...(needsFormLevel && formLevel !== null ? { formLevel } : {}),
         ...(referralCode.trim() ? { referralCode: referralCode.trim() } : {}),
       });
+      trackEvent("auth_signup_completed", {
+        level: examType as ExamType,
+        // Boolean, never the code itself — a referral code identifies
+        // the referrer and has no place in an analytics property.
+        withReferral: referralCode.trim().length > 0,
+      });
       // Auto-sign-in with the credentials we just set. The register
       // endpoint returns tokens too but NextAuth needs its own
       // Credentials handshake to establish the session cookie — we
@@ -203,8 +216,10 @@ export function RegisterFlow() {
       }
     } catch (err) {
       if (err instanceof ApiError && err.status === 409) {
+        trackEvent("auth_signup_failed", { reason: "email_taken" });
         setEmailTakenOpen(true);
       } else {
+        trackEvent("auth_signup_failed", { reason: "error" });
         const msg =
           err instanceof ApiError
             ? err.message

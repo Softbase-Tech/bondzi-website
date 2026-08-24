@@ -9,6 +9,7 @@ import { PaywallDialog } from "@/components/exam/PaywallDialog";
 import { cn } from "@/lib/utils";
 import { api } from "@/lib/api/client";
 import { handlePaywallError } from "@/lib/paywall";
+import { trackEvent } from "@/lib/analytics";
 import type { ExamSession, ExamType, PmTestSubjectSummary } from "@/lib/api/types";
 
 type Difficulty = "easy" | "medium" | "hard" | "mixed";
@@ -165,6 +166,10 @@ export function QuizPicker({ subjects, pro, examType }: Props) {
                             ? {}
                             : { difficulty }),
                         },
+                      });
+                      trackEvent("exam_started", {
+                        mode: "pm_test",
+                        level: examType,
                       });
                       router.push(`/exam/${exam.id}`);
                     } catch (err) {

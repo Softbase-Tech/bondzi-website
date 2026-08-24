@@ -17,6 +17,7 @@ import type {
 } from "@/lib/api/types";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 type Tab = "weekly" | "monthly" | "all-time";
 const STALE_MS = 5 * 60_000;
@@ -429,6 +430,7 @@ function ShareButton({
     const text = `I ranked #${row.rank} in the ${exam} leaderboard the ${periodLabel} of ${formatPeriod(row.periodStart, period)} on Bondzi Ghana! 🔥\nhttps://bondzi.online`;
     const nav: (Navigator & { share?: (d: ShareData) => Promise<void> }) | null =
       typeof navigator !== "undefined" ? navigator : null;
+    trackEvent("winner_shared", { periodType: period });
     try {
       if (nav?.share) {
         await nav.share({ text });

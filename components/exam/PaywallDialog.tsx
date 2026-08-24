@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { Sparkles, Check } from "lucide-react";
 import { Dialog, DialogActions } from "@/components/ui/Dialog";
 import { Button } from "@/components/ui/Button";
+import { trackEvent } from "@/lib/analytics";
 
 interface Props {
   open: boolean;
@@ -85,6 +87,16 @@ const COPY: Record<
  */
 export function PaywallDialog({ open, onOpenChange, feature, dismissTo }: Props) {
   const copy = COPY[feature];
+
+  // Fire on the open transition, not on every render, and keyed by
+  // `feature` so re-opening the wall for a different gate counts
+  // again. This is the denominator for paywall→checkout conversion:
+  // without it, `checkout_initiated` has nothing to divide by.
+  useEffect(() => {
+    if (!open) return;
+    trackEvent("paywall_shown", { feature });
+  }, [open, feature]);
+
   return (
     <Dialog
       open={open}
@@ -118,6 +130,7 @@ export function PaywallDialog({ open, onOpenChange, feature, dismissTo }: Props)
         </Button>
         <Link
           href="/subscription/plans"
+          onClick={() => trackEvent("paywall_upgrade_clicked", { feature })}
           className="inline-flex items-center justify-center gap-1.5 min-h-11 px-5 rounded-xl bg-orange text-paper font-medium text-[15px] hover:bg-orange-deep transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         >
           <Sparkles size={16} />

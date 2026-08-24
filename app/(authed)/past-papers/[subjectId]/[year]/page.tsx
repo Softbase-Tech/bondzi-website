@@ -49,6 +49,7 @@ export default async function PastPaperLauncherPage({ params }: Props) {
       subjectId={subject.id}
       subjectName={subject.name}
       subjectCode={subject.code}
+      examType={subject.examType}
       year={yearNum}
     />
   );

@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import "katex/dist/katex.min.css";
-import { Analytics } from "@vercel/analytics/next";
+import { VercelAnalytics } from "@/components/analytics/VercelAnalytics";
 import { Providers } from "./providers";
 
 // Google Analytics 4 measurement ID. Public by design (it ends up in
@@ -304,7 +304,7 @@ export default function RootLayout({
             </Script>
           </>
         )}
-        <Analytics />
+        <VercelAnalytics />
       </body>
     </html>
   );

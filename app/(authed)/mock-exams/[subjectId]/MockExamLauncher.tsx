@@ -4,10 +4,11 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Play } from "lucide-react";
 import { api } from "@/lib/api/client";
-import type { ExamSession } from "@/lib/api/types";
+import type { ExamSession, ExamType } from "@/lib/api/types";
 import { Button } from "@/components/ui/Button";
 import { PaywallDialog } from "@/components/exam/PaywallDialog";
 import { handlePaywallError } from "@/lib/paywall";
+import { trackEvent } from "@/lib/analytics";
 
 // Mock exams are a fixed simulation: the backend forces 50 questions and a
 // 3-hour timer server-side and ignores any client count, so these are for
@@ -18,6 +19,8 @@ const MOCK_EXAM_COUNT = 50;
 interface Props {
   subjectId: string;
   subjectName: string;
+  /** The subject's exam level — carried into `exam_started`. */
+  examType: ExamType;
   pro: boolean;
 }
 
@@ -28,7 +31,12 @@ interface Props {
  * full-page navigation — students on flaky mobile data need the button
  * to fall back to an inline error, not a Next.js error boundary.
  */
-export function MockExamLauncher({ subjectId, subjectName, pro }: Props) {
+export function MockExamLauncher({
+  subjectId,
+  subjectName,
+  examType,
+  pro,
+}: Props) {
   const router = useRouter();
   const [paywallOpen, setPaywallOpen] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -52,6 +60,7 @@ export function MockExamLauncher({ subjectId, subjectName, pro }: Props) {
             difficulty: "mixed",
           },
         });
+        trackEvent("exam_started", { mode: "mock_exam", level: examType });
         router.push(`/exam/${exam.id}`);
       } catch (err) {
         if (handlePaywallError(err, (href) => router.push(href), "/mock-exams")) {

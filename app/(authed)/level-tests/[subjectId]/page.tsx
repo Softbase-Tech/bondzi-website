@@ -73,6 +73,7 @@ export default async function LevelTestSubjectPage({
       <LevelTestPicker
         subjectId={subject.id}
         subjectName={subject.name}
+        examType={subject.examType}
         formLevel={formLevel}
         topics={topics}
         pro={proTier}

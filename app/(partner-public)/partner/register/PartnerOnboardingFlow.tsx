@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Partner onboarding flow. Two modes depending on `isSignedIn`:
@@ -195,6 +196,10 @@ export function PartnerOnboardingFlow({
           momoAccountName: momoAccountName.trim(),
         });
 
+        // `hadAccount` splits the two onboarding paths: an existing
+        // Bondzi student becoming a partner vs a cold signup. They
+        // convert very differently and the copy is tuned per path.
+        trackEvent("partner_signup_completed", { hadAccount: isSignedIn });
         toast.success("Partner account created — welcome!");
         router.replace("/partner/dashboard");
         router.refresh();

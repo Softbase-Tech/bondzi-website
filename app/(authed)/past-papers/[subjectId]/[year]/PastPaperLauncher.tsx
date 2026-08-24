@@ -8,12 +8,15 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { api } from "@/lib/api/client";
 import { handlePaywallError } from "@/lib/paywall";
-import type { ExamSession } from "@/lib/api/types";
+import type { ExamSession, ExamType } from "@/lib/api/types";
+import { trackEvent } from "@/lib/analytics";
 
 interface Props {
   subjectId: string;
   subjectName: string;
   subjectCode: string;
+  /** The subject's exam level — carried into `exam_started`. */
+  examType: ExamType;
   year: number;
 }
 
@@ -36,6 +39,7 @@ export function PastPaperLauncher({
   subjectId,
   subjectName,
   subjectCode,
+  examType,
   year,
 }: Props) {
   const router = useRouter();
@@ -60,6 +64,7 @@ export function PastPaperLauncher({
             questionCount: 40,
           },
         });
+        trackEvent("exam_started", { mode: "past_paper", level: examType });
         router.push(`/exam/${exam.id}`);
       } catch (err) {
         if (handlePaywallError(err, (href) => router.push(href), returnTo)) {

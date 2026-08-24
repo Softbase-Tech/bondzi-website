@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { ENV } from "@/lib/env";
 import { openPaystackCheckout } from "@/lib/paystack";
+import { trackEvent, type Cadence as AnalyticsCadence } from "@/lib/analytics";
 import {
   initiateSubscription,
   verifySubscription,
@@ -93,6 +94,18 @@ export function PlanPicker({
   for (const e of entitlements) entitlementByLevel[e.level] = e;
 
   const buy = async (plan: PublicPlan, chosenCadence: Cadence | null) => {
+    // Every checkout event carries the same three dimensions so the
+    // funnel can be sliced by tier, level, and cadence without joining
+    // anything. `lifetime` stands in for Plus, which is one-time and
+    // therefore has no billing interval.
+    const dims = {
+      account: plan.account === "pro" ? ("pro" as const) : ("plus" as const),
+      level: plan.level,
+      cadence: (plan.paymentKind === "one_time"
+        ? "lifetime"
+        : (chosenCadence ?? "monthly")) as AnalyticsCadence,
+    };
+
     if (!studentEmail) {
       toast.error(
         "Add an email to your profile before buying — Paystack needs one for receipts.",
@@ -112,6 +125,9 @@ export function PlanPicker({
             ? undefined
             : (chosenCadence ?? undefined),
       });
+      // Fires once the backend has a real `payment_attempts` row —
+      // i.e. the student committed, not merely looked at the card.
+      trackEvent("checkout_initiated", dims);
       const amountMinor = getAmountMinor(plan, chosenCadence);
       const result = await openPaystackCheckout({
         publicKey: ENV.PAYSTACK_PUBLIC_KEY_GH,
@@ -135,6 +151,12 @@ export function PlanPicker({
       });
 
       if (result.status === "closed") {
+        // Popup dismissed without paying. The gap between
+        // `checkout_initiated` and this is the abandoned-cart rate.
+        trackEvent("checkout_dismissed", {
+          account: dims.account,
+          level: dims.level,
+        });
         toast("Checkout closed. Restart it any time from this page.");
         return;
       }
@@ -143,6 +165,7 @@ export function PlanPicker({
       startTransition(async () => {
         try {
           await verifySubscription(reference);
+          trackEvent("checkout_completed", dims);
           await Promise.all([
             qc.invalidateQueries({ queryKey: ["subscription", "me"] }),
             qc.invalidateQueries({ queryKey: ["subscription", "entitlements"] }),
@@ -159,6 +182,15 @@ export function PlanPicker({
           // Webhook is the fallback — send the user to the success
           // page anyway with the reference so they can see resolved
           // state (backend will have activated by then in most cases).
+          //
+          // Tracked as an ops signal, not a lost sale: a rising rate
+          // here means students are landing on "activating…" instead
+          // of a clean success.
+          trackEvent("checkout_failed", {
+            account: dims.account,
+            level: dims.level,
+            stage: "verify",
+          });
           // eslint-disable-next-line no-console
           console.warn("Verify failed — relying on webhook", err);
           router.push(
@@ -169,6 +201,10 @@ export function PlanPicker({
     } catch (err) {
       const resume = checkoutInProgressFrom(err);
       if (resume) {
+        trackEvent("checkout_resumed", {
+          account: dims.account,
+          level: dims.level,
+        });
         toast("You already started a checkout — reopening it.");
         // Reopen with the SAME reference so backend recognises the
         // attempt.
@@ -188,6 +224,11 @@ export function PlanPicker({
         }
         return;
       }
+      trackEvent("checkout_failed", {
+        account: dims.account,
+        level: dims.level,
+        stage: "initiate",
+      });
       const message =
         err instanceof Error
           ? err.message

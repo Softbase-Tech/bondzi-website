@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { appPath } from "@/lib/urls";
+import { trackEvent } from "@/lib/analytics";
 
 export interface NavItem {
   label: string;
@@ -107,6 +108,9 @@ export function SiteHeader({ items }: Props) {
           {isAuthed ? (
             <Link
               href={appPath("/dashboard")}
+              onClick={() =>
+                trackEvent("cta_click", { surface: "header", target: "open_app" })
+              }
               className="hidden md:inline-flex items-center gap-1.5 bg-ink text-bg px-4 h-10 rounded-full text-[13px] font-medium hover:bg-orange transition-colors"
             >
               Open app
@@ -116,12 +120,18 @@ export function SiteHeader({ items }: Props) {
             <>
               <Link
                 href={appPath("/login")}
+                onClick={() =>
+                  trackEvent("cta_click", { surface: "header", target: "signin" })
+                }
                 className="hidden md:inline-flex items-center h-10 px-3 rounded-full text-[13px] font-medium text-ink-soft hover:text-ink hover:bg-yellow-soft/60 transition-colors"
               >
                 Sign in
               </Link>
               <Link
                 href={appPath("/register")}
+                onClick={() =>
+                  trackEvent("cta_click", { surface: "header", target: "register" })
+                }
                 className="hidden md:inline-flex items-center gap-1.5 bg-ink text-bg px-4 h-10 rounded-full text-[13px] font-medium hover:bg-orange transition-colors"
               >
                 Get started
@@ -178,7 +188,10 @@ export function SiteHeader({ items }: Props) {
           {isAuthed ? (
             <Link
               href={appPath("/dashboard")}
-              onClick={close}
+              onClick={() => {
+                trackEvent("cta_click", { surface: "header", target: "open_app" });
+                close();
+              }}
               className="mt-2 mb-1 inline-flex items-center justify-center gap-1.5 bg-ink text-bg h-12 rounded-full text-[14px] font-medium"
             >
               Open app
@@ -188,7 +201,10 @@ export function SiteHeader({ items }: Props) {
             <>
               <Link
                 href={appPath("/register")}
-                onClick={close}
+                onClick={() => {
+                  trackEvent("cta_click", { surface: "header", target: "register" });
+                  close();
+                }}
                 className="mt-2 inline-flex items-center justify-center gap-1.5 bg-ink text-bg h-12 rounded-full text-[14px] font-medium"
               >
                 Get started
@@ -196,7 +212,10 @@ export function SiteHeader({ items }: Props) {
               </Link>
               <Link
                 href={appPath("/login")}
-                onClick={close}
+                onClick={() => {
+                  trackEvent("cta_click", { surface: "header", target: "signin" });
+                  close();
+                }}
                 className="mt-2 mb-1 inline-flex items-center justify-center h-12 rounded-full text-[14px] font-medium text-ink border border-rule-strong hover:bg-yellow-soft/60"
               >
                 Sign in

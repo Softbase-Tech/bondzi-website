@@ -20,6 +20,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 const STALE_MS = 60_000;
 
@@ -58,6 +59,7 @@ export function AiReviewView({
   const generate = useMutation({
     mutationFn: () => generateAiReview(),
     onSuccess: (res: GenerateAiReviewResult) => {
+      trackEvent("ai_review_generated");
       // Prime the detail cache so the destination renders instantly, refresh
       // the quota + history, then navigate into the fresh report.
       qc.setQueryData(["ai-review", "detail", res.review.id], res.review);

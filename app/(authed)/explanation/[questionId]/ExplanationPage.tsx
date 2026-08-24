@@ -12,6 +12,7 @@ import { getExplanation } from "@/lib/api/explanations";
 import { getQuestionDetail } from "@/lib/api/questions";
 import { ApiError } from "@/lib/api/client";
 import type { Explanation, Question } from "@/lib/api/types";
+import { trackEvent } from "@/lib/analytics";
 
 interface Props {
   questionId: string;
@@ -41,6 +42,7 @@ export function ExplanationPage({ questionId }: Props) {
       if (cancelled) return;
       if (qRes.status === "fulfilled") setQuestion(qRes.value);
       if (eRes.status === "fulfilled") {
+        trackEvent("explanation_opened", { source: "deeplink" });
         setExplanation(eRes.value);
       } else if (
         eRes.reason instanceof ApiError &&

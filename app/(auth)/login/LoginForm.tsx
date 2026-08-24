@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { detectAuthMode, normalizeGhanaPhone } from "@/lib/auth-input";
 import { getWebDeviceId, getWebDeviceName } from "@/lib/device";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Sign-in form. Accepts either email or phone in a single field — the
@@ -87,6 +88,10 @@ export function LoginForm() {
         redirect: false,
       });
       if (res?.ok) {
+        // No property carrying which identifier they used — email vs
+        // phone is a weak signal and `mode` is derived from what they
+        // typed, so it's not worth the PII-adjacency.
+        trackEvent("auth_signin_completed");
         // Success — clear form state so a "back" tap doesn't leak the
         // last-typed password into a re-mount.
         setPassword("");

@@ -4,8 +4,9 @@ import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { GraduationCap, ListChecks } from "lucide-react";
 import { api } from "@/lib/api/client";
-import type { ExamSession, SyllabusTopic } from "@/lib/api/types";
+import type { ExamSession, ExamType, SyllabusTopic } from "@/lib/api/types";
 import { handlePaywallError } from "@/lib/paywall";
+import { trackEvent } from "@/lib/analytics";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { PaywallDialog } from "@/components/exam/PaywallDialog";
@@ -18,6 +19,8 @@ const LEVEL_TEST_COUNT = 40;
 interface Props {
   subjectId: string;
   subjectName: string;
+  /** The subject's exam level — carried into `exam_started`. */
+  examType: ExamType;
   formLevel: 1 | 2 | 3;
   topics: SyllabusTopic[];
   pro: boolean;
@@ -36,6 +39,7 @@ interface Props {
 export function LevelTestPicker({
   subjectId,
   subjectName,
+  examType,
   formLevel,
   topics,
   pro,
@@ -82,6 +86,7 @@ export function LevelTestPicker({
             difficulty: "mixed",
           },
         });
+        trackEvent("exam_started", { mode: "pm_test", level: examType });
         router.push(`/exam/${exam.id}`);
       } catch (err) {
         if (handlePaywallError(err, (href) => router.push(href), "/level-tests")) {

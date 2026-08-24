@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { QuestionRenderer } from "@/components/exam/QuestionRenderer";
 import { ExplanationSheet } from "@/components/exam/ExplanationSheet";
 import { renderMarkdown } from "@/lib/markdown";
+import { trackEvent } from "@/lib/analytics";
 import type { ExamResult, Question } from "@/lib/api/types";
 
 interface Props {
@@ -83,7 +84,10 @@ export function ReviewList({ result, questions }: Props) {
                     variant="outline"
                     size="sm"
                     leftIcon={<Sparkles size={14} />}
-                    onClick={() => setOpenQuestionId(row.questionId)}
+                    onClick={() => {
+                      trackEvent("explanation_opened", { source: "result" });
+                      setOpenQuestionId(row.questionId);
+                    }}
                   >
                     Explain
                   </Button>

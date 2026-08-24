@@ -11,6 +11,7 @@ import type { Subscription } from "@/lib/api/types";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogActions } from "@/components/ui/Dialog";
+import { trackEvent } from "@/lib/analytics";
 
 interface Props {
   subscription: Subscription;
@@ -42,6 +43,9 @@ export function ManagePanel({ subscription, currentLevelLabel }: Props) {
     startTransition(async () => {
       try {
         await cancelSubscription();
+        trackEvent("subscription_cancelled", {
+          account: isPlus ? "plus" : "pro",
+        });
         await Promise.all([
           qc.invalidateQueries({ queryKey: ["subscription", "me"] }),
           qc.invalidateQueries({ queryKey: ["subscription", "entitlements"] }),

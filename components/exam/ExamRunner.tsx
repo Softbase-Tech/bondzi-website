@@ -23,6 +23,7 @@ import {
   submitAnswer,
 } from "@/lib/api/exams";
 import type { ExamSession, Question } from "@/lib/api/types";
+import { scoreBand, trackEvent } from "@/lib/analytics";
 import { QuestionRenderer } from "./QuestionRenderer";
 import { ExplanationSheet } from "./ExplanationSheet";
 import { ReportQuestionDialog } from "./ReportQuestionDialog";
@@ -248,7 +249,15 @@ export function ExamRunner({ session }: Props) {
       toast.info("Time's up", { description: "Submitting your exam." });
     }
     try {
-      await completeExam(session.id);
+      const result = await completeExam(session.id);
+      // `score` is a 0..1 ratio from the backend serialiser. Banded
+      // rather than sent raw: the exact percentage is one bucket per
+      // student, the band is a distribution you can actually read.
+      trackEvent("exam_completed", {
+        mode: session.mode,
+        scoreBand: scoreBand(result.score),
+        reason,
+      });
       router.replace(`/exam/${session.id}/result`);
     } catch (err) {
       const message =
@@ -262,6 +271,7 @@ export function ExamRunner({ session }: Props) {
 
   async function handleAbandon() {
     setConfirmAbandonOpen(false);
+    trackEvent("exam_abandoned", { mode: session.mode });
     try {
       await abandonExam(session.id);
     } catch {
@@ -396,7 +406,10 @@ export function ExamRunner({ session }: Props) {
               variant="outline"
               size="sm"
               leftIcon={<Sparkles size={14} />}
-              onClick={() => setExplanationQuestionId(currentQuestion.id)}
+              onClick={() => {
+                trackEvent("explanation_opened", { source: "exam" });
+                setExplanationQuestionId(currentQuestion.id);
+              }}
             >
               Explain this
             </Button>

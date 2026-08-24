@@ -11,6 +11,7 @@ import {
   normalizeReferralCode,
 } from "@/lib/api/referrals";
 import type { ReferralEvent, ReferralStats } from "@/lib/api/types";
+import { trackEvent } from "@/lib/analytics";
 
 interface Props {
   stats: ReferralStats;
@@ -43,6 +44,7 @@ export function ReferralPanel({ stats, events }: Props) {
   const copyCode = async () => {
     try {
       await navigator.clipboard.writeText(displayCode);
+      trackEvent("referral_shared", { channel: "clipboard" });
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -51,6 +53,7 @@ export function ReferralPanel({ stats, events }: Props) {
   };
 
   const openWhatsApp = () => {
+    trackEvent("referral_shared", { channel: "whatsapp" });
     // Opens WhatsApp mobile app when installed on mobile browsers and
     // falls through to WhatsApp Web on desktop.
     window.open(
@@ -66,9 +69,11 @@ export function ReferralPanel({ stats, events }: Props) {
     try {
       if (nav?.share) {
         await nav.share({ text: message });
+        trackEvent("referral_shared", { channel: "native" });
         return;
       }
       await nav?.clipboard.writeText(message);
+      trackEvent("referral_shared", { channel: "clipboard" });
       toast.success("Copied — paste and send");
     } catch (err) {
       if ((err as { name?: string })?.name === "AbortError") return;

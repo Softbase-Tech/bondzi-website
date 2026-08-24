@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { setSelectedSubjectIds } from "@/lib/api/user";
 import type { Subject } from "@/lib/api/types";
 import { cn } from "@/lib/utils";
+import { countBand, trackEvent } from "@/lib/analytics";
 
 const MAX_SELECTIONS = 50;
 
@@ -60,8 +61,19 @@ export function OnboardingSubjectPicker({
     });
   };
 
-  const save = (thenGo: "dashboard") => {
+  // `skipped` distinguishes the two callers — both land on the
+  // dashboard and both persist whatever is currently toggled, so the
+  // only difference is intent, and that's exactly the thing worth
+  // measuring: how many students bail past the picker with only the
+  // pre-checked cores.
+  const save = (thenGo: "dashboard", { skipped }: { skipped: boolean }) => {
     startTransition(async () => {
+      // Bucketed, not raw — the exact count is noise, the shape of the
+      // distribution is what tells you whether the picker is working.
+      trackEvent("onboarding_subjects_saved", {
+        subjectCount: countBand(selected.size),
+        skipped,
+      });
       try {
         await setSelectedSubjectIds(Array.from(selected));
       } catch (err) {
@@ -148,14 +160,14 @@ export function OnboardingSubjectPicker({
           block
           size="lg"
           loading={pending}
-          onClick={() => save("dashboard")}
+          onClick={() => save("dashboard", { skipped: false })}
           className="sm:flex-1"
         >
           {count > 0 ? `Continue with ${count} subjects` : "Continue"}
         </Button>
         <button
           type="button"
-          onClick={() => save("dashboard")}
+          onClick={() => save("dashboard", { skipped: true })}
           disabled={pending}
           className="text-[13px] text-ink-soft hover:text-ink underline underline-offset-2 disabled:opacity-60"
         >

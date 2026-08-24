@@ -82,6 +82,7 @@ export default async function MockExamSubjectPage({
         <MockExamLauncher
           subjectId={subject.id}
           subjectName={subject.name}
+          examType={subject.examType}
           pro={proTier}
         />
       </Card>
