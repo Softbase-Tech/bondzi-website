@@ -1,4 +1,4 @@
-import { api, requestRaw } from "./client";
+import { ApiError, api, requestRaw } from "./client";
 import type { AuthResponse, SafeUser, TokenPair } from "./types";
 
 /**
@@ -66,10 +66,56 @@ export async function register(input: {
   utmTerm?: string;
   signupReferrer?: string;
 }): Promise<AuthResponse> {
-  return requestRaw<AuthResponse>("/auth/register", {
-    method: "POST",
-    body: input,
-  });
+  try {
+    return await requestRaw<AuthResponse>("/auth/register", {
+      method: "POST",
+      body: input,
+    });
+  } catch (err) {
+    // FORWARD-COMPATIBILITY GUARD.
+    //
+    // The API validates with `forbidNonWhitelisted: true`, which means
+    // an unrecognised property doesn't get ignored — it 400s the whole
+    // registration. The attribution fields land in a separate backend
+    // release, so between this deploy and that one every signup
+    // carrying a campaign (or merely an external referrer) would fail.
+    //
+    // Rather than couple two deploys together, detect that specific
+    // rejection and retry once without the attribution. Costs one
+    // wasted round-trip on an old backend, nothing on a new one, and
+    // it starts working by itself the moment the API ships — no flag
+    // to remember to flip.
+    //
+    // Safe to delete once the attribution release is live everywhere.
+    if (!rejectsAttribution(err)) throw err;
+    const retry = { ...input };
+    for (const key of ATTRIBUTION_KEYS) delete retry[key];
+    return requestRaw<AuthResponse>("/auth/register", {
+      method: "POST",
+      body: retry,
+    });
+  }
+}
+
+const ATTRIBUTION_KEYS = [
+  "utmSource",
+  "utmMedium",
+  "utmCampaign",
+  "utmContent",
+  "utmTerm",
+  "signupReferrer",
+] as const;
+
+/**
+ * True when a 400 is specifically class-validator complaining about the
+ * attribution properties ("property utmSource should not exist"), as
+ * opposed to a real validation failure the user needs to see.
+ */
+function rejectsAttribution(err: unknown): boolean {
+  if (!(err instanceof ApiError) || err.status !== 400) return false;
+  const message = err.body?.message;
+  const text = Array.isArray(message) ? message.join(" ") : (message ?? "");
+  return ATTRIBUTION_KEYS.some((key) => text.includes(key));
 }
 
 export async function refreshTokens(
