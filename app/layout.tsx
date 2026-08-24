@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import "katex/dist/katex.min.css";
 import { VercelAnalytics } from "@/components/analytics/VercelAnalytics";
+import { AttributionCapture } from "@/components/analytics/AttributionCapture";
 import { Providers } from "./providers";
 
 // Google Analytics 4 measurement ID. Public by design (it ends up in
@@ -233,8 +235,12 @@ const mobileAppJsonLd = {
     eligibleRegion: { "@type": "Country", name: "Ghana" },
   },
   publisher: { "@type": "Organization", name: "Cliffbase Tech" },
-  downloadUrl: "https://expo.dev/artifacts/eas/oA5ZFub4WNxKkYEg5Wn2yn.apk",
-  installUrl: "https://expo.dev/artifacts/eas/oA5ZFub4WNxKkYEg5Wn2yn.apk",
+  // `downloadUrl` / `installUrl` intentionally omitted until the Play
+  // Store listing is live. They previously pointed at a direct APK,
+  // which is unattributable (no Play Install Referrer) — and publishing
+  // a sideload link as structured data invites search engines to
+  // surface it as the canonical install route. Restore both, pointing
+  // at the Play listing, when NEXT_PUBLIC_PLAY_STORE_URL is set.
   about: [
     "WASSCE",
     "BECE",
@@ -305,6 +311,14 @@ export default function RootLayout({
           </>
         )}
         <VercelAnalytics />
+        {/* Reads utm_* / ?ref= off the URL into a `.bondzi.online`
+            cookie so the campaign survives the hop to app.bondzi.online,
+            where registration actually happens. Suspense-wrapped because
+            it calls useSearchParams, which would otherwise opt the whole
+            tree out of static rendering. */}
+        <Suspense fallback={null}>
+          <AttributionCapture />
+        </Suspense>
       </body>
     </html>
   );

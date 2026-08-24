@@ -69,7 +69,10 @@ const MARKETING_PUBLIC_PATHS = new Set([
   "/partners",
   ...LEGAL_PUBLIC_PATHS,
 ]);
-const MARKETING_PUBLIC_PREFIXES = ["/blog"];
+// `/r/<CODE>` is the partner share link. It lives on the marketing host
+// (that's the URL partners hand out) and is a Route Handler that sets the
+// referral cookie and bounces to `/`.
+const MARKETING_PUBLIC_PREFIXES = ["/blog", "/r/"];
 
 // Public prefixes that stay reachable everywhere (NextAuth's own
 // route handler must never be redirected — it needs to reply on
@@ -233,6 +236,7 @@ export default auth((req: NextRequest & { auth: unknown }) => {
     // app host would otherwise login-gate them).
     if (
       pathname.startsWith("/blog") ||
+      pathname.startsWith("/r/") ||
       pathname === "/partners" ||
       LEGAL_PUBLIC_PATHS.includes(pathname)
     ) {

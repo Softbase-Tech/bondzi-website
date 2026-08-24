@@ -6,6 +6,7 @@ import {
   trackEvent,
   type AnalyticsEventMap,
 } from "@/lib/analytics";
+import { useAttributedHref } from "@/lib/attribution";
 
 type TrackedEventName = keyof AnalyticsEventMap;
 
@@ -47,20 +48,25 @@ export function TrackedLink<K extends TrackedEventName>({
   children,
   ...rest
 }: TrackedLinkProps<K>) {
+  // Carries utm_* / ?ref= from the current URL onto the target, so a
+  // campaign survives the hop from bondzi.online to app.bondzi.online
+  // where registration actually happens.
+  const attributedHref = useAttributedHref(href);
+
   const onClick = () => {
     trackEvent(event, properties);
   };
 
   if (external) {
     return (
-      <a href={href} onClick={onClick} {...rest}>
+      <a href={attributedHref} onClick={onClick} {...rest}>
         {children}
       </a>
     );
   }
 
   return (
-    <Link href={href} onClick={onClick} {...rest}>
+    <Link href={attributedHref} onClick={onClick} {...rest}>
       {children}
     </Link>
   );

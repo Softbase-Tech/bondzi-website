@@ -41,11 +41,30 @@ export async function register(input: {
   formLevel?: 1 | 2 | 3;
   gender?: "male" | "female" | "other" | "prefer_not_to_say";
   dateOfBirth?: string;
+  /** Student XP referral code (resolves against `users.referral_code`). */
   referralCode?: string;
+  /**
+   * Partner referral code (resolves against `partner_referral_codes`).
+   * A different system from `referralCode` above — separate table,
+   * separate rewards. Both are sent because the backend no-ops
+   * silently on a code it can't resolve, so a student who types one
+   * code into the single visible field gets credited to whichever
+   * system it actually belongs to.
+   */
+  partnerReferralCode?: string;
   schoolName?: string;
   region?: string;
   deviceId?: string;
   deviceName?: string;
+  // First-touch acquisition attribution. Every field is optional and
+  // must exist on the backend's SignupAttributionDto — the API runs
+  // `forbidNonWhitelisted`, so an unknown key 400s the registration.
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  utmTerm?: string;
+  signupReferrer?: string;
 }): Promise<AuthResponse> {
   return requestRaw<AuthResponse>("/auth/register", {
     method: "POST",

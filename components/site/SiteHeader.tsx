@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { appPath } from "@/lib/urls";
 import { trackEvent } from "@/lib/analytics";
+import { useAttributedHref } from "@/lib/attribution";
 
 export interface NavItem {
   label: string;
@@ -35,6 +36,14 @@ export function SiteHeader({ items }: Props) {
   // browser knows.
   const { status } = useSession();
   const isAuthed = status === "authenticated";
+
+  // Cross-host CTAs: carry the current page's campaign params over to
+  // app.bondzi.online so the register form sees where the student came
+  // from. Computed once at the top — hooks can't live inside the
+  // conditional branches below.
+  const dashboardHref = useAttributedHref(appPath("/dashboard"));
+  const loginHref = useAttributedHref(appPath("/login"));
+  const registerHref = useAttributedHref(appPath("/register"));
 
   // Close the menu on Escape and lock body scroll while it's open so the
   // page doesn't scroll behind the overlay on iOS Safari.
@@ -107,7 +116,7 @@ export function SiteHeader({ items }: Props) {
               full page load. */}
           {isAuthed ? (
             <Link
-              href={appPath("/dashboard")}
+              href={dashboardHref}
               onClick={() =>
                 trackEvent("cta_click", { surface: "header", target: "open_app" })
               }
@@ -119,7 +128,7 @@ export function SiteHeader({ items }: Props) {
           ) : (
             <>
               <Link
-                href={appPath("/login")}
+                href={loginHref}
                 onClick={() =>
                   trackEvent("cta_click", { surface: "header", target: "signin" })
                 }
@@ -128,7 +137,7 @@ export function SiteHeader({ items }: Props) {
                 Sign in
               </Link>
               <Link
-                href={appPath("/register")}
+                href={registerHref}
                 onClick={() =>
                   trackEvent("cta_click", { surface: "header", target: "register" })
                 }
@@ -187,7 +196,7 @@ export function SiteHeader({ items }: Props) {
               targets stay generous. */}
           {isAuthed ? (
             <Link
-              href={appPath("/dashboard")}
+              href={dashboardHref}
               onClick={() => {
                 trackEvent("cta_click", { surface: "header", target: "open_app" });
                 close();
@@ -200,7 +209,7 @@ export function SiteHeader({ items }: Props) {
           ) : (
             <>
               <Link
-                href={appPath("/register")}
+                href={registerHref}
                 onClick={() => {
                   trackEvent("cta_click", { surface: "header", target: "register" });
                   close();
@@ -211,7 +220,7 @@ export function SiteHeader({ items }: Props) {
                 <ArrowUpRight size={15} strokeWidth={2.25} />
               </Link>
               <Link
-                href={appPath("/login")}
+                href={loginHref}
                 onClick={() => {
                   trackEvent("cta_click", { surface: "header", target: "signin" });
                   close();

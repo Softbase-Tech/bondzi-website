@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { TrackedLink } from "../components/analytics/TrackedLink";
+import { AndroidAppCta } from "../components/site/AndroidAppCta";
 import { appPath } from "../lib/urls";
 import {
   ArrowUpRight,
@@ -999,39 +1000,29 @@ function GetTheApp() {
               </span>
             </h2>
             <p className="mt-5 sm:mt-6 text-[15px] sm:text-[16px] leading-[1.65] text-ink-soft max-w-xl">
-              Free to download. Free to revise. The AI tutor and Bondzi Test
-              live behind Bondzi Pro — paid in cedis, by mobile money, and
-              cheaper than a single weekend tutor session.
+              Free to study. The AI tutor and Bondzi Test live behind Bondzi
+              Pro — paid in cedis, by mobile money, and cheaper than a single
+              weekend tutor session.
             </p>
             <div className="mt-7 sm:mt-9 flex flex-wrap items-center gap-3">
               <TrackedLink
-                href="https://expo.dev/artifacts/eas/oA5ZFub4WNxKkYEg5Wn2yn.apk"
-                external
-                event="app_download_click"
-                properties={{ platform: "android", surface: "home_get_app" }}
-                className="inline-flex items-center gap-2 bg-ink text-bg px-5 h-12 rounded-full font-medium hover:bg-orange transition-colors whitespace-nowrap text-[14px] sm:text-[15px]"
-                rel="noopener"
+                href={appPath("/register")}
+                event="cta_click"
+                properties={{ surface: "home_get_app", target: "register_primary" }}
+                className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap text-[14px] sm:text-[15px]"
               >
-                Download Android APK
-                <ArrowUpRight size={16} strokeWidth={2.25} />
+                Start studying free
+                <ArrowRight size={16} strokeWidth={2.25} />
               </TrackedLink>
-              <TrackedLink
-                href="#"
-                external
-                event="app_download_click"
-                properties={{ platform: "ios", surface: "home_get_app" }}
-                className="inline-flex items-center gap-2 px-5 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[14px] sm:text-[15px] whitespace-nowrap"
-              >
-                iOS · waitlist
-              </TrackedLink>
+              <AndroidAppCta />
             </div>
             <p className="mt-3 text-[11.5px] sm:text-[12px] text-ink-mute leading-snug max-w-md">
-              Direct APK · v1.0.0 · ~70&nbsp;MB. On Play Store soon. Enable
-              install from unknown sources if your phone asks.
+              Works in any phone browser — nothing to install. The Android app
+              lands on the Play Store shortly.
             </p>
             <div className="mt-6 sm:mt-8 border-t border-rule pt-5 flex flex-wrap items-center gap-3">
               <span className="text-[13px] text-ink-soft">
-                No phone handy? Study in your browser:
+                Already have an account?
               </span>
               <TrackedLink
                 href={appPath("/register")}

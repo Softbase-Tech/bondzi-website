@@ -18,6 +18,7 @@ import {
   validatePasswordMin,
 } from "@/lib/password";
 import { trackEvent } from "@/lib/analytics";
+import { getAttribution, getPartnerRefCode } from "@/lib/attribution";
 import type { ExamType, Gender } from "@/lib/api/types";
 
 /**
@@ -173,6 +174,21 @@ export function RegisterFlow() {
     const deviceName = getWebDeviceName();
 
     try {
+      // First-touch campaign attribution, carried here in a
+      // `.bondzi.online` cookie set when the student first landed —
+      // usually on the marketing host, a different origin from this
+      // one. See lib/attribution.ts for why this can't be localStorage.
+      const attribution = getAttribution();
+      const typedCode = referralCode.trim();
+      // A partner code can reach us two ways: silently, via a
+      // `/r/<CODE>` link the partner shared (cookie), or typed into the
+      // single visible referral field. The typed value is sent as BOTH
+      // codes because the backend resolves each against its own table
+      // and silently no-ops on a code it doesn't recognise — so one
+      // field credits whichever system the code actually belongs to,
+      // without asking a student to know the difference.
+      const partnerCode = getPartnerRefCode() ?? typedCode;
+
       await register({
         fullName: fullName.trim(),
         username: username.trim(),
@@ -185,13 +201,15 @@ export function RegisterFlow() {
         deviceId,
         deviceName,
         ...(needsFormLevel && formLevel !== null ? { formLevel } : {}),
-        ...(referralCode.trim() ? { referralCode: referralCode.trim() } : {}),
+        ...(typedCode ? { referralCode: typedCode } : {}),
+        ...(partnerCode ? { partnerReferralCode: partnerCode } : {}),
+        ...attribution,
       });
       trackEvent("auth_signup_completed", {
         level: examType as ExamType,
         // Boolean, never the code itself — a referral code identifies
         // the referrer and has no place in an analytics property.
-        withReferral: referralCode.trim().length > 0,
+        withReferral: typedCode.length > 0 || partnerCode.length > 0,
       });
       // Auto-sign-in with the credentials we just set. The register
       // endpoint returns tokens too but NextAuth needs its own

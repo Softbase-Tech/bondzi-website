@@ -42,6 +42,21 @@ export const ENV = {
    * Value should match the mobile app's EXPO_PUBLIC_PAYSTACK_KEY_GH.
    */
   PAYSTACK_PUBLIC_KEY_GH: process.env.NEXT_PUBLIC_PAYSTACK_KEY_GH ?? "",
+  /**
+   * Play Store listing URL. EMPTY UNTIL THE LISTING IS LIVE.
+   *
+   * Acts as the launch switch for the Android CTA: while it's blank the
+   * marketing site shows a non-linking "coming to Play Store" note, and
+   * the moment it's set the button becomes a real Play link carrying an
+   * encoded `referrer` so the campaign survives the install (read back
+   * in-app via the Play Install Referrer API).
+   *
+   * Deliberately not defaulted to a guessed play.google.com URL — a
+   * dead store link is worse than no link.
+   *
+   * e.g. https://play.google.com/store/apps/details?id=com.bondzi.app
+   */
+  PLAY_STORE_URL: process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "",
 };
 
 /**
