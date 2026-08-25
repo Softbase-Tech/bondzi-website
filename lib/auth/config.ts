@@ -1,7 +1,7 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { ApiError } from "../api/client";
-import { login, refreshTokens } from "../api/auth";
+import { fetchMe, login, refreshTokens } from "../api/auth";
 import { ENV, assertServerEnv } from "../env";
 import type { SafeUser } from "../api/types";
 
@@ -53,6 +53,25 @@ const STUDENT_CSRF_COOKIE_NAME = isProd
  * edge of expiry when a client request goes out.
  */
 const ACCESS_TOKEN_REFRESH_LEEWAY_MS = 60 * 1000; // 60s
+
+/**
+ * How long a cached `profile` may be trusted before it is re-read from
+ * `/auth/me`.
+ *
+ * `profile` is a snapshot taken at sign-in. Nothing refreshed it, and
+ * the session lives for 90 days — so a student who changed exam type on
+ * the mobile app kept browsing the OLD level's subjects on the web,
+ * indefinitely, on the same account. Every page that scopes a query by
+ * `profile.examType` (dashboard, subjects, past papers, quiz, mocks,
+ * level tests) was affected, which is what made the two clients show
+ * different lists.
+ *
+ * 5 minutes trades a cheap authenticated GET for an upper bound on how
+ * stale any of that can be. The fetch is opportunistic: it only runs
+ * when a session callback fires, and a failure leaves the previous
+ * snapshot in place rather than signing anyone out.
+ */
+const PROFILE_MAX_AGE_MS = 5 * 60 * 1000;
 
 /**
  * NextAuth v5 config for the student-facing web app.
@@ -232,7 +251,10 @@ export const authConfig: NextAuthConfig = {
         if (patch.refreshToken) token.refreshToken = patch.refreshToken;
         if (patch.accessExpiresAt) token.accessExpiresAt = patch.accessExpiresAt;
         if (patch.refreshExpiresAt) token.refreshExpiresAt = patch.refreshExpiresAt;
-        if (patch.profile) token.profile = patch.profile;
+        if (patch.profile) {
+          token.profile = patch.profile;
+          token.profileFetchedAt = Date.now();
+        }
         delete (token as { error?: string }).error;
         return token;
       }
@@ -252,6 +274,7 @@ export const authConfig: NextAuthConfig = {
         token.accessExpiresAt = authed.accessExpiresAt;
         token.refreshExpiresAt = authed.refreshExpiresAt;
         token.profile = authed.profile;
+        token.profileFetchedAt = Date.now();
         return token;
       }
 
@@ -266,8 +289,10 @@ export const authConfig: NextAuthConfig = {
       const accessExpiryMs = Date.parse(accessExpiresAt);
       const nowMs = Date.now();
       if (nowMs + ACCESS_TOKEN_REFRESH_LEEWAY_MS < accessExpiryMs) {
-        // Still fresh enough — no work.
-        return token;
+        // Token is still fresh, but the cached profile may not be —
+        // it goes stale on its own clock (exam type, form level,
+        // username, streak all change from the mobile app).
+        return refreshProfileIfStale(token, nowMs);
       }
 
       // Access token needs rotation. If refresh itself has expired,
@@ -285,7 +310,10 @@ export const authConfig: NextAuthConfig = {
         token.refreshExpiresAt = fresh.refreshExpiresAt;
         // Clear any transient error from a previous cycle.
         delete (token as { error?: string }).error;
-        return token;
+        // Re-read the profile on the same beat as the token rotation —
+        // we already know the network is reachable and the credentials
+        // are good.
+        return refreshProfileIfStale(token, Date.now(), { force: true });
       } catch (err) {
         // Distinguish DEVICE_KICKED (specific sign-out reason) from a
         // generic refresh failure. The session client-side reads
@@ -319,5 +347,33 @@ export const authConfig: NextAuthConfig = {
     },
   },
 };
+
+/**
+ * Re-read `/auth/me` into the token when the cached copy has aged out.
+ *
+ * Deliberately total: any failure returns the token untouched, keeping
+ * the previous snapshot. A profile refresh is a freshness optimisation,
+ * never a reason to interrupt a signed-in student — the access token is
+ * still valid either way, and a 401 here would be handled by the
+ * regular refresh path on the next call.
+ */
+async function refreshProfileIfStale(
+  token: import("next-auth/jwt").JWT,
+  nowMs: number,
+  opts: { force?: boolean } = {},
+): Promise<import("next-auth/jwt").JWT> {
+  const accessToken = token.accessToken;
+  if (!accessToken) return token;
+  const fetchedAt = token.profileFetchedAt ?? 0;
+  if (!opts.force && nowMs - fetchedAt < PROFILE_MAX_AGE_MS) return token;
+
+  try {
+    token.profile = await fetchMe(accessToken);
+    token.profileFetchedAt = nowMs;
+  } catch {
+    // Keep the stale profile; try again on the next callback.
+  }
+  return token;
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

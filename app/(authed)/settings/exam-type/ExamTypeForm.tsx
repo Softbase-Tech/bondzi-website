@@ -221,11 +221,13 @@ export function ExamTypeForm({ profile }: Props) {
         </Button>
       </div>
 
+      {/* Subject picks are kept per level and restored when you switch
+          back, so this no longer warns about losing them. */}
       <Dialog
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         title="Switch to a new exam type?"
-        description={`This clears your selected subjects and your ${profile.examType.toUpperCase()} leaderboard entries. Your XP, streak, and past attempts stay. Continue?`}
+        description={`Your ${profile.examType.toUpperCase()} leaderboard entries are reset. Subject picks, XP, streak and past attempts all stay — your ${profile.examType.toUpperCase()} subjects come back when you switch back. Continue?`}
       >
         <DialogActions>
           <Button

@@ -36,6 +36,13 @@ declare module "next-auth/jwt" {
     accessExpiresAt?: string;
     refreshExpiresAt?: string;
     profile?: SafeUser;
+    /**
+     * Epoch ms when `profile` was last read from `/auth/me`. Drives the
+     * staleness check in the jwt callback — without it the profile was
+     * a sign-in snapshot that never changed for the 90-day life of the
+     * session.
+     */
+    profileFetchedAt?: number;
     error?:
       | "DeviceKicked"
       | "RefreshTokenExpired"

@@ -379,8 +379,21 @@ export type LeaderboardPeriodType = "weekly" | "monthly";
  */
 export interface LeaderboardRow {
   userId: string;
-  username: string | null;
-  fullName: string;
+  /**
+   * Public display name, and the ONLY name field the board returns.
+   *
+   * The backend resolves this to the user's username, or an opaque
+   * `student-XXXXXX` handle derived from their id when they haven't set
+   * one. Real names are deliberately never sent: these are minors, and
+   * the board pairs a name with a region.
+   *
+   * This client previously typed the row as `{ username, fullName }` —
+   * neither of which the API has ever returned — so every entry fell
+   * through to the literal string "Student" and the whole board looked
+   * anonymous. `fullName` is intentionally absent rather than optional,
+   * so a future display chain can't quietly reintroduce a real name.
+   */
+  handle: string;
   score: number;
   rank: number;
 }

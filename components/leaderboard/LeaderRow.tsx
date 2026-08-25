@@ -27,7 +27,7 @@ export const LeaderRow = memo(function LeaderRow({
   currentUserId,
 }: Props) {
   const isYou = row.userId === currentUserId;
-  const displayName = row.username ?? row.fullName ?? "Student";
+  const displayName = row.handle;
   return (
     <li
       className={cn(

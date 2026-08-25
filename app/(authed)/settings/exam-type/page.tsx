@@ -49,9 +49,10 @@ export default async function ExamTypePage() {
         <div className="text-[12.5px] text-ink-soft space-y-2 leading-relaxed">
           <p>
             <strong className="text-ink">Heads up:</strong> switching
-            exam type resets your selected subjects and your
-            leaderboard entries for the old level. Your XP, streak,
-            and past attempts stay intact.
+            exam type resets your leaderboard entries for the old
+            level. Your subject picks, XP, streak, and past attempts
+            stay intact — each level keeps its own subject list, so
+            switching back restores it.
           </p>
           <p>
             Subscriptions are per-level. Pro on WASSCE does not carry

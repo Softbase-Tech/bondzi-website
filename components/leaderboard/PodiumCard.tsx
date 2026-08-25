@@ -89,9 +89,7 @@ function Column({
   showCrown?: boolean;
 }) {
   const t = TONES[tone];
-  const displayName = entry
-    ? entry.username ?? entry.fullName ?? "Student"
-    : "—";
+  const displayName = entry ? entry.handle : "—";
   const initials = getInitials(displayName);
   const isYou = entry?.userId === currentUserId;
 

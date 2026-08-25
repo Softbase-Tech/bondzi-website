@@ -118,6 +118,24 @@ function rejectsAttribution(err: unknown): boolean {
   return ATTRIBUTION_KEYS.some((key) => text.includes(key));
 }
 
+/**
+ * `GET /auth/me` — the authoritative current profile.
+ *
+ * Used by the NextAuth `jwt` callback to keep `session.profile` honest.
+ * Takes the token explicitly because it runs server-side inside that
+ * callback, where there is no session to read yet.
+ *
+ * The response embeds the current subscription alongside the user; we
+ * only want the user half, and only the fields SafeUser declares.
+ */
+export async function fetchMe(accessToken: string): Promise<SafeUser> {
+  const body = await requestRaw<SafeUser & { subscription?: unknown }>(
+    "/auth/me",
+    { accessToken },
+  );
+  return body;
+}
+
 export async function refreshTokens(
   refreshToken: string,
 ): Promise<TokenPair> {
