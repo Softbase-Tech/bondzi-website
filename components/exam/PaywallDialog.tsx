@@ -111,7 +111,7 @@ export function PaywallDialog({ open, onOpenChange, feature, dismissTo }: Props)
             className="flex items-start gap-2.5 text-[14px] text-ink-soft"
           >
             <span
-              className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange text-paper shrink-0"
+              className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange text-on-brand shrink-0"
               aria-hidden="true"
             >
               <Check size={12} strokeWidth={3} />
@@ -131,7 +131,7 @@ export function PaywallDialog({ open, onOpenChange, feature, dismissTo }: Props)
         <Link
           href="/subscription/plans"
           onClick={() => trackEvent("paywall_upgrade_clicked", { feature })}
-          className="inline-flex items-center justify-center gap-1.5 min-h-11 px-5 rounded-xl bg-orange text-paper font-medium text-[15px] hover:bg-orange-deep transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          className="inline-flex items-center justify-center gap-1.5 min-h-11 px-5 rounded-xl bg-orange text-on-brand font-medium text-[15px] hover:bg-orange-deep transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         >
           <Sparkles size={16} />
           Upgrade to Pro

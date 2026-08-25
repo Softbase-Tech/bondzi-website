@@ -289,7 +289,7 @@ function Hero() {
                 href={appPath("/register")}
                 event="cta_click"
                 properties={{ surface: "home_hero", target: "register" }}
-                className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-2 bg-orange text-on-brand px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
               >
                 Try Bondzi free
                 <ArrowRight size={16} strokeWidth={2.25} />
@@ -329,7 +329,7 @@ function Hero() {
                 sizes="(min-width: 1024px) 480px, 100vw"
                 priority
               />
-              <figcaption className="absolute left-3 bottom-3 right-3 flex flex-wrap items-center justify-between gap-2 text-[10px] sm:text-[11px] text-paper font-mono tracking-wide">
+              <figcaption className="absolute left-3 bottom-3 right-3 flex flex-wrap items-center justify-between gap-2 text-[10px] sm:text-[11px] text-on-brand font-mono tracking-wide">
                 <span className="bg-ink/70 backdrop-blur-sm px-2 py-1 rounded-sm">
                   ACCRA · GHANA
                 </span>
@@ -733,7 +733,7 @@ function Goals() {
             <article key={g.code} className="bg-paper p-7 sm:p-8 lg:p-10">
               <div className="flex items-center gap-3 mb-6">
                 <span
-                  className="inline-flex items-center justify-center text-paper font-bold text-[14px] w-12 h-12 rounded-sm"
+                  className="inline-flex items-center justify-center text-on-brand font-bold text-[14px] w-12 h-12 rounded-sm"
                   style={{ backgroundColor: g.color }}
                 >
                   {g.code.replace("SDG ", "")}
@@ -862,7 +862,7 @@ function Partners() {
                 href="/partners"
                 event="cta_click"
                 properties={{ surface: "home", target: "partners_learn_more" }}
-                className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-2 bg-orange text-on-brand px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
               >
                 See how it works
                 <ArrowRight size={16} strokeWidth={2.25} />
@@ -1009,7 +1009,7 @@ function GetTheApp() {
                 href={appPath("/register")}
                 event="cta_click"
                 properties={{ surface: "home_get_app", target: "register_primary" }}
-                className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap text-[14px] sm:text-[15px]"
+                className="inline-flex items-center gap-2 bg-orange text-on-brand px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap text-[14px] sm:text-[15px]"
               >
                 Start studying free
                 <ArrowRight size={16} strokeWidth={2.25} />

@@ -35,7 +35,7 @@ export function MyRankBanner({ rows, currentUserId, periodLabel }: Props) {
     return (
       <Card className="p-4 border-orange/40 bg-yellow-soft/50">
         <div className="flex items-start gap-3">
-          <div className="shrink-0 mt-0.5 inline-flex items-center justify-center w-9 h-9 rounded-full bg-orange text-paper">
+          <div className="shrink-0 mt-0.5 inline-flex items-center justify-center w-9 h-9 rounded-full bg-orange text-on-brand">
             <Trophy size={16} />
           </div>
           <div className="min-w-0">
@@ -64,7 +64,7 @@ export function MyRankBanner({ rows, currentUserId, periodLabel }: Props) {
   return (
     <Card className="p-4 border-orange/40 bg-yellow-soft/50">
       <div className="flex items-center gap-3">
-        <div className="shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-full bg-orange text-paper">
+        <div className="shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-full bg-orange text-on-brand">
           <Trophy size={18} />
         </div>
         <div className="min-w-0 flex-1">

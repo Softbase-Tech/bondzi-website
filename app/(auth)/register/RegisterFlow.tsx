@@ -722,7 +722,7 @@ function Chip({
       aria-pressed={selected}
       className={`inline-flex items-center min-h-9 px-3.5 rounded-full text-[13.5px] font-medium border transition-colors ${
         selected
-          ? "border-orange bg-orange text-paper"
+          ? "border-orange bg-orange text-on-brand"
           : "border-rule-strong bg-paper text-ink hover:border-ink-soft"
       }`}
     >

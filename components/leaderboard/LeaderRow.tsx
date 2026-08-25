@@ -46,7 +46,7 @@ export const LeaderRow = memo(function LeaderRow({
       <span
         className={cn(
           "inline-flex items-center justify-center w-9 h-9 rounded-full text-[12.5px] font-semibold",
-          isYou ? "bg-orange text-paper" : "bg-yellow-soft text-orange",
+          isYou ? "bg-orange text-on-brand" : "bg-yellow-soft text-orange",
         )}
         aria-hidden="true"
       >

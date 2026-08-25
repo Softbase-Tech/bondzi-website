@@ -55,7 +55,7 @@ export default async function LevelTestSubjectPage({
       </Link>
 
       <header>
-        <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-paper text-[11.5px] font-semibold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-on-brand text-[11.5px] font-semibold uppercase tracking-widest">
           <Sparkles size={12} />
           Pro
         </div>

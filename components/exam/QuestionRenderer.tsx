@@ -212,7 +212,7 @@ function OptionTile({
             : isCorrect === true
               ? "bg-emerald-500 text-white"
               : selected
-                ? "bg-orange text-paper"
+                ? "bg-orange text-on-brand"
                 : "bg-yellow-soft text-ink",
         )}
       >

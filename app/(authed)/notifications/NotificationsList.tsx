@@ -96,7 +96,7 @@ export function NotificationsList({ initial }: Props) {
             Inbox
           </div>
           {unread > 0 ? (
-            <span className="inline-flex items-center h-6 px-2 rounded-full bg-orange text-paper text-[11.5px] font-semibold">
+            <span className="inline-flex items-center h-6 px-2 rounded-full bg-orange text-on-brand text-[11.5px] font-semibold">
               {unread} new
             </span>
           ) : null}

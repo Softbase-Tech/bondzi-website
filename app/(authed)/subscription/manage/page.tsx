@@ -77,7 +77,7 @@ export default async function ManageSubscriptionPage() {
           </p>
           <Link
             href="/subscription/plans"
-            className="mt-4 inline-flex items-center justify-center h-11 px-5 rounded-xl bg-orange text-paper font-medium text-[14.5px] hover:bg-orange-deep transition-colors motion-reduce:transition-none"
+            className="mt-4 inline-flex items-center justify-center h-11 px-5 rounded-xl bg-orange text-on-brand font-medium text-[14.5px] hover:bg-orange-deep transition-colors motion-reduce:transition-none"
           >
             See plans
           </Link>

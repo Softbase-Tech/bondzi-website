@@ -64,7 +64,7 @@ export default async function PlansPage({
   return (
     <div className="max-w-[880px] mx-auto space-y-8">
       <header className="text-center sm:text-left">
-        <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-paper text-[11.5px] font-semibold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-on-brand text-[11.5px] font-semibold uppercase tracking-widest">
           <Sparkles size={12} />
           Bondzi Pro
         </div>
@@ -126,7 +126,7 @@ export default async function PlansPage({
           </div>
           <Link
             href="/subscription/redeem"
-            className="inline-flex items-center gap-1.5 h-11 px-5 rounded-xl bg-orange text-paper font-medium text-[14.5px] hover:bg-orange-deep transition-colors motion-reduce:transition-none"
+            className="inline-flex items-center gap-1.5 h-11 px-5 rounded-xl bg-orange text-on-brand font-medium text-[14.5px] hover:bg-orange-deep transition-colors motion-reduce:transition-none"
           >
             <Coins size={14} />
             Redeem XP

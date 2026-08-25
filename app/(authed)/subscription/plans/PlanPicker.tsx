@@ -347,7 +347,7 @@ function PlanCard({
       )}
     >
       {!isPlus ? (
-        <div className="absolute top-0 right-0 inline-flex items-center gap-1 px-2.5 h-7 bg-orange text-paper rounded-bl-2xl text-[11.5px] font-semibold uppercase tracking-widest">
+        <div className="absolute top-0 right-0 inline-flex items-center gap-1 px-2.5 h-7 bg-orange text-on-brand rounded-bl-2xl text-[11.5px] font-semibold uppercase tracking-widest">
           <Sparkles size={12} />
           Most popular
         </div>
@@ -389,7 +389,7 @@ function PlanCard({
                 className={cn(
                   "inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full text-[13px] font-medium border transition-colors motion-reduce:transition-none",
                   active
-                    ? "border-orange bg-orange text-paper"
+                    ? "border-orange bg-orange text-on-brand"
                     : "border-rule-strong bg-paper text-ink hover:border-ink-soft",
                 )}
               >

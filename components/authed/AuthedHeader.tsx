@@ -17,6 +17,7 @@ import { marketingPath, POST_LOGOUT_DEFAULT_PATH } from "@/lib/urls";
 import { logout as apiLogout } from "@/lib/api/auth";
 import { AUTHED_NAV } from "./nav-items";
 import { NotificationBell } from "./NotificationBell";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 /**
@@ -103,6 +104,10 @@ export function AuthedHeader() {
         </nav>
 
         <div className="flex items-center gap-1">
+        {/* Hidden on the narrowest phones — the row already carries the
+            bell and the account menu, and the theme also lives in the
+            OS-level `system` default there. */}
+        <ThemeToggle className="hidden sm:inline-flex" />
         <NotificationBell />
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
@@ -110,7 +115,7 @@ export function AuthedHeader() {
               type="button"
               className="inline-flex items-center gap-2 h-10 pl-1 pr-2.5 rounded-full hover:bg-yellow-soft/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange transition-colors motion-reduce:transition-none"
             >
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange text-paper text-[13px] font-semibold">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange text-on-brand text-[13px] font-semibold">
                 {initials}
               </span>
               <span className="hidden sm:inline text-[13.5px] font-medium text-ink truncate max-w-[140px]">

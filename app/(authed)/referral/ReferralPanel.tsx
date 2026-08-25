@@ -214,14 +214,14 @@ function StatChip({
     <div
       className={
         accent
-          ? "p-4 rounded-2xl bg-orange text-paper"
+          ? "p-4 rounded-2xl bg-orange text-on-brand"
           : "p-4 rounded-2xl bg-paper border border-rule-strong"
       }
     >
       <div
         className={
           accent
-            ? "text-[10.5px] font-semibold uppercase tracking-widest text-paper/80"
+            ? "text-[10.5px] font-semibold uppercase tracking-widest text-on-brand/80"
             : "text-[10.5px] font-semibold uppercase tracking-widest text-ink-mute"
         }
       >
@@ -288,7 +288,7 @@ function ReferralEventRow({ event }: { event: ReferralEvent }) {
         <div className="text-[12px] text-ink-soft">Joined {joinedLabel}</div>
       </div>
       {qualified ? (
-        <span className="shrink-0 inline-flex items-center h-7 px-2.5 rounded-full bg-orange text-paper text-[11.5px] font-semibold uppercase tracking-widest">
+        <span className="shrink-0 inline-flex items-center h-7 px-2.5 rounded-full bg-orange text-on-brand text-[11.5px] font-semibold uppercase tracking-widest">
           +{REFERRAL_REWARDS.qualifyXp} XP
         </span>
       ) : (

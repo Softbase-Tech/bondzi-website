@@ -50,7 +50,7 @@ export default async function OnboardingPage() {
   return (
     <div className="max-w-[720px] mx-auto space-y-6">
       <header className="text-center">
-        <div className="mx-auto w-14 h-14 rounded-2xl bg-orange text-paper flex items-center justify-center mb-4">
+        <div className="mx-auto w-14 h-14 rounded-2xl bg-orange text-on-brand flex items-center justify-center mb-4">
           <span className="text-[24px]">🎉</span>
         </div>
         <h1 className="font-display text-[32px] sm:text-[40px] leading-[1.05] text-ink">

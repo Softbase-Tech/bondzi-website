@@ -51,7 +51,7 @@ export function HeroFlame({
         {subtitle}
       </div>
       {longestStreak > 0 ? (
-        <div className="inline-flex items-center gap-2 mt-4 bg-white/10 px-3 py-1.5 rounded-full">
+        <div className="inline-flex items-center gap-2 mt-4 bg-paper/10 px-3 py-1.5 rounded-full">
           <Trophy size={12} className="text-white" />
           <span className="text-[12px] font-semibold text-white">
             Personal best {longestStreak}{" "}

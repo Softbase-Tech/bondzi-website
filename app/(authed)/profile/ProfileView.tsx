@@ -109,9 +109,9 @@ export function ProfileView({
       ) : null}
 
       {/* Hero identity */}
-      <Card className="relative overflow-hidden bg-ink p-6 text-white">
+      <Card className="relative overflow-hidden bg-invert p-6 text-on-invert">
         <div className="relative flex items-center gap-4">
-          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-orange text-[22px] font-bold text-white ring-4 ring-orange/25">
+          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-orange text-[22px] font-bold text-on-invert ring-4 ring-orange/25">
             {initials(profile.fullName)}
           </span>
           <div className="min-w-0 flex-1">
@@ -119,10 +119,10 @@ export function ProfileView({
               {profile.fullName}
             </h1>
             {profile.username ? (
-              <p className="text-[13px] text-white/60">@{profile.username}</p>
+              <p className="text-[13px] text-on-invert/60">@{profile.username}</p>
             ) : null}
             <div className="mt-2 flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide">
+              <span className="rounded-full bg-paper/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide">
                 {examChip(profile)}
               </span>
               {tier ? (
@@ -130,7 +130,7 @@ export function ProfileView({
                   className={cn(
                     "rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide",
                     tier === "PRO"
-                      ? "bg-orange text-white"
+                      ? "bg-orange text-on-invert"
                       : "bg-yellow text-ink",
                   )}
                 >
@@ -140,7 +140,7 @@ export function ProfileView({
               {profile.streakDays > 0 ? (
                 <Link
                   href="/streak"
-                  className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold transition-colors hover:bg-white/20 motion-reduce:transition-none"
+                  className="inline-flex items-center gap-1 rounded-full bg-paper/10 px-2.5 py-1 text-[11px] font-semibold transition-colors hover:bg-paper/20 motion-reduce:transition-none"
                 >
                   <Flame size={12} className="text-orange" />
                   {profile.streakDays}
@@ -148,7 +148,7 @@ export function ProfileView({
               ) : (
                 <Link
                   href="/streak"
-                  className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold transition-colors hover:bg-white/20 motion-reduce:transition-none"
+                  className="inline-flex items-center gap-1 rounded-full bg-paper/10 px-2.5 py-1 text-[11px] font-semibold transition-colors hover:bg-paper/20 motion-reduce:transition-none"
                 >
                   <Flame size={12} className="text-orange" />
                   Start a streak
@@ -158,7 +158,7 @@ export function ProfileView({
           </div>
           <Link
             href="/settings/account"
-            className="shrink-0 self-start rounded-lg bg-white/10 px-3 py-1.5 text-[12px] font-semibold transition-colors hover:bg-white/20 motion-reduce:transition-none"
+            className="shrink-0 self-start rounded-lg bg-paper/10 px-3 py-1.5 text-[12px] font-semibold transition-colors hover:bg-paper/20 motion-reduce:transition-none"
           >
             Edit
           </Link>
@@ -230,8 +230,8 @@ export function ProfileView({
       {/* Level / XP */}
       <Card className="p-5 sm:p-6">
         <div className="flex items-center gap-4">
-          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-ink text-center leading-none text-white">
-            <span className="text-[9px] uppercase tracking-widest text-white/60">
+          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-invert text-center leading-none text-on-invert">
+            <span className="text-[9px] uppercase tracking-widest text-on-invert/60">
               Lvl
             </span>
             <span className="font-display text-[20px]">
@@ -291,7 +291,7 @@ export function ProfileView({
                   <span
                     className={cn(
                       "mx-auto grid h-11 w-11 place-items-center rounded-xl",
-                      a.unlocked ? "text-white" : "bg-rule text-ink-mute",
+                      a.unlocked ? "text-on-invert" : "bg-rule text-ink-mute",
                     )}
                     style={
                       a.unlocked

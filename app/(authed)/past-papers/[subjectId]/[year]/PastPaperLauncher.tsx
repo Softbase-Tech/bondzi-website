@@ -150,7 +150,7 @@ function Perk({
   return (
     <div className="flex items-start gap-3 p-4 rounded-xl bg-yellow-soft/40 border border-rule">
       <div
-        className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-orange text-paper shrink-0"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-orange text-on-brand shrink-0"
         aria-hidden="true"
       >
         {icon}

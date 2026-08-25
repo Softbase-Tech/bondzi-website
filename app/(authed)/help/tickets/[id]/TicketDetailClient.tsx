@@ -70,14 +70,14 @@ export function TicketDetailClient({
       <header className="space-y-1">
         <Link
           href="/help/tickets"
-          className="text-xs text-pm-slate-500 hover:text-pm-navy"
+          className="text-xs text-ink-mute hover:text-ink"
         >
           ← All tickets
         </Link>
-        <h1 className="text-2xl font-bold text-pm-navy">
+        <h1 className="text-2xl font-bold text-ink">
           {detail.subject}
         </h1>
-        <p className="text-sm text-pm-slate-500 font-mono">
+        <p className="text-sm text-ink-mute font-mono">
           {detail.ticketNumber} · {detail.status === "closed" ? "Closed" : "Open"}
           {detail.relatedTicketNumber
             ? ` · continues ${detail.relatedTicketNumber}`
@@ -90,7 +90,7 @@ export function TicketDetailClient({
           if (m.senderRole === "system") {
             return (
               <div key={m.id} className="flex justify-center">
-                <div className="rounded-full bg-pm-slate-100 px-3 py-1 text-xs text-pm-slate-500">
+                <div className="rounded-full bg-rule px-3 py-1 text-xs text-ink-mute">
                   {m.body}
                 </div>
               </div>
@@ -103,14 +103,14 @@ export function TicketDetailClient({
               className={`flex ${isAdmin ? "justify-start" : "justify-end"}`}
             >
               <div
-                className={`max-w-lg rounded-2xl px-4 py-3 ${isAdmin ? "bg-pm-slate-100" : "bg-pm-orange-light border border-pm-orange/30"}`}
+                className={`max-w-lg rounded-2xl px-4 py-3 ${isAdmin ? "bg-rule" : "bg-yellow-soft border border-orange/30"}`}
               >
                 <div
-                  className={`text-[11px] font-semibold mb-1 ${isAdmin ? "text-pm-navy" : "text-pm-orange-dark"}`}
+                  className={`text-[11px] font-semibold mb-1 ${isAdmin ? "text-ink" : "text-orange-deep"}`}
                 >
                   {isAdmin ? m.senderName ?? "Bondzi team" : "You"}
                 </div>
-                <div className="whitespace-pre-wrap text-sm text-pm-navy">
+                <div className="whitespace-pre-wrap text-sm text-ink">
                   {m.body}
                 </div>
                 {m.attachments.length > 0 ? (
@@ -141,7 +141,7 @@ export function TicketDetailClient({
                           href={href}
                           target="_blank"
                           rel="noreferrer"
-                          className="rounded-md bg-white/70 px-2 py-1 text-xs text-pm-navy hover:bg-white"
+                          className="rounded-md bg-paper/70 px-2 py-1 text-xs text-ink hover:bg-paper"
                         >
                           📎 {a.originalFilename ?? "attachment"}
                         </a>
@@ -149,7 +149,7 @@ export function TicketDetailClient({
                     })}
                   </div>
                 ) : null}
-                <div className="mt-2 text-[10px] text-pm-slate-500">
+                <div className="mt-2 text-[10px] text-ink-mute">
                   {relativeTime(m.createdAt)}
                 </div>
               </div>
@@ -159,35 +159,35 @@ export function TicketDetailClient({
       </section>
 
       {detail.status === "open" ? (
-        <section className="rounded-2xl border border-pm-slate-200 bg-white p-4 space-y-3">
-          <label className="block text-xs font-bold uppercase tracking-wider text-pm-slate-500">
+        <section className="rounded-2xl border border-rule bg-paper p-4 space-y-3">
+          <label className="block text-xs font-bold uppercase tracking-wider text-ink-mute">
             Your reply
           </label>
           <textarea
             value={reply}
             onChange={(e) => setReply(e.target.value)}
             placeholder="Type your reply…"
-            className="w-full min-h-32 rounded-lg border border-pm-slate-200 px-3 py-2 focus:border-pm-orange focus:outline-none"
+            className="w-full min-h-32 rounded-lg border border-rule px-3 py-2 focus:border-orange focus:outline-none"
           />
           <AttachmentPicker value={attachments} onChange={setAttachments} />
           <button
             type="button"
             onClick={send}
             disabled={reply.trim().length === 0 || sending}
-            className="rounded-lg bg-pm-orange px-4 py-2 text-sm font-semibold text-white hover:bg-pm-orange-dark disabled:opacity-50"
+            className="rounded-lg bg-orange px-4 py-2 text-sm font-semibold text-white hover:bg-orange-deep disabled:opacity-50"
           >
             {sending ? "Sending…" : "Send reply"}
           </button>
         </section>
       ) : (
-        <section className="rounded-2xl border border-pm-slate-200 bg-white p-4 space-y-3">
-          <p className="text-sm text-pm-slate-500">
+        <section className="rounded-2xl border border-rule bg-paper p-4 space-y-3">
+          <p className="text-sm text-ink-mute">
             This ticket is closed. Start a new ticket if the problem comes
             back — we&apos;ll have the history.
           </p>
           <Link
             href={`/help/tickets/new?related=${encodeURIComponent(detail.ticketNumber)}`}
-            className="inline-block rounded-lg border border-pm-slate-200 bg-white px-4 py-2 text-sm font-semibold text-pm-navy hover:border-pm-slate-500"
+            className="inline-block rounded-lg border border-rule bg-paper px-4 py-2 text-sm font-semibold text-ink hover:border-rule-strong"
           >
             New ticket referencing this one
           </Link>

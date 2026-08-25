@@ -38,7 +38,7 @@ export function Dialog({
       <RadixDialog.Portal>
         <RadixDialog.Overlay
           className={cn(
-            "fixed inset-0 z-40 bg-ink/40 backdrop-blur-[2px]",
+            "fixed inset-0 z-40 bg-scrim backdrop-blur-[2px]",
             "data-[state=open]:animate-in data-[state=open]:fade-in",
             "data-[state=closed]:animate-out data-[state=closed]:fade-out",
           )}

@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/*
+ * Dark mode is opt-in per surface, driven by a `.dark` class on <html>.
+ *
+ * It applies ONLY to the signed-in product — app.bondzi.online and
+ * partners.bondzi.online. The marketing site keeps its cream editorial
+ * palette in every condition: it is the brand's shop window, its art
+ * direction is built around warm paper, and a visitor arriving from a
+ * Facebook link with a dark OS should still see the identity we chose.
+ * `components/theme/theme-script.ts` decides which surface is which.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --bg: #fbf7ec;
   --paper: #ffffff;
@@ -13,6 +25,32 @@
   --orange: #ff6b35;
   --orange-deep: #d44b1a;
   --shadow: 0 1px 0 rgba(20, 20, 20, 0.04), 0 12px 32px -16px rgba(20, 20, 20, 0.12);
+
+  /*
+   * Text sitting ON a brand fill (orange button, ink chip, gradient
+   * badge). Split out of `--paper` because the two only looked like the
+   * same colour: `--paper` is the CARD SURFACE and has to go dark, while
+   * this has to stay near-white in both themes or every primary button
+   * flips to dark-on-orange. Identical to `--paper` in light mode, so
+   * the light theme renders byte-identical to before.
+   */
+  --on-brand: #ffffff;
+
+  /*
+   * A deliberately DARK panel (profile hero, secondary button, the
+   * current-question chip) and the text that sits on it.
+   *
+   * Distinct from `--ink` even though they're the same colour here.
+   * `--ink` is the TEXT token: in dark mode it becomes near-white, so a
+   * surface painted `bg-ink` would flip to a white card — and every
+   * `text-white` label on it would vanish. These two keep "dark panel"
+   * meaning dark panel in both themes.
+   */
+  --invert: #141414;
+  --on-invert: #ffffff;
+
+  /* Modal/sheet scrim. Always a dark wash, never derived from --ink. */
+  --scrim: rgba(20, 20, 20, 0.4);
 }
 
 @theme inline {
@@ -27,9 +65,126 @@
   --color-yellow-soft: var(--yellow-soft);
   --color-orange: var(--orange);
   --color-orange-deep: var(--orange-deep);
+  --color-on-brand: var(--on-brand);
+  --color-invert: var(--invert);
+  --color-on-invert: var(--on-invert);
+  --color-scrim: var(--scrim);
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+
+/* ---------------------------------------------------------------------------
+ * Dark theme.
+ *
+ * Implemented by REMAPPING the same custom properties the light theme
+ * defines, not by adding `dark:` variants across ~200 components. Every
+ * surface already speaks in tokens (`bg-bg`, `bg-paper`, `text-ink`,
+ * `border-rule`), so redefining the tokens re-skins the entire signed-in
+ * product from one place — and a component written tomorrow inherits it
+ * for free instead of needing a matching `dark:` for every colour.
+ *
+ * The palette stays WARM rather than the usual blue-grey: the light
+ * theme's identity is cream paper and ink, and a cold slate dark mode
+ * would read as a different product.
+ * ------------------------------------------------------------------------- */
+.dark {
+  --bg: #14120e; /* warm near-black page */
+  --paper: #1e1b16; /* elevated card surface */
+  --ink: #f6f1e4; /* warm off-white body text */
+  --ink-soft: #cabfa8;
+  --ink-mute: #9a907c;
+  --rule: #2e2921;
+  --rule-strong: #453d31;
+
+  --yellow: #ffd93d; /* brand yellow is unchanged — it carries the identity */
+  /*
+   * The pale-wash token. In light mode this is a near-white yellow used
+   * as a tint behind cards and chips; a literal inversion would leave
+   * bright yellow blocks glowing out of a dark page, so it becomes a
+   * deep amber that plays the same *role*.
+   */
+  --yellow-soft: #3a3118;
+
+  /*
+   * Brand orange is deliberately UNCHANGED.
+   *
+   * Lightening it for the dark ground was tempting and wrong: it is the
+   * fill behind ~53 primary buttons whose label is `--on-brand` white,
+   * and every step lighter drops that already-marginal white-on-orange
+   * contrast further (2.84 at brand value, 2.53 at #ff7d52). Holding the
+   * brand value keeps buttons EXACTLY as legible as they are in light
+   * mode — no regression — while orange-as-text actually improves on
+   * dark (2.65 on cream, 6.6 on #14120e).
+   *
+   * NOTE: white-on-orange is below WCAG AA in BOTH themes. That is a
+   * pre-existing property of the brand palette, not something dark mode
+   * introduced, and changing it is a brand decision rather than a
+   * theming one — flagged rather than silently altered.
+   *
+   * `--orange-deep` is the hover/emphasis step. On a light ground
+   * "more prominent" means darker; on a dark ground it means brighter,
+   * so this one does invert.
+   */
+  --orange: #ff6b35;
+  --orange-deep: #ff9166;
+
+  --shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 12px 32px -16px rgba(0, 0, 0, 0.7);
+
+  /* Stays near-white: this is text on an orange/ink fill, not a surface. */
+  --on-brand: #ffffff;
+
+  /*
+   * The inverted panel is LIGHTER than the page here, not darker —
+   * on a dark ground, elevation reads as lift. Text on it stays the
+   * warm off-white, so `text-on-invert` works unchanged in both themes.
+   */
+  --invert: #3a3227;
+  --on-invert: #f6f1e4;
+
+  /* Scrim goes deeper so a modal still separates from a dark page. */
+  --scrim: rgba(0, 0, 0, 0.62);
+
+  /*
+   * Semantic ramps. Components use Tailwind's numeric shades directly
+   * for correct/wrong/warning states (`bg-emerald-50 text-emerald-800`,
+   * `bg-red-50 text-red-700`). Those are all CSS variables in Tailwind
+   * v4, so remapping the handful actually in use flips every call site
+   * at once — a light-tinted result banner would otherwise sit on a dark
+   * card looking like a rendering fault.
+   *
+   * The pattern is a swap of roles: the pale `-50/-100` backgrounds
+   * become deep tints, and the dark `-600/-800` text becomes bright.
+   */
+  --color-emerald-50: #10281d;
+  --color-emerald-100: #16341f;
+  --color-emerald-200: #245c3c;
+  --color-emerald-500: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+
+  --color-red-50: #2c1416;
+  --color-red-100: #3a181b;
+  --color-red-200: #6b2027;
+  --color-red-400: #f87171;
+  --color-red-500: #f05252;
+  --color-red-600: #ff8a8a;
+  --color-red-700: #ffa3a3;
+  --color-red-800: #ffc2c2;
+
+  --color-green-100: #16341f;
+  --color-green-500: #34d399;
+  --color-green-800: #a7f3d0;
+
+  --color-amber-50: #2e2411;
+  --color-amber-300: #5c4a1d;
+  --color-amber-900: #fcd9a1;
+
+  --color-sky-100: #12283a;
+  --color-sky-800: #a5d8ff;
+
+  /* Native widgets (scrollbars, date pickers, form controls). */
+  color-scheme: dark;
 }
 
 html,

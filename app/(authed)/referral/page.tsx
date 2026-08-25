@@ -49,7 +49,7 @@ export default async function ReferralPage() {
   return (
     <div className="max-w-[720px] mx-auto space-y-6">
       <header>
-        <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-paper text-[11.5px] font-semibold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-on-brand text-[11.5px] font-semibold uppercase tracking-widest">
           <Gift size={12} />
           Refer &amp; earn
         </div>

@@ -7,6 +7,8 @@ import "katex/dist/katex.min.css";
 import { VercelAnalytics } from "@/components/analytics/VercelAnalytics";
 import { AttributionCapture } from "@/components/analytics/AttributionCapture";
 import { Providers } from "./providers";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { themeScript } from "@/components/theme/theme-script";
 
 // Google Analytics 4 measurement ID. Public by design (it ends up in
 // the rendered HTML) so committing the literal is safe. Swap for
@@ -258,9 +260,18 @@ export default function RootLayout({
   return (
     <html
       lang="en-GH"
+      // The blocking theme script below sets `class="dark"` and
+      // `style.colorScheme` on this element before React hydrates, so the
+      // server markup and the first client render legitimately differ.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
     >
       <head>
+        {/* Must run before first paint: a dark-mode student would
+            otherwise get a full-brightness white flash on every load.
+            Also decides whether this surface gets dark mode at all —
+            the marketing site is light-only. */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
       </head>
@@ -285,7 +296,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(mobileAppJsonLd) }}
         />
-        <Providers>{children}</Providers>
+        <ThemeProvider>
+          <Providers>{children}</Providers>
+        </ThemeProvider>
         {/* Google Analytics 4 (gtag.js). next/script's
             `afterInteractive` strategy is the App Router equivalent of
             the `async` attribute on the original snippet — the loader

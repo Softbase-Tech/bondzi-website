@@ -43,7 +43,7 @@ export function NotificationBell() {
       <Bell size={18} className="text-ink" />
       {unread > 0 ? (
         <span
-          className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-orange text-paper text-[10.5px] font-semibold inline-flex items-center justify-center"
+          className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-orange text-on-brand text-[10.5px] font-semibold inline-flex items-center justify-center"
           aria-hidden="true"
         >
           {label}

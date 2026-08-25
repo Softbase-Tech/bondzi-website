@@ -43,25 +43,25 @@ export default async function TicketsPage() {
     <div className="mx-auto max-w-2xl px-4 py-8 space-y-8">
       <header className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-pm-navy">My tickets</h1>
-          <p className="text-pm-slate-500">
+          <h1 className="text-3xl font-bold text-ink">My tickets</h1>
+          <p className="text-ink-mute">
             Every enquiry you&apos;ve opened.
           </p>
         </div>
         <Link
           href="/help/tickets/new"
-          className="rounded-lg bg-pm-orange px-4 py-2 text-sm font-semibold text-white hover:bg-pm-orange-dark"
+          className="rounded-lg bg-orange px-4 py-2 text-sm font-semibold text-white hover:bg-orange-deep"
         >
           New enquiry
         </Link>
       </header>
 
       {tickets.length === 0 ? (
-        <div className="rounded-2xl border border-pm-slate-200 bg-white p-8 text-center space-y-3">
-          <div className="font-semibold text-pm-navy">No tickets yet</div>
-          <p className="text-sm text-pm-slate-500">
+        <div className="rounded-2xl border border-rule bg-paper p-8 text-center space-y-3">
+          <div className="font-semibold text-ink">No tickets yet</div>
+          <p className="text-sm text-ink-mute">
             Open one from{" "}
-            <Link href="/help" className="text-pm-orange underline">
+            <Link href="/help" className="text-orange underline">
               Help &amp; feedback
             </Link>{" "}
             when you need us.
@@ -92,39 +92,39 @@ function TicketGroup({
 }) {
   return (
     <section className="space-y-2">
-      <h2 className="text-xs font-bold uppercase tracking-wider text-pm-slate-500">
+      <h2 className="text-xs font-bold uppercase tracking-wider text-ink-mute">
         {title}
       </h2>
-      <div className="rounded-2xl border border-pm-slate-200 bg-white divide-y">
+      <div className="rounded-2xl border border-rule bg-paper divide-y">
         {tickets.map((t) => (
           <Link
             key={t.id}
             href={`/help/tickets/${t.id}`}
-            className="flex items-start gap-3 px-4 py-4 hover:bg-pm-slate-50"
+            className="flex items-start gap-3 px-4 py-4 hover:bg-bg"
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <div
-                  className={`font-semibold ${muted ? "text-pm-slate-500" : "text-pm-navy"} truncate`}
+                  className={`font-semibold ${muted ? "text-ink-mute" : "text-ink"} truncate`}
                 >
                   {t.subject}
                 </div>
                 {t.status === "open" && t.lastReplyBy === "admin" ? (
-                  <span className="inline-flex items-center rounded-full bg-pm-orange px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                  <span className="inline-flex items-center rounded-full bg-orange px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                     Reply
                   </span>
                 ) : null}
               </div>
               {t.preview ? (
-                <div className="text-sm text-pm-slate-500 mt-1 line-clamp-2">
+                <div className="text-sm text-ink-mute mt-1 line-clamp-2">
                   {t.preview}
                 </div>
               ) : null}
-              <div className="text-xs text-pm-slate-500 mt-2 font-mono">
+              <div className="text-xs text-ink-mute mt-2 font-mono">
                 {t.ticketNumber} · updated {relativeTime(t.lastReplyAt)}
               </div>
             </div>
-            <span className="text-pm-slate-500">→</span>
+            <span className="text-ink-mute">→</span>
           </Link>
         ))}
       </div>

@@ -151,7 +151,7 @@ export default async function DashboardPage() {
               className={`inline-flex items-center justify-center w-11 h-11 rounded-xl ${
                 stats?.streakBroken
                   ? "bg-rule text-ink-mute"
-                  : "bg-orange text-paper"
+                  : "bg-orange text-on-brand"
               }`}
               aria-hidden="true"
             >
@@ -449,7 +449,7 @@ function AchievementChip({ a }: { a: Achievement }) {
       <div
         className={
           "font-nunito-bold text-[14px] leading-tight " +
-          (a.unlocked ? "text-paper" : "text-ink")
+          (a.unlocked ? "text-on-brand" : "text-ink")
         }
       >
         {a.title}
@@ -457,7 +457,7 @@ function AchievementChip({ a }: { a: Achievement }) {
       <div
         className={
           "text-[11.5px] " +
-          (a.unlocked ? "text-paper/85" : "text-ink-mute")
+          (a.unlocked ? "text-on-brand/85" : "text-ink-mute")
         }
       >
         {a.progressLabel}

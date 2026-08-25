@@ -640,9 +640,9 @@ function NavMap({
               "relative h-10 rounded-lg text-[12.5px] font-semibold transition-colors motion-reduce:transition-none",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-1 focus-visible:ring-offset-bg",
               isCurrent
-                ? "bg-ink text-paper ring-2 ring-orange"
+                ? "bg-invert text-on-invert ring-2 ring-orange"
                 : answered
-                  ? "bg-orange text-paper"
+                  ? "bg-orange text-on-brand"
                   : submitting
                     ? "bg-yellow text-ink"
                     : "bg-rule text-ink-soft hover:bg-rule-strong",

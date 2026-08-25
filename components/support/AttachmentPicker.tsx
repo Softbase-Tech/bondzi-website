@@ -60,17 +60,17 @@ export function AttachmentPicker({
               <img
                 src={absoluteUrl(a.url)}
                 alt={a.originalFilename ?? "attachment"}
-                className="h-20 w-20 rounded-lg object-cover border border-pm-slate-200"
+                className="h-20 w-20 rounded-lg object-cover border border-rule"
               />
             ) : (
-              <div className="flex h-20 w-20 items-center justify-center rounded-lg border border-pm-slate-200 bg-white text-[10px] text-pm-slate-500 text-center px-1">
+              <div className="flex h-20 w-20 items-center justify-center rounded-lg border border-rule bg-paper text-[10px] text-ink-mute text-center px-1">
                 {a.originalFilename ?? "file"}
               </div>
             )}
             <button
               type="button"
               onClick={() => remove(i)}
-              className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-pm-navy text-white"
+              className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink text-white"
               aria-label={`Remove attachment ${i + 1}`}
             >
               <X className="h-3 w-3" />
@@ -82,7 +82,7 @@ export function AttachmentPicker({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={busy}
-            className="flex h-20 w-20 flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-pm-slate-200 text-pm-slate-500 hover:border-pm-slate-500 disabled:opacity-50"
+            className="flex h-20 w-20 flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-rule text-ink-mute hover:border-rule-strong disabled:opacity-50"
           >
             {busy ? (
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -103,7 +103,7 @@ export function AttachmentPicker({
         className="hidden"
         onChange={(e) => void handleFiles(e.target.files)}
       />
-      <p className="text-xs text-pm-slate-500">
+      <p className="text-xs text-ink-mute">
         Up to 3 images or PDFs. Max 5MB each.
       </p>
     </div>

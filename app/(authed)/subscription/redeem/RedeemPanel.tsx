@@ -156,7 +156,7 @@ export function RedeemPanel({ initialSpendableXp, tiers }: Props) {
         }
       >
         <div className="flex items-center justify-center py-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-orange text-paper">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-orange text-on-brand">
             <CheckCircle2 size={26} strokeWidth={2.25} />
           </div>
         </div>

@@ -48,7 +48,7 @@ export function Sheet({
       snapPoints={snapPoints}
     >
       <Vaul.Portal>
-        <Vaul.Overlay className="fixed inset-0 z-40 bg-ink/40 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in" />
+        <Vaul.Overlay className="fixed inset-0 z-40 bg-scrim backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in" />
         <Vaul.Content
           className={cn(
             "fixed inset-x-0 bottom-0 z-50 flex flex-col",

@@ -43,13 +43,13 @@ const BASE = [
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: cn(
-    "bg-orange text-paper",
+    "bg-orange text-on-brand",
     "hover:bg-orange-deep",
     "shadow-[0_1px_0_rgba(0,0,0,0.06),0_2px_8px_-4px_rgba(212,75,26,0.35)]",
   ),
   secondary: cn(
-    "bg-ink text-paper",
-    "hover:bg-ink-soft",
+    "bg-invert text-on-invert",
+    "hover:bg-invert/90",
   ),
   outline: cn(
     "bg-paper text-ink border border-rule-strong",
@@ -60,7 +60,7 @@ const VARIANTS: Record<ButtonVariant, string> = {
     "hover:bg-yellow-soft/60",
   ),
   destructive: cn(
-    "bg-red-600 text-white",
+    "bg-red-600 text-on-invert",
     "hover:bg-red-700",
   ),
 };

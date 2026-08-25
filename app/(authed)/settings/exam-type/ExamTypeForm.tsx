@@ -167,7 +167,7 @@ export function ExamTypeForm({ profile }: Props) {
                 <div
                   className={cn(
                     "shrink-0 mt-0.5 inline-flex items-center justify-center w-6 h-6 rounded-full",
-                    active ? "bg-orange text-paper" : "bg-yellow-soft text-orange",
+                    active ? "bg-orange text-on-brand" : "bg-yellow-soft text-orange",
                   )}
                   aria-hidden="true"
                 >
@@ -196,7 +196,7 @@ export function ExamTypeForm({ profile }: Props) {
                   className={cn(
                     "inline-flex items-center min-h-9 px-4 rounded-full text-[13.5px] font-medium border transition-colors motion-reduce:transition-none",
                     active
-                      ? "border-orange bg-orange text-paper"
+                      ? "border-orange bg-orange text-on-brand"
                       : "border-rule-strong bg-paper text-ink hover:border-ink-soft",
                   )}
                 >

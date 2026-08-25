@@ -45,7 +45,7 @@ export default async function WinnersPage() {
   return (
     <div className="max-w-[720px] mx-auto space-y-6">
       <header className="text-center sm:text-left">
-        <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-paper text-[11.5px] font-semibold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-on-brand text-[11.5px] font-semibold uppercase tracking-widest">
           <Trophy size={12} />
           Hall of Fame
         </div>

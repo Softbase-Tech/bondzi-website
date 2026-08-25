@@ -149,7 +149,7 @@ export default function BlogIndex() {
             </div>
             <Link
               href="/#get"
-              className="inline-flex items-center justify-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors shrink-0 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-2 bg-orange text-on-brand px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors shrink-0 whitespace-nowrap"
             >
               Get Bondzi App
               <ArrowUpRight size={16} strokeWidth={2.25} />

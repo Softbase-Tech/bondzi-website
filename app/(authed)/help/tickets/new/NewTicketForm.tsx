@@ -90,43 +90,43 @@ export function NewTicketForm({
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-3xl font-bold text-pm-navy">New enquiry</h1>
+        <h1 className="text-3xl font-bold text-ink">New enquiry</h1>
       </header>
 
       {related ? (
-        <div className="rounded-lg bg-pm-slate-50 px-4 py-3 text-sm text-pm-slate-500">
+        <div className="rounded-lg bg-bg px-4 py-3 text-sm text-ink-mute">
           Continues ticket{" "}
-          <span className="font-semibold text-pm-navy">{related}</span>. We&apos;ll
+          <span className="font-semibold text-ink">{related}</span>. We&apos;ll
           link them so ops has the history.
         </div>
       ) : null}
 
       <section className="space-y-2">
-        <div className="text-xs font-bold uppercase tracking-wider text-pm-slate-500">
+        <div className="text-xs font-bold uppercase tracking-wider text-ink-mute">
           Category
         </div>
-        <div className="rounded-2xl border border-pm-slate-200 bg-white divide-y">
+        <div className="rounded-2xl border border-rule bg-paper divide-y">
           {CATEGORIES.map((c) => (
             <button
               key={c.id}
               type="button"
               onClick={() => setCategory(c.id)}
-              className="flex w-full items-start gap-3 px-4 py-3 text-left hover:bg-pm-slate-50"
+              className="flex w-full items-start gap-3 px-4 py-3 text-left hover:bg-bg"
             >
               <span className="mt-1 flex h-5 w-5 items-center justify-center">
                 {category === c.id ? (
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-pm-orange">
-                    <span className="h-2.5 w-2.5 rounded-full bg-pm-orange" />
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-orange">
+                    <span className="h-2.5 w-2.5 rounded-full bg-orange" />
                   </span>
                 ) : (
-                  <span className="h-5 w-5 rounded-full border-2 border-pm-slate-200" />
+                  <span className="h-5 w-5 rounded-full border-2 border-rule" />
                 )}
               </span>
               <span className="flex-1">
-                <span className="block font-semibold text-pm-navy">
+                <span className="block font-semibold text-ink">
                   {c.label}
                 </span>
-                <span className="mt-0.5 block text-sm text-pm-slate-500">
+                <span className="mt-0.5 block text-sm text-ink-mute">
                   {c.subtitle}
                 </span>
               </span>
@@ -136,7 +136,7 @@ export function NewTicketForm({
       </section>
 
       <div>
-        <label className="block text-sm font-semibold text-pm-navy mb-1">
+        <label className="block text-sm font-semibold text-ink mb-1">
           Subject
         </label>
         <input
@@ -145,12 +145,12 @@ export function NewTicketForm({
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
           placeholder="One sentence summary"
-          className="w-full rounded-lg border border-pm-slate-200 px-3 py-2 focus:border-pm-orange focus:outline-none"
+          className="w-full rounded-lg border border-rule px-3 py-2 focus:border-orange focus:outline-none"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-pm-navy mb-1">
+        <label className="block text-sm font-semibold text-ink mb-1">
           Message
         </label>
         <textarea
@@ -158,18 +158,18 @@ export function NewTicketForm({
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder="What happened? Steps, times, screenshots if you have them"
-          className="w-full min-h-48 rounded-lg border border-pm-slate-200 px-3 py-2 focus:border-pm-orange focus:outline-none"
+          className="w-full min-h-48 rounded-lg border border-rule px-3 py-2 focus:border-orange focus:outline-none"
         />
       </div>
 
       <div className="space-y-2">
-        <div className="text-xs font-bold uppercase tracking-wider text-pm-slate-500">
+        <div className="text-xs font-bold uppercase tracking-wider text-ink-mute">
           Screenshots (optional)
         </div>
         <AttachmentPicker value={attachments} onChange={setAttachments} />
       </div>
 
-      <p className="text-xs text-pm-slate-500 leading-relaxed">
+      <p className="text-xs text-ink-mute leading-relaxed">
         We&apos;ll reply here and via push. Include as much detail as you can —
         we can&apos;t respond faster than the info you give us.
       </p>
@@ -178,7 +178,7 @@ export function NewTicketForm({
         type="button"
         onClick={submit}
         disabled={!canSend}
-        className="w-full rounded-lg bg-pm-orange px-4 py-3 font-semibold text-white hover:bg-pm-orange-dark disabled:opacity-50"
+        className="w-full rounded-lg bg-orange px-4 py-3 font-semibold text-white hover:bg-orange-deep disabled:opacity-50"
       >
         {sending ? "Sending…" : "Send"}
       </button>

@@ -64,7 +64,9 @@ function buildGrid(items: { completedAt: string | null }[]): (GridDay | null)[][
 }
 
 function colorForCount(n: number): string {
-  if (n <= 0) return "#F1F5F9";
+  // Empty cells follow the theme rule colour — a hardcoded light grey
+  // sat on the dark page looking like missing data.
+  if (n <= 0) return "var(--rule)";
   if (n === 1) return "#FFDCC5";
   if (n === 2) return "#FFAF85";
   if (n === 3) return "#FF8151";

@@ -5,6 +5,7 @@ import { signOut, useSession } from "next-auth/react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ChevronDown, LogOut } from "lucide-react";
 import { logout as apiLogout } from "@/lib/api/auth";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 /**
  * Top bar for the partner portal. Mirrors AuthedHeader's grammar
@@ -58,13 +59,14 @@ export function PartnerHeader() {
           </span>
         </Link>
         <div className="flex items-center gap-2">
+          <ThemeToggle className="hidden sm:inline-flex" />
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
               <button
                 type="button"
                 className="inline-flex items-center gap-2 rounded-full border border-rule bg-paper px-2.5 py-1.5 hover:border-rule-strong"
               >
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-orange text-paper text-[12px] font-bold">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-orange text-on-brand text-[12px] font-bold">
                   {initials}
                 </span>
                 <ChevronDown

@@ -182,7 +182,7 @@ function Hero() {
                 href="https://partners.bondzi.online/partner/register"
                 event="cta_click"
                 properties={{ surface: "partners", target: "partner_register_hero" }}
-                className="inline-flex items-center gap-2 bg-orange text-paper px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-2 bg-orange text-on-brand px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
               >
                 Sign up as a partner
                 <ArrowUpRight size={16} strokeWidth={2.25} />
@@ -603,7 +603,7 @@ function CTA() {
               href="https://partners.bondzi.online/partner/register"
               event="cta_click"
               properties={{ surface: "partners", target: "partner_register_footer" }}
-              className="inline-flex items-center gap-2 bg-orange text-paper px-6 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-2 bg-orange text-on-brand px-6 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors whitespace-nowrap"
             >
               Sign up as a partner
               <ArrowUpRight size={16} strokeWidth={2.25} />

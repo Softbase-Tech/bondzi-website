@@ -73,7 +73,7 @@ export function ManagePanel({ subscription, currentLevelLabel }: Props) {
       <Card className="p-5 sm:p-6 space-y-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-paper text-[11.5px] font-semibold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-on-brand text-[11.5px] font-semibold uppercase tracking-widest">
               <Sparkles size={12} />
               Bondzi {isPlus ? "Plus" : "Pro"}
             </div>
@@ -137,7 +137,7 @@ export function ManagePanel({ subscription, currentLevelLabel }: Props) {
         <div className="flex flex-col sm:flex-row gap-2">
           <Link
             href="/subscription/plans"
-            className="inline-flex items-center justify-center h-11 px-5 rounded-xl bg-orange text-paper font-medium text-[14.5px] hover:bg-orange-deep transition-colors motion-reduce:transition-none"
+            className="inline-flex items-center justify-center h-11 px-5 rounded-xl bg-orange text-on-brand font-medium text-[14.5px] hover:bg-orange-deep transition-colors motion-reduce:transition-none"
           >
             {isPlus ? "Upgrade to Pro" : "Change plan"}
           </Link>

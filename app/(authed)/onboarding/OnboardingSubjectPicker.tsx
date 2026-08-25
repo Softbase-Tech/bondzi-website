@@ -131,7 +131,7 @@ export function OnboardingSubjectPicker({
                     className={cn(
                       "shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full text-[12px] font-semibold",
                       isSelected
-                        ? "bg-orange text-paper"
+                        ? "bg-orange text-on-brand"
                         : "bg-yellow-soft text-orange",
                     )}
                     aria-hidden="true"

@@ -53,12 +53,12 @@ export default async function FaqDetailPage({
     <div className="mx-auto max-w-2xl px-4 py-8 space-y-6">
       <Link
         href="/help"
-        className="text-sm text-pm-slate-500 hover:text-pm-navy"
+        className="text-sm text-ink-mute hover:text-ink"
       >
         ← Back to Help
       </Link>
 
-      <h1 className="text-3xl font-bold text-pm-navy">{entry.question}</h1>
+      <h1 className="text-3xl font-bold text-ink">{entry.question}</h1>
 
       {!entry.isActive ? (
         <div className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
@@ -74,17 +74,17 @@ export default async function FaqDetailPage({
       ) : null}
 
       <article
-        className="prose prose-slate max-w-none text-pm-navy prose-headings:text-pm-navy prose-a:text-pm-orange"
+        className="prose prose-slate max-w-none text-ink prose-headings:text-ink prose-a:text-orange"
         dangerouslySetInnerHTML={{ __html: html }}
       />
 
-      <div className="rounded-2xl border border-pm-slate-200 bg-white p-4 space-y-2">
-        <div className="text-sm font-semibold text-pm-navy">
+      <div className="rounded-2xl border border-rule bg-paper p-4 space-y-2">
+        <div className="text-sm font-semibold text-ink">
           Still need a hand?
         </div>
         <Link
           href="/help/tickets/new?category=general"
-          className="inline-block rounded-lg bg-pm-navy px-4 py-2 text-sm font-semibold text-white hover:bg-pm-navy-mid"
+          className="inline-block rounded-lg bg-invert px-4 py-2 text-sm font-semibold text-on-invert hover:bg-invert/90"
         >
           Open a ticket
         </Link>

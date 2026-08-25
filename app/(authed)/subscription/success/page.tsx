@@ -38,7 +38,7 @@ export default async function SubscriptionSuccessPage({
 
   return (
     <div className="max-w-[640px] mx-auto space-y-6 text-center">
-      <div className="mx-auto inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange text-paper">
+      <div className="mx-auto inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange text-on-brand">
         {isPending ? (
           <Sparkles size={26} />
         ) : (
@@ -88,7 +88,7 @@ export default async function SubscriptionSuccessPage({
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link
           href="/dashboard"
-          className="inline-flex items-center justify-center h-11 px-5 rounded-xl bg-orange text-paper font-medium text-[14.5px] hover:bg-orange-deep transition-colors motion-reduce:transition-none"
+          className="inline-flex items-center justify-center h-11 px-5 rounded-xl bg-orange text-on-brand font-medium text-[14.5px] hover:bg-orange-deep transition-colors motion-reduce:transition-none"
         >
           Go to dashboard
         </Link>

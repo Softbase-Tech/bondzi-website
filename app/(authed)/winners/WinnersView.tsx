@@ -247,7 +247,7 @@ function AllTimeBoard({
               <span
                 className={cn(
                   "inline-flex items-center justify-center w-9 h-9 rounded-full text-[12.5px] font-semibold",
-                  isYou ? "bg-orange text-paper" : "bg-yellow-soft text-orange",
+                  isYou ? "bg-orange text-on-brand" : "bg-yellow-soft text-orange",
                 )}
                 aria-hidden="true"
               >
@@ -356,7 +356,7 @@ function WinnerRowView({
       <span
         className={cn(
           "inline-flex items-center justify-center w-9 h-9 rounded-full text-[12.5px] font-semibold",
-          isYou ? "bg-orange text-paper" : "bg-yellow-soft text-orange",
+          isYou ? "bg-orange text-on-brand" : "bg-yellow-soft text-orange",
         )}
         aria-hidden="true"
       >
@@ -395,7 +395,7 @@ function ShareBanner({
   );
   if (!mine) return null;
   return (
-    <Card className="p-4 border-orange bg-orange text-paper">
+    <Card className="p-4 border-orange bg-orange text-on-brand">
       <div className="flex items-center gap-3">
         <div className="shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-full bg-paper/20">
           <Trophy size={18} />
@@ -404,7 +404,7 @@ function ShareBanner({
           <div className="font-display text-[17px] leading-tight">
             You ranked #{mine.rank} {period === "weekly" ? "this week" : "this month"}
           </div>
-          <p className="mt-0.5 text-[13px] text-paper/85">
+          <p className="mt-0.5 text-[13px] text-on-brand/85">
             Tell your friends — a share earns the bragging rights you
             just paid for in XP.
           </p>
@@ -461,7 +461,7 @@ function ShareButton({
         type="button"
         onClick={share}
         aria-label="Share your rank"
-        className="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full bg-yellow-soft text-orange hover:bg-orange hover:text-paper transition-colors motion-reduce:transition-none"
+        className="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full bg-yellow-soft text-orange hover:bg-orange hover:text-on-brand transition-colors motion-reduce:transition-none"
       >
         <Share2 size={14} />
       </button>
