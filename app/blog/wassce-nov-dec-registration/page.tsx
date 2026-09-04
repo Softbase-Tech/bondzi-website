@@ -167,7 +167,7 @@ export default function Page() {
         <p>
           The honest answer is: practise past WAEC questions, under timed
           conditions, until the patterns are second nature. Bondzi gives you
-          the full WASSCE past-question bank — nine years of papers across
+          the full WASSCE past-question bank — thirty-four years of papers across
           fourteen subjects — with an AI tutor that explains every wrong
           answer and a spaced-repetition schedule that drags shaky topics
           back until they&apos;re solid.

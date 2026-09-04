@@ -34,6 +34,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   };
 
+  const pricing: MetadataRoute.Sitemap[number] = {
+    url: `${SITE_URL}/pricing`,
+    lastModified: buildTime,
+    changeFrequency: "monthly",
+    priority: 0.8,
+    alternates: {
+      languages: { "en-GH": `${SITE_URL}/pricing` },
+    },
+  };
+
   const partners: MetadataRoute.Sitemap[number] = {
     url: `${SITE_URL}/partners`,
     lastModified: buildTime,
@@ -54,5 +64,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   }));
 
-  return [home, blogIndex, partners, ...blogPosts];
+  return [home, blogIndex, pricing, partners, ...blogPosts];
 }

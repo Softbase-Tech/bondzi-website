@@ -355,6 +355,41 @@ body {
   max-width: 100%;
   margin: 0 0.15em;
 }
+/* Screenshot figures (blog how-to posts) are real images, not inline
+   math — undo the inline-math sizing inside <figure>. */
+.prose-bondzi figure img {
+  display: block;
+  max-height: none;
+  margin: 0;
+}
+/* Data tables (e.g. exam timetables). Wide tables scroll inside the
+   article measure instead of widening the page. */
+.prose-bondzi table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.prose-bondzi th,
+.prose-bondzi td {
+  border: 1px solid var(--rule);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  color: var(--ink-soft);
+  min-width: 90px;
+}
+.prose-bondzi th {
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.prose-bondzi td strong {
+  color: var(--ink);
+}
 /* Marked wraps stand-alone paragraphs (like every question stem) in
    `<p>`. Make sure they don't stack extra top margins under the kicker. */
 .prose-bondzi > p:first-child {

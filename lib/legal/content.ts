@@ -12,7 +12,7 @@ export const PRIVACY_POLICY_MD = `# Privacy Policy
 _Last updated: ${LEGAL_LAST_UPDATED}_
 
 Bondzi ("Bondzi", "we", "us") is an exam-preparation service for BECE, WASSCE
-and NOV/DEC students in Ghana, operated by Cliffbase Tech. This policy explains
+and NOV/DEC students in Ghana, operated by Cliffbase Technologies. This policy explains
 what personal data we collect, how we use it, and the choices you have.
 
 If you have any questions, contact us at **support@bondzi.online**.
@@ -89,7 +89,7 @@ date above and, where changes are significant, notify you in the app or by email
 
 ## Contact
 
-Cliffbase Tech · Ghana · **support@bondzi.online**
+Cliffbase Technologies · Ghana · **support@bondzi.online**
 `;
 
 export const TERMS_OF_SERVICE_MD = `# Terms of Service
@@ -97,7 +97,7 @@ export const TERMS_OF_SERVICE_MD = `# Terms of Service
 _Last updated: ${LEGAL_LAST_UPDATED}_
 
 These Terms govern your use of Bondzi, an exam-preparation service operated by
-Cliffbase Tech. By creating an account or using Bondzi, you agree to these Terms.
+Cliffbase Technologies. By creating an account or using Bondzi, you agree to these Terms.
 
 ## Eligibility and accounts
 
@@ -154,7 +154,7 @@ access if you breach these Terms or where required by law.
 ## Limitation of liability
 
 To the fullest extent permitted by law, Bondzi is provided "as is", and Cliffbase
-Tech is not liable for indirect or consequential losses arising from your use of
+Technologies is not liable for indirect or consequential losses arising from your use of
 the service.
 
 ## Governing law
@@ -168,7 +168,7 @@ latest version. Continued use after changes means you accept them.
 
 ## Contact
 
-Cliffbase Tech · Ghana · **support@bondzi.online**
+Cliffbase Technologies · Ghana · **support@bondzi.online**
 `;
 
 export const ACCOUNT_DELETION_MD = `# Account & Data Deletion
@@ -176,7 +176,7 @@ export const ACCOUNT_DELETION_MD = `# Account & Data Deletion
 _Last updated: ${LEGAL_LAST_UPDATED}_
 
 This page explains how to delete your Bondzi account and what happens to your
-data. Bondzi is operated by Cliffbase Tech (**support@bondzi.online**).
+data. Bondzi is operated by Cliffbase Technologies (**support@bondzi.online**).
 
 ## How to delete your account
 
@@ -218,5 +218,5 @@ inactivity, if your account is dormant), unless you log back in first.
 
 ## Contact
 
-Cliffbase Tech · Ghana · **support@bondzi.online**
+Cliffbase Technologies · Ghana · **support@bondzi.online**
 `;

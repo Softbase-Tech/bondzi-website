@@ -66,7 +66,7 @@ export default async function PastPapersPage({
           {profile.examType.toUpperCase()} past papers
         </p>
         <h1 className="mt-1 font-display text-[32px] sm:text-[42px] leading-[1.05] text-ink">
-          Nine years of WAEC papers
+          Thirty-four years of WAEC papers
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           Pick a subject to see every year with past questions. Each

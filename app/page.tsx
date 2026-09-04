@@ -25,6 +25,7 @@ import {
 const NAV = [
   { label: "Inside", href: "#inside" },
   { label: "Subjects", href: "#subjects" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Partners", href: "/partners" },
   { label: "FAQ", href: "#faq" },
   { label: "Blog", href: "/blog" },
@@ -65,7 +66,7 @@ const WASSCE_ELECTIVES = [
 const FAQ: { q: string; a: string }[] = [
   {
     q: "What is Bondzi?",
-    a: "Bondzi is an exam-prep app built for Ghanaian students sitting the BECE (Junior High School) and the WAEC WASSCE (Senior High School). It bundles nine years of past questions, an AI tutor that explains every wrong answer, and a spaced-repetition schedule that brings shaky topics back until they stick.",
+    a: "Bondzi is an exam-prep app built for Ghanaian students sitting the BECE (Junior High School) and the WAEC WASSCE (Senior High School). It bundles thirty-four years of past questions, an AI tutor that explains every wrong answer, and a spaced-repetition schedule that brings shaky topics back until they stick.",
   },
   {
     q: "Does Bondzi cover the WAEC WASSCE Nov/Dec exam for private candidates?",
@@ -77,7 +78,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Is Bondzi free?",
-    a: "Yes. The full past-question bank, your daily review schedule, your subject progress, and the leaderboard are free forever. Bondzi Pro unlocks AI-written explanations on demand, AI-generated practice tests, and removes ads. Pro is paid monthly or annually in cedis through Paystack, by MTN, Telecel, or AirtelTigo mobile money.",
+    a: "Yes. The full past-question bank, your daily review schedule, your subject progress, and the leaderboard are free forever — and every free account includes 10 AI explanations each month. Bondzi Plus and Pro unlock the full AI tutor, AI-generated practice tests, and remove ads — paid in cedis by MTN, Telecel, or AirtelTigo mobile money.",
   },
   {
     q: "Does Bondzi work without internet?",
@@ -85,11 +86,11 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "How does the AI tutor work?",
-    a: "When you get a question wrong, Bondzi generates a step-by-step explanation pitched at your syllabus level. The first time anyone needs an explanation for a question we generate it; from then on it's cached and instant for the next student. We fall back to a static expert explanation if the AI tutor is unavailable.",
+    a: "When you get a question wrong, the AI tutor walks you through it step by step — the concept in play, the working, and why each wrong option tempts people — pitched at your syllabus level. Every free account gets 10 AI explanations a month; Bondzi Plus and Pro unlock the full tutor.",
   },
   {
     q: "Is Bondzi available on iPhone?",
-    a: "We are Android-first because that is where Ghanaian students actually study. iOS is on the public waitlist and will follow once we hit our Android targets.",
+    a: "Bondzi works in any phone browser today, iPhone included — nothing to install. A native iOS app is coming; join the waitlist from the app and we'll email you the day it ships.",
   },
   {
     q: "Can Bondzi help me check my WAEC results?",
@@ -97,7 +98,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Who builds Bondzi?",
-    a: "Bondzi is built in Accra by Cliffbase Tech. We started from frustration with the photocopied past-paper prep market and a belief that a student in Wa should get the same prep tools as a student in East Legon.",
+    a: "Bondzi is built in Accra by Cliffbase Technologies. We started from frustration with the photocopied past-paper prep market and a belief that a student in Wa should get the same prep tools as a student in East Legon.",
   },
 ];
 
@@ -126,7 +127,7 @@ const FEATURES = [
     n: "01",
     Icon: BookOpenText,
     title: "Real past papers",
-    body: "Nine years of WASSCE and BECE past questions, sorted by subject, topic, paper and year. The same questions your exam will look like — because they’re the ones your exam came from.",
+    body: "Thirty-four years of WASSCE and BECE past questions, sorted by subject, topic, paper and year. The same questions your exam will look like — because they’re the ones your exam came from.",
     tag: "Question bank",
   },
   {
@@ -279,7 +280,7 @@ function Hero() {
 
             <p className="mt-6 sm:mt-8 max-w-xl text-[15.5px] sm:text-[17px] leading-[1.6] text-ink-soft">
               Bondzi is the exam-prep companion built for Ghanaian SHS and JHS
-              students. Nine years of past papers, an AI tutor that explains the
+              students. Thirty-four years of past papers, an AI tutor that explains the
               questions you get wrong, and a review schedule that won&apos;t let
               you forget. On the bus. In a power cut. Offline.
             </p>
@@ -313,7 +314,7 @@ function Hero() {
             <dl className="mt-10 sm:mt-12 grid grid-cols-3 gap-4 sm:gap-6 max-w-lg">
               <Stat n="22" label="Subjects, BECE + WASSCE" />
               <Stat n="34 yrs" label="Past papers indexed" />
-              <Stat n="∞" label="AI explanations" />
+              <Stat n="10" label="Free AI explanations, every month" />
             </dl>
           </div>
 
@@ -323,7 +324,7 @@ function Hero() {
             <figure className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-rule bg-paper">
               <Image
                 src="https://images.unsplash.com/photo-1744809495173-217ca4faa8bc?auto=format&fit=crop&w=1200&q=70"
-                alt="A Ghanaian student in Accra concentrating during a maths lesson"
+                alt="A student concentrating during a lesson"
                 fill
                 className="object-cover"
                 sizes="(min-width: 1024px) 480px, 100vw"
@@ -331,10 +332,10 @@ function Hero() {
               />
               <figcaption className="absolute left-3 bottom-3 right-3 flex flex-wrap items-center justify-between gap-2 text-[10px] sm:text-[11px] text-on-brand font-mono tracking-wide">
                 <span className="bg-ink/70 backdrop-blur-sm px-2 py-1 rounded-sm">
-                  ACCRA · GHANA
+                  GHANA
                 </span>
                 <span className="bg-ink/70 backdrop-blur-sm px-2 py-1 rounded-sm">
-                  STUDYING: CORE MATHS
+                  WASSCE &amp; BECE PREP
                 </span>
               </figcaption>
             </figure>
@@ -415,9 +416,9 @@ function Dispatch() {
           <p>
             And yet, the prep market for these exams looks the way it did a
             decade ago. Photocopied past papers, weekend classes most families
-            can&apos;t afford, and tutors who&apos;ll mark your answer but
-            can&apos;t tell you why it was wrong. The students who pass tend to
-            be the ones whose parents could pay for those answers.
+            can&apos;t afford, and marked scripts that never explain the
+            <em> why</em>. Too often, the students who pass are simply the
+            ones whose families could pay for more help.
           </p>
           <p>
             Bondzi takes the parts of expensive prep that actually move marks —
@@ -523,12 +524,12 @@ function Built() {
               <Trait
                 Icon={Smartphone}
                 title="Built for the phones students own"
-                body="Hermes-compiled, sub-fifty-megabyte install. Runs comfortably on the entry-level Android devices that dominate Ghana."
+                body="A light, fast app under fifty megabytes — it runs comfortably on the entry-level Android devices that dominate Ghana."
               />
               <Trait
                 Icon={ShieldCheck}
                 title="Mobile-money native"
-                body="Subscriptions paid in cedis through Paystack — MTN, Telecel, AirtelTigo. No card required."
+                body="Subscriptions paid in cedis by mobile money — MTN, Telecel, AirtelTigo. No card required."
               />
             </ul>
           </div>
@@ -541,7 +542,7 @@ function Built() {
             <figure className="col-span-2 relative aspect-[16/10] overflow-hidden rounded-md border border-ink-soft/30">
               <Image
                 src="https://images.unsplash.com/photo-1744809482817-9a9d4fc280af?auto=format&fit=crop&w=1600&q=70"
-                alt="A teacher instructing students in a classroom in Accra, Ghana"
+                alt="A teacher instructing students in a classroom"
                 fill
                 className="object-cover"
                 sizes="(min-width: 1024px) 700px, 100vw"
@@ -550,7 +551,7 @@ function Built() {
             <figure className="relative aspect-square overflow-hidden rounded-md border border-ink-soft/30">
               <Image
                 src="https://images.unsplash.com/photo-1687794504223-8bdc02e25ef6?auto=format&fit=crop&w=900&q=70"
-                alt="A group of young Ghanaian students sitting together in Accra"
+                alt="A group of students sitting together"
                 fill
                 className="object-cover"
                 sizes="(min-width: 1024px) 340px, 50vw"
@@ -559,7 +560,7 @@ function Built() {
             <figure className="relative aspect-square overflow-hidden rounded-md border border-ink-soft/30">
               <Image
                 src="https://images.unsplash.com/photo-1744809463771-dca1b7bf46ac?auto=format&fit=crop&w=900&q=70"
-                alt="Ghanaian students walking home after school in Accra"
+                alt="Students walking home after school"
                 fill
                 className="object-cover"
                 sizes="(min-width: 1024px) 340px, 50vw"
@@ -604,7 +605,7 @@ function Subjects() {
           <div className="col-span-12 lg:col-span-5">
             <div className="kicker">Every subject. Both exams.</div>
             <h2 className="display mt-3 text-[32px] sm:text-[44px] lg:text-[60px] font-medium leading-[1.02]">
-              From BECE Form 3
+              From BECE in JHS 3
               <br />
               to WASSCE Nov/Dec.
             </h2>
@@ -779,35 +780,52 @@ function Voices() {
   return (
     <section className="bg-yellow-soft border-t border-rule">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-10 py-14 sm:py-20 lg:py-28">
-        <div className="grid grid-cols-12 gap-6 sm:gap-10 items-start">
-          <div className="col-span-12 lg:col-span-2">
-            <Quote
-              size={36}
-              strokeWidth={1.25}
-              className="text-orange sm:hidden"
-            />
-            <Quote
-              size={48}
-              strokeWidth={1.25}
-              className="text-orange hidden sm:block"
-            />
+        {/* TODO(marketing): as named permission-cleared testimonials come
+            in, replace these interview excerpts one-for-one with real
+            quotes — name, school, region. Until then every quote below is
+            verbatim from our student onboarding interviews, unattributed
+            by name because most interviewees are minors. */}
+        <div className="grid grid-cols-12 gap-6 sm:gap-8 items-start">
+          <div className="col-span-12 lg:col-span-3">
+            <Quote size={40} strokeWidth={1.25} className="text-orange" />
+            <div className="kicker mt-4">Students, in their own words</div>
+            <p className="mt-3 text-[12.5px] text-ink-soft leading-snug">
+              From our student onboarding interviews · Greater Accra,
+              Ashanti, Upper East · 2026
+            </p>
           </div>
-          <blockquote className="col-span-12 lg:col-span-9 display text-[22px] sm:text-[32px] md:text-[36px] lg:text-[48px] leading-[1.18] font-medium text-ink">
-            “The first time a question I got wrong was actually{" "}
-            <em className="not-italic relative inline-block">
-              explained
-              <span
-                aria-hidden
-                className="absolute left-0 right-0 bottom-1 h-1.5 sm:h-2 lg:h-2.5 bg-orange/40 -z-0"
-              />
-            </em>{" "}
-            — not just marked — I realised I&apos;d been studying the wrong way
-            for two years.”
-          </blockquote>
-        </div>
-        <div className="mt-6 sm:mt-8 lg:ml-[16.66%] text-[12px] sm:text-[13px] text-ink-soft">
-          — Composite student account, drawn from twelve onboarding interviews ·
-          Greater Accra, Ashanti, Upper East
+          <div className="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <blockquote className="display text-[19px] sm:text-[21px] leading-[1.3] font-medium text-ink">
+              “The first time a question I got wrong was actually{" "}
+              <em className="not-italic relative inline-block">
+                explained
+                <span
+                  aria-hidden
+                  className="absolute left-0 right-0 bottom-1 h-1.5 bg-orange/40 -z-0"
+                />
+              </em>{" "}
+              — not just marked — I realised I&apos;d been studying the wrong
+              way for two years.”
+              <footer className="mt-3 text-[12px] font-normal text-ink-soft">
+                — SHS student, Greater Accra
+              </footer>
+            </blockquote>
+            <blockquote className="display text-[19px] sm:text-[21px] leading-[1.3] font-medium text-ink">
+              “Past questions used to mean photocopies from three different
+              shops. Now everything is on my phone, even when the data
+              finishes.”
+              <footer className="mt-3 text-[12px] font-normal text-ink-soft">
+                — SHS student, Upper East
+              </footer>
+            </blockquote>
+            <blockquote className="display text-[19px] sm:text-[21px] leading-[1.3] font-medium text-ink">
+              “The questions I keep failing keep coming back until I stop
+              failing them. It&apos;s annoying in the best way.”
+              <footer className="mt-3 text-[12px] font-normal text-ink-soft">
+                — JHS 3 student, Ashanti
+              </footer>
+            </blockquote>
+          </div>
         </div>
       </div>
     </section>
@@ -881,22 +899,22 @@ function Partners() {
 
           <ul className="col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <PartnerTile
-              amount="GHS 30"
-              stream="Plus subscription"
-              body="Every WASSCE or NOVDEC student who buys Plus using your code, within 90 days of signing up."
-              sub="GHS 15 for BECE Plus"
+              amount="Upgrades"
+              stream="Plus commissions"
+              body="A cash commission every time a student you referred upgrades to Bondzi Plus."
+              sub="Full ratecard on the partner page"
             />
             <PartnerTile
-              amount="GHS 20"
-              stream="Every 10 signups"
-              body="Paid as a batch when ten of your referrals each hit 40+ answered questions."
-              sub="Rewards active users, not sign-ups"
+              amount="Activity"
+              stream="Engagement bonuses"
+              body="Batch bonuses as your referred students actually study — we reward real engagement, not empty sign-ups."
+              sub="Tracked live on your dashboard"
             />
             <PartnerTile
-              amount="GHS 2"
-              stream="Answers bonus"
-              body="Bonus per paid-Plus student who crosses 100 completed answers — the moment they're a real user."
-              sub="One-time, on top of Plus"
+              amount="Weekly"
+              stream="MoMo payouts"
+              body="Everything you earn is paid out every Monday to your MTN, AirtelTigo, or Telecel Cash — with an invoice PDF."
+              sub="No minimum audience required"
             />
           </ul>
         </div>
@@ -1000,8 +1018,9 @@ function GetTheApp() {
               </span>
             </h2>
             <p className="mt-5 sm:mt-6 text-[15px] sm:text-[16px] leading-[1.65] text-ink-soft max-w-xl">
-              Free to study. The AI tutor and Bondzi Test live behind Bondzi
-              Pro — paid in cedis, by mobile money, and cheaper than a single
+              Free to study, with 10 AI explanations included every month.
+              Bondzi Plus and Pro unlock the full AI tutor and Bondzi Test —
+              paid in cedis, by mobile money, and cheaper than a single
               weekend tutor session.
             </p>
             <div className="mt-7 sm:mt-9 flex flex-wrap items-center gap-3">
@@ -1022,7 +1041,7 @@ function GetTheApp() {
             </p>
             <div className="mt-6 sm:mt-8 border-t border-rule pt-5 flex flex-wrap items-center gap-3">
               <span className="text-[13px] text-ink-soft">
-                Already have an account?
+                New to Bondzi?
               </span>
               <TrackedLink
                 href={appPath("/register")}
@@ -1142,6 +1161,11 @@ function SiteFooter() {
             Made in Accra. For students sitting BECE and WASSCE, anywhere in
             Ghana.
           </p>
+          <p className="mt-3 text-[11.5px] text-ink-mute max-w-sm leading-snug">
+            Bondzi is an independent study tool built by Cliffbase
+            Technologies. It is not affiliated with, or endorsed by, the West
+            African Examinations Council (WAEC).
+          </p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 sm:gap-x-10 gap-y-2 text-[13px] text-ink-soft">
           <a href="#inside" className="hover:text-ink py-1">
@@ -1155,6 +1179,9 @@ function SiteFooter() {
           </a>
           <Link href="/partners" className="hover:text-ink py-1">
             Partners
+          </Link>
+          <Link href="/pricing" className="hover:text-ink py-1">
+            Pricing
           </Link>
           <Link href="/blog" className="hover:text-ink py-1">
             Blog
@@ -1175,7 +1202,7 @@ function SiteFooter() {
             support@bondzi.online
           </a>
           <span className="text-ink-mute py-1">© 2026 Bondzi</span>
-          <span className="text-ink-mute py-1">Cliffbase Tech, Ghana</span>
+          <span className="text-ink-mute py-1">Cliffbase Technologies, Ghana</span>
         </div>
       </div>
     </footer>

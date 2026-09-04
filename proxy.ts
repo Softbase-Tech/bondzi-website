@@ -67,6 +67,7 @@ const LEGAL_PUBLIC_PATHS = [
 const MARKETING_PUBLIC_PATHS = new Set([
   "/",
   "/partners",
+  "/pricing",
   ...LEGAL_PUBLIC_PATHS,
 ]);
 // `/r/<CODE>` is the partner share link. It lives on the marketing host
