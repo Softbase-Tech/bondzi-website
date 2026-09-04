@@ -57,6 +57,26 @@ export const ENV = {
    * e.g. https://play.google.com/store/apps/details?id=com.bondzi.app
    */
   PLAY_STORE_URL: process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "",
+  /**
+   * Firebase web config — used ONLY for Cloud Messaging (browser push).
+   * Same Firebase project the mobile app uses; the backend delivers
+   * pushes through firebase-admin against it. All values are public
+   * identifiers (safe to inline in the client bundle).
+   *
+   * Deliberately optional: when any of these is unset the push layer
+   * reports "not configured" and every hook/UI surface no-ops, so dev
+   * environments without Firebase never crash.
+   */
+  FIREBASE: {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? "",
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "",
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? "",
+    messagingSenderId:
+      process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "",
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? "",
+    /** Web Push certificate key pair (Firebase console → Cloud Messaging). */
+    vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY ?? "",
+  },
 };
 
 /**

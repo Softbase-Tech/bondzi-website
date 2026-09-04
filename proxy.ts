@@ -79,7 +79,15 @@ const MARKETING_PUBLIC_PREFIXES = ["/blog", "/r/"];
 // whatever host it was called from).
 const ALWAYS_PUBLIC_PREFIXES = ["/api/auth"];
 
+// Exact paths reachable on EVERY host without a session. /unsubscribe
+// is opened from email clients (almost always logged out) and the
+// emails' {SITE_URL} has pointed at both hosts over time — serving it
+// wherever it lands beats bouncing a one-click action through a
+// redirect (or worse, a login wall).
+const ALWAYS_PUBLIC_PATHS = new Set(["/unsubscribe"]);
+
 function isAlwaysPublic(pathname: string): boolean {
+  if (ALWAYS_PUBLIC_PATHS.has(pathname)) return true;
   return ALWAYS_PUBLIC_PREFIXES.some((p) => pathname.startsWith(p));
 }
 

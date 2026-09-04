@@ -11,6 +11,7 @@ import {
   type PushPreferences,
 } from "@/lib/api/user";
 import type { SafeUser } from "@/lib/api/types";
+import { usePushNotifications } from "@/lib/push/usePushNotifications";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -175,16 +176,90 @@ export function NotificationPrefsForm({ profile }: Props) {
           />
         </div>
         <p className="mt-3 text-[12px] text-ink-mute">
-          Push notifications also require your browser&apos;s permission —
-          we&apos;ll ask when you first enable them.
+          These choose WHICH pushes you get — delivery to this browser is
+          controlled below.
         </p>
       </Card>
+
+      <BrowserPushCard />
 
       <p className="text-[12px] text-ink-mute">
         Account-critical mail (receipts, password resets, security
         notices) cannot be disabled.
       </p>
     </div>
+  );
+}
+
+/**
+ * Per-device delivery switch for browser push (FCM Web Push). Distinct
+ * from the topic toggles above: those are account-level backend prefs,
+ * this one registers/unregisters THIS browser as a push target. The
+ * browser's own permission prompt fires only from the explicit toggle
+ * gesture — never on page load.
+ */
+function BrowserPushCard() {
+  const { ready, supported, permission, enabled, busy, enable, disable } =
+    usePushNotifications();
+
+  // Detection runs client-side; render nothing until it has (avoids a
+  // hydration flash of the wrong state).
+  if (!ready) return null;
+
+  const flip = async (next: boolean) => {
+    if (!next) {
+      await disable();
+      toast("Push turned off for this browser");
+      return;
+    }
+    const result = await enable();
+    if (result === "enabled") {
+      toast.success("Push notifications enabled", {
+        description: "This browser will now receive Bondzi notifications.",
+      });
+    } else if (result === "denied") {
+      toast.error("Notifications are blocked", {
+        description:
+          "Allow notifications for Bondzi in your browser settings, then try again.",
+      });
+    } else if (result === "error") {
+      toast.error("Couldn't enable push notifications", {
+        description: "Please try again in a moment.",
+      });
+    }
+    // "dismissed" — the user closed the browser prompt; stay quiet.
+  };
+
+  return (
+    <Card className="p-4 sm:p-5">
+      <div className="text-[13px] font-medium uppercase tracking-widest text-ink-mute mb-3">
+        This browser
+      </div>
+      {!supported ? (
+        <p className="text-[13px] text-ink-soft">
+          Push notifications aren&apos;t available in this browser. On
+          iPhone, add Bondzi to your Home Screen from the share menu
+          first, then enable them here.
+        </p>
+      ) : (
+        <>
+          <ToggleRow
+            title="Notifications on this device"
+            body="Let this browser show Bondzi notifications, even when the tab is closed."
+            checked={enabled}
+            disabled={busy || permission === "denied"}
+            onChange={flip}
+          />
+          {permission === "denied" ? (
+            <p className="mt-2 text-[12px] text-red-600">
+              Blocked in your browser settings. Allow notifications for
+              this site (usually via the lock icon in the address bar),
+              then reload and flip the toggle.
+            </p>
+          ) : null}
+        </>
+      )}
+    </Card>
   );
 }
 
