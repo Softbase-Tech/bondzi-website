@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth/config";
 import { AuthedHeader } from "@/components/authed/AuthedHeader";
 import { BottomTabBar } from "@/components/authed/BottomTabBar";
 import { VerifyEmailBanner } from "@/components/authed/VerifyEmailBanner";
+import { PushManager } from "@/components/push/PushManager";
 import { SessionErrorGuard } from "./SessionErrorGuard";
 
 /**
@@ -30,6 +31,8 @@ export default async function AuthedLayout({ children }: { children: ReactNode }
   return (
     <div className="min-h-dvh flex flex-col bg-bg">
       <SessionErrorGuard />
+      {/* Push token refresh + foreground-push toasts. Renders nothing. */}
+      <PushManager />
       <VerifyEmailBanner />
       <AuthedHeader />
       <main
