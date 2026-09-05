@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { PaywallDialog } from "@/components/exam/PaywallDialog";
 import { QuestionRenderer } from "@/components/exam/QuestionRenderer";
 import { getExplanation } from "@/lib/api/explanations";
+import { renderMarkdown } from "@/lib/markdown";
 import { getQuestionDetail } from "@/lib/api/questions";
 import { ApiError } from "@/lib/api/client";
 import type { Explanation, Question } from "@/lib/api/types";
@@ -109,9 +110,15 @@ export function ExplanationPage({ questionId }: Props) {
                 dangerouslySetInnerHTML={{ __html: explanation.contentHtml }}
               />
             ) : (
-              <div className="prose-bondzi max-w-none text-[15.5px] leading-relaxed whitespace-pre-wrap">
-                {explanation.markdown}
-              </div>
+              // No pre-rendered HTML (fresh AI explanations) — render
+              // the markdown client-side so inline math data-URIs
+              // become images instead of literal ![math](...) text.
+              <div
+                className="prose-bondzi max-w-none text-[15.5px] leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: renderMarkdown(explanation.markdown),
+                }}
+              />
             )}
           </div>
         ) : (
