@@ -16,6 +16,7 @@ import type {
   XpRedemptionTier,
 } from "@/lib/api/types";
 import { PlanPicker } from "./PlanPicker";
+import { OnboardingPlansBanner } from "./OnboardingPlansBanner";
 import { Card } from "@/components/ui/Card";
 
 export const metadata: Metadata = {
@@ -39,7 +40,11 @@ export const metadata: Metadata = {
 export default async function PlansPage({
   searchParams,
 }: {
-  searchParams: Promise<{ level?: string; returnTo?: string }>;
+  searchParams: Promise<{
+    level?: string;
+    returnTo?: string;
+    onboarding?: string;
+  }>;
 }) {
   const session = await auth();
   if (!session?.accessToken || !session.profile) redirect("/login");
@@ -61,8 +66,11 @@ export default async function PlansPage({
   const xpTiers: XpRedemptionTier[] =
     tiersRes.status === "fulfilled" ? tiersRes.value : [];
 
+  const fromOnboarding = params.onboarding === "1";
+
   return (
     <div className="max-w-[880px] mx-auto space-y-8">
+      {fromOnboarding ? <OnboardingPlansBanner /> : null}
       <header className="text-center sm:text-left">
         <div className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-orange text-on-brand text-[11.5px] font-semibold uppercase tracking-widest">
           <Sparkles size={12} />

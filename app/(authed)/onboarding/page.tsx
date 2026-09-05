@@ -19,10 +19,11 @@ export const metadata: Metadata = {
  * Flow decisions:
  *   - Core subjects are pre-selected so a student who taps "Continue"
  *     without changing anything still lands with a sensible default.
- *   - Continue submits + routes to /dashboard.
- *   - "Skip for now" is a low-friction escape that just lands on the
- *     dashboard; if selection stays empty the dashboard empty-state
- *     card prompts them again.
+ *   - Continue submits + routes to the plans page in onboarding mode
+ *     (one skippable pricing look while signup intent is highest).
+ *   - "Skip for now" is a low-friction escape past the picker; it goes
+ *     through the same plans step, and if selection stays empty the
+ *     dashboard empty-state card prompts them again.
  */
 export default async function OnboardingPage() {
   const session = await auth();
