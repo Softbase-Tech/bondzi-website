@@ -359,6 +359,14 @@ body {
   max-width: 100%;
   margin: 0 0.15em;
 }
+/* Server-rendered math arrives as SVG data-URIs drawn in black. An
+   <img> can't inherit the page's text color, so in dark mode the
+   glyphs vanish into the background — invert them to white. The
+   hue-rotate keeps any colored strokes recognisable. Scoped to data
+   URIs so real photos inside prose are never inverted. */
+.dark .prose-bondzi img[src^="data:image/svg+xml"] {
+  filter: invert(1) hue-rotate(180deg);
+}
 /* Screenshot figures (blog how-to posts) are real images, not inline
    math — undo the inline-math sizing inside <figure>. */
 .prose-bondzi figure img {

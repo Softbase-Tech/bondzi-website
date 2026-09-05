@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Sheet } from "@/components/ui/Sheet";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { getExplanation } from "@/lib/api/explanations";
+import { renderMarkdown } from "@/lib/markdown";
 import { ApiError } from "@/lib/api/client";
 import type { Explanation } from "@/lib/api/types";
 import { PaywallDialog } from "./PaywallDialog";
@@ -102,9 +103,15 @@ export function ExplanationSheet({ questionId, open, onOpenChange }: Props) {
                 dangerouslySetInnerHTML={{ __html: data.contentHtml }}
               />
             ) : (
-              <div className="prose-bondzi max-w-none text-[15px] leading-relaxed whitespace-pre-wrap">
-                {data.markdown}
-              </div>
+              // No pre-rendered HTML (fresh AI explanations) — render
+              // the markdown client-side so inline math data-URIs
+              // become images instead of literal ![math](...) text.
+              <div
+                className="prose-bondzi max-w-none text-[15px] leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: renderMarkdown(data.markdown),
+                }}
+              />
             )}
           </div>
         ) : null}
