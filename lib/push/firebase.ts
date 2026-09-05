@@ -31,6 +31,20 @@ const SW_PATH = "/firebase-messaging-sw.js";
 const ENABLED_KEY = "bondzi_push_enabled_v1";
 /** localStorage timestamp (ms) of the last prompt-card dismissal. */
 export const PROMPT_DISMISSED_KEY = "bondzi_push_prompt_dismissed_at";
+
+/**
+ * Forget a previous prompt dismissal. Called on successful sign-in and
+ * registration so each fresh session gets asked again (product call:
+ * a new session is a new chance to say yes). Browser-DENIED permission
+ * is unaffected — nothing can re-ask past an explicit block.
+ */
+export function clearPushPromptSnooze(): void {
+  try {
+    localStorage.removeItem(PROMPT_DISMISSED_KEY);
+  } catch {
+    // Best-effort.
+  }
+}
 /** `source` marker on messages the service worker posts to the page. */
 export const SW_MESSAGE_SOURCE = "bondzi-push";
 

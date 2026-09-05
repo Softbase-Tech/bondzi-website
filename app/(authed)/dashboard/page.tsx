@@ -23,6 +23,7 @@ import {
   AddMoreSubjectsLink,
 } from "@/components/subjects/SubjectSelectionCta";
 import { StreakDots } from "./StreakDots";
+import { PushPromptCard } from "@/components/push/PushPromptCard";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -89,6 +90,12 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8 sm:space-y-10">
+      {/* Notification opt-in — shown to every signed-in user who hasn't
+          granted permission yet. Sign-in/register clear the dismissal
+          snooze, so each fresh session asks again. Self-hides when
+          unsupported, already enabled, or browser-denied. */}
+      <PushPromptCard />
+
       {/* Greeting + streak hero */}
       <section className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>

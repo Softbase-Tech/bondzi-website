@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/Input";
 import { Dialog, DialogActions } from "@/components/ui/Dialog";
 import { register, requestEmailOtp } from "@/lib/api/auth";
 import { getWebDeviceId, getWebDeviceName } from "@/lib/device";
+import { clearPushPromptSnooze } from "@/lib/push/firebase";
 import { ApiError } from "@/lib/api/client";
 import {
   MIN_PASSWORD_LENGTH,
@@ -223,6 +224,9 @@ export function RegisterFlow() {
         redirect: false,
       });
       if (signInResult?.ok) {
+        // New account: make sure the notification prompt card is
+        // eligible to show once they reach the dashboard.
+        clearPushPromptSnooze();
         router.replace("/onboarding");
       } else {
         // Extreme edge — account was created but the immediate
