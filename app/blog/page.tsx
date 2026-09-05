@@ -37,7 +37,7 @@ export default function BlogIndex() {
     inLanguage: "en-GH",
     publisher: {
       "@type": "Organization",
-      name: "Cliffbase Tech",
+      name: "Cliffbase Technologies",
       logo: {
         "@type": "ImageObject",
         url: "https://bondzi.online/brand/icon.png",
@@ -160,7 +160,7 @@ export default function BlogIndex() {
 
       <footer className="border-t border-rule bg-bg">
         <div className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-10 py-8 sm:py-10 text-[13px] text-ink-mute">
-          © 2026 Bondzi · Cliffbase Tech, Ghana
+          © 2026 Bondzi · Cliffbase Technologies, Ghana
         </div>
       </footer>
 

@@ -41,7 +41,7 @@ const SITE_URL = "https://bondzi.online";
 const SITE_NAME = "Bondzi";
 const TAGLINE = "WASSCE & BECE exam prep, made in Ghana";
 const DESCRIPTION =
-  "Bondzi is the AI-powered WAEC, WASSCE and BECE exam prep app for Ghanaian students — school candidates and Nov/Dec private candidates. Nine years of past questions across Core Mathematics, English, Integrated Science, Elective Maths, Physics, Chemistry, Biology, Economics and more. AI explanations for every wrong answer, spaced-repetition review, and full offline support. Free to download, paid in cedis.";
+  "Bondzi is the AI-powered WAEC, WASSCE and BECE exam prep app for Ghanaian students — school candidates and Nov/Dec private candidates. Thirty-four years of past questions across Core Mathematics, English, Integrated Science, Elective Maths, Physics, Chemistry, Biology, Economics and more. AI explanations for every wrong answer, spaced-repetition review, and full offline support. Free to download, paid in cedis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -52,53 +52,9 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   applicationName: SITE_NAME,
   generator: "Next.js",
-  keywords: [
-    "WAEC",
-    "WAEC Ghana",
-    "WAEC results checker",
-    "WASSCE",
-    "WASSCE 2026",
-    "WASSCE timetable",
-    "WASSCE Nov Dec",
-    "WASSCE November December",
-    "Nov Dec private candidate",
-    "BECE",
-    "BECE 2026",
-    "BECE timetable",
-    "WASSCE past questions",
-    "BECE past questions",
-    "WASSCE prep app",
-    "BECE prep app",
-    "Ghana exam app",
-    "exam prep Ghana",
-    "SHS revision Ghana",
-    "JHS revision Ghana",
-    "AI tutor Ghana",
-    "Core Mathematics WASSCE",
-    "Elective Mathematics WASSCE",
-    "WASSCE English Language",
-    "Integrated Science WASSCE",
-    "WASSCE Physics",
-    "WASSCE Chemistry",
-    "WASSCE Biology",
-    "WASSCE Economics",
-    "WASSCE Geography",
-    "WASSCE Government",
-    "WASSCE History",
-    "WASSCE Literature in English",
-    "BECE Mathematics",
-    "BECE English",
-    "BECE Social Studies",
-    "BECE Integrated Science",
-    "spaced repetition exam prep",
-    "WASSCE syllabus",
-    "BECE syllabus",
-    "Bondzi",
-    "Bondzi app",
-  ],
-  authors: [{ name: "Cliffbase Tech", url: SITE_URL }],
-  creator: "Cliffbase Tech",
-  publisher: "Cliffbase Tech",
+  authors: [{ name: "Cliffbase Technologies", url: SITE_URL }],
+  creator: "Cliffbase Technologies",
+  publisher: "Cliffbase Technologies",
   category: "education",
   alternates: {
     canonical: "/",
@@ -190,8 +146,8 @@ const organizationJsonLd = {
   description: DESCRIPTION,
   email: "support@bondzi.online",
   foundingDate: "2026",
-  founder: { "@type": "Organization", name: "Cliffbase Tech" },
-  parentOrganization: { "@type": "Organization", name: "Cliffbase Tech" },
+  founder: { "@type": "Organization", name: "Cliffbase Technologies" },
+  parentOrganization: { "@type": "Organization", name: "Cliffbase Technologies" },
   areaServed: {
     "@type": "Country",
     name: "Ghana",
@@ -210,7 +166,7 @@ const websiteJsonLd = {
   name: SITE_NAME,
   url: SITE_URL,
   inLanguage: "en-GH",
-  publisher: { "@type": "Organization", name: "Cliffbase Tech" },
+  publisher: { "@type": "Organization", name: "Cliffbase Technologies" },
 };
 
 const mobileAppJsonLd = {
@@ -236,7 +192,7 @@ const mobileAppJsonLd = {
     availability: "https://schema.org/InStock",
     eligibleRegion: { "@type": "Country", name: "Ghana" },
   },
-  publisher: { "@type": "Organization", name: "Cliffbase Tech" },
+  publisher: { "@type": "Organization", name: "Cliffbase Technologies" },
   // `downloadUrl` / `installUrl` intentionally omitted until the Play
   // Store listing is live. They previously pointed at a direct APK,
   // which is unattributable (no Play Install Referrer) — and publishing

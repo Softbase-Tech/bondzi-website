@@ -63,7 +63,7 @@ export function LoginForm() {
       const e164 = normalizeGhanaPhone(identifier);
       if (!e164) {
         setSubmitting(false);
-        setFieldError("Use a Ghana number, e.g. 0205778299.");
+        setFieldError("Use a Ghana number, e.g. 020 000 0000.");
         return;
       }
       phone = e164;

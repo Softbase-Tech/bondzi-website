@@ -652,7 +652,7 @@ function Footer() {
             support@bondzi.online
           </a>
           <span className="text-ink-mute py-1">© 2026 Bondzi</span>
-          <span className="text-ink-mute py-1">Cliffbase Tech, Ghana</span>
+          <span className="text-ink-mute py-1">Cliffbase Technologies, Ghana</span>
         </div>
       </div>
     </footer>

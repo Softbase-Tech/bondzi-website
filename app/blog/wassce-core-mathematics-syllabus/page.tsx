@@ -182,7 +182,7 @@ export default function Page() {
 
         <h2>How Bondzi handles Core Mathematics</h2>
         <p>
-          Bondzi&apos;s WASSCE Core Mathematics question bank covers nine
+          Bondzi&apos;s WASSCE Core Mathematics question bank covers thirty-four
           years of past papers, organised by topic and by year. Every
           question you get wrong triggers an AI explanation pitched at SHS
           level. Topics you consistently stumble on get scheduled by a

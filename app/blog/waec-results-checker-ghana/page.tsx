@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleLayout } from "../../../components/blog/ArticleLayout";
+import { ArticleCta } from "../../../components/blog/ArticleCta";
 import { getPost } from "../../../lib/blog/posts";
 import { buildBlogPostingJsonLd } from "../../../lib/blog/jsonld";
 
@@ -90,6 +91,11 @@ export default function Page() {
           much easier than buying another card.
         </p>
 
+        <ArticleCta
+          headline="Waiting on results? Get ahead of the re-sit."
+          body="Thirty-four years of WAEC past questions, an AI tutor on every wrong answer — free to start, right in your browser."
+        />
+
         <h2>What WASSCE grades mean</h2>
         <p>
           WASSCE results are graded on a nine-point scale, A1 (best) through
@@ -143,12 +149,41 @@ export default function Page() {
           </li>
         </ol>
 
+        <h2>
+          Didn&apos;t get the credit you needed? The Nov/Dec window is your
+          second chance
+        </h2>
+        <p>
+          Every year, thousands of candidates open the checker and find a D7
+          or an F9 sitting exactly where they needed a C6. That grade is not
+          the end of the road — it&apos;s the reason the{" "}
+          <strong>WASSCE for Private Candidates (Nov/Dec)</strong> series
+          exists. The 2026 second series runs from{" "}
+          <strong>4 September to 29 October 2026</strong>, and a Nov/Dec
+          credit counts exactly the same toward university admission as a
+          May/June one.
+        </p>
+        <p>
+          Two things decide whether a re-sit goes differently: registering
+          properly and preparing differently. Our{" "}
+          <Link href="/blog/wassce-nov-dec-registration">
+            Nov/Dec registration guide
+          </Link>{" "}
+          covers the first;{" "}
+          <Link href="/blog/wassce-novdec-2026-timetable">
+            the official Nov/Dec 2026 timetable
+          </Link>{" "}
+          tells you exactly how long you have per paper. For the second — the
+          honest fix is practising the topics that produced the bad grade,
+          not re-reading the whole textbook.
+        </p>
+
         <h2>The best result is one you don&apos;t stress-check</h2>
         <p>
           Bondzi can&apos;t check your result for you — only WAEC can — but
           the best version of results day is one where you already know what
           to expect because you walked into the exam prepared. The app gives
-          you nine years of WAEC past questions, an AI tutor on every wrong
+          you thirty-four years of WAEC past questions, an AI tutor on every wrong
           answer, and a spaced-repetition schedule that brings shaky topics
           back until they stick.
         </p>

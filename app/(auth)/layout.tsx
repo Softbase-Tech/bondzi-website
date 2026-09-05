@@ -44,7 +44,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         <div className="w-full max-w-md">{children}</div>
       </main>
       <footer className="w-full py-6 text-center text-[12px] text-ink-mute">
-        © {new Date().getFullYear()} Bondzi · Cliffbase Tech
+        © {new Date().getFullYear()} Bondzi · Cliffbase Technologies
       </footer>
     </div>
   );

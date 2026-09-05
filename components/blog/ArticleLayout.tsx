@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { TrackedLink } from "../analytics/TrackedLink";
+import { appPath } from "../../lib/urls";
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import type { PostMeta } from "../../lib/blog/posts";
@@ -80,17 +82,20 @@ export function ArticleLayout({ post, children }: Props) {
               Practice what you just read about.
             </h3>
             <p className="mt-2 text-[14px] text-ink-soft max-w-md leading-[1.5]">
-              Bondzi is the WAEC, WASSCE and BECE prep app behind this journal.
-              Free to download, AI tutor on every wrong answer.
+              Bondzi is the WAEC, WASSCE and BECE prep app behind this
+              journal. Free to use in any browser — thirty-four years of past
+              questions, an AI tutor on every wrong answer.
             </p>
           </div>
-          <Link
-            href="/#get"
+          <TrackedLink
+            href={appPath("/register")}
+            event="cta_click"
+            properties={{ surface: "blog_article_footer", target: "register" }}
             className="inline-flex items-center justify-center gap-2 bg-orange text-on-brand px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors shrink-0 whitespace-nowrap"
           >
-            Get Bondzi App
+            Use the Bondzi app — free
             <ArrowUpRight size={16} strokeWidth={2.25} />
-          </Link>
+          </TrackedLink>
         </div>
       </article>
 
@@ -107,7 +112,7 @@ export function ArticleLayout({ post, children }: Props) {
             <span className="display text-[22px] font-medium">Bondzi</span>
           </Link>
           <div className="text-[13px] text-ink-mute">
-            © 2026 Bondzi · Cliffbase Tech, Ghana
+            © 2026 Bondzi · Cliffbase Technologies, Ghana
           </div>
         </div>
       </footer>

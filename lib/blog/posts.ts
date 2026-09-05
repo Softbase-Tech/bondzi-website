@@ -26,6 +26,41 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "wassce-novdec-2026-timetable",
+    title:
+      "WASSCE Nov/Dec 2026 timetable (official): dates for every Ghana paper",
+    description:
+      "The official WAEC timetable for the 2026 WASSCE for Private Candidates (Second Series) — 4 September to 29 October 2026 — with dates and times for every major Ghana paper.",
+    excerpt:
+      "WAEC has released the final timetable — and the 'Nov/Dec' series actually runs 4 September to 29 October. Every Ghana paper, date by date.",
+    publishedAt: "2026-09-04",
+    readMinutes: 8,
+    tags: ["WASSCE", "Nov/Dec", "WAEC", "Timetable"],
+  },
+  {
+    slug: "how-to-use-bondzi",
+    title: "How to use Bondzi: a step-by-step guide to smarter WAEC prep",
+    description:
+      "A complete walkthrough of the Bondzi app — past-question practice, AI explanations, spaced review, level tests, mock exams, and what's free versus paid.",
+    excerpt:
+      "From your first sign-up to your first full mock exam: how every part of Bondzi works, and the daily habit that actually moves grades.",
+    publishedAt: "2026-09-04",
+    readMinutes: 7,
+    tags: ["Bondzi", "How-to", "Study plan"],
+  },
+  {
+    slug: "ghana-new-curriculum-guide",
+    title:
+      "Ghana's new curriculum explained: what the SBC changes for students",
+    description:
+      "What Ghana's new Standards-Based Curriculum actually changes, who is on which curriculum right now, and where to download the official NaCCA syllabuses and learner materials.",
+    excerpt:
+      "Two curricula exist at once in Ghana right now. Here's what the new Standards-Based Curriculum changes, who it affects, and where the official documents live.",
+    publishedAt: "2026-09-04",
+    readMinutes: 7,
+    tags: ["Curriculum", "NaCCA", "SHS", "BECE"],
+  },
+  {
     slug: "wassce-2026-timetable",
     title: "WASSCE 2026 timetable: dates, format, and how to plan your study",
     description:
@@ -33,6 +68,7 @@ export const POSTS: PostMeta[] = [
     excerpt:
       "When is the WASSCE 2026? How many papers? Here's the format every Ghanaian SHS candidate should know — plus a revision schedule that fits around school.",
     publishedAt: "2026-05-12",
+    updatedAt: "2026-09-04",
     readMinutes: 6,
     tags: ["WASSCE", "WAEC", "Timetable", "Study plan"],
   },
@@ -44,6 +80,7 @@ export const POSTS: PostMeta[] = [
     excerpt:
       "Where to go, what you need (serial number, PIN), what each grade means, and what to do if you can't find your result.",
     publishedAt: "2026-05-12",
+    updatedAt: "2026-09-04",
     readMinutes: 5,
     tags: ["WAEC", "Results", "WASSCE", "BECE"],
   },

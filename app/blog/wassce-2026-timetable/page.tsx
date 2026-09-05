@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleLayout } from "../../../components/blog/ArticleLayout";
+import { ArticleCta } from "../../../components/blog/ArticleCta";
 import { getPost } from "../../../lib/blog/posts";
 import { buildBlogPostingJsonLd } from "../../../lib/blog/jsonld";
 
@@ -47,20 +48,28 @@ export default function Page() {
 
         <h2>When is the WASSCE 2026?</h2>
         <p>
-          WAEC publishes the official timetable a few months before each
-          series at <a href="https://www.waecgh.org">waecgh.org</a>. As a rule
-          of thumb:
+          WAEC publishes each official timetable at{" "}
+          <a href="https://waecgh.org/timetable/">waecgh.org</a>. Where the
+          2026 series stand now:
         </p>
         <ul>
           <li>
-            <strong>May/June 2026 (school candidates):</strong> papers
-            typically run from late April through early July, spread out so
-            candidates aren&apos;t sitting two heavy papers on the same day.
+            <strong>May/June 2026 (school candidates):</strong> completed.
+            If you sat it, your next milestone is results — see{" "}
+            <Link href="/blog/waec-results-checker-ghana">
+              our guide to checking WAEC results
+            </Link>
+            .
           </li>
           <li>
-            <strong>Nov/Dec 2026 (private candidates):</strong> registration
-            tends to open around April/May; papers run from late October
-            through November.
+            <strong>2026 second series (private candidates):</strong> the
+            final international timetable is out — papers run from{" "}
+            <strong>4 September to 29 October 2026</strong>. We&apos;ve
+            broken down every Ghana paper, date and time in{" "}
+            <Link href="/blog/wassce-novdec-2026-timetable">
+              the official Nov/Dec 2026 timetable guide
+            </Link>
+            .
           </li>
         </ul>
         <p>
@@ -93,11 +102,16 @@ export default function Page() {
           </li>
         </ul>
 
+        <ArticleCta
+          headline="Sitting the second series?"
+          body="Practise the exact papers on the timetable — thirty-four years of WAEC past questions with an AI tutor, free to start."
+        />
+
         <h2>A WASSCE study plan that actually works</h2>
         <p>
           The single most useful thing any WASSCE candidate can do is
           practise past questions under timed conditions — not just read the
-          textbook. WAEC questions follow patterns; ten years of past papers
+          textbook. WAEC questions follow patterns; decades of past papers
           show you exactly how they like to phrase a quadratic equation, an
           ecosystem question, a mole calculation.
         </p>
@@ -127,7 +141,7 @@ export default function Page() {
 
         <h2>Where Bondzi fits in</h2>
         <p>
-          Bondzi bundles nine years of WAEC WASSCE past questions across all
+          Bondzi bundles thirty-four years of WAEC WASSCE past questions across all
           fourteen most-sat subjects, sorted by paper, year, and topic. When
           you get a question wrong, an AI tutor explains it step by step in
           the same language your teacher would use. Questions you stumble on
