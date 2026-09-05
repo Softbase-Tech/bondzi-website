@@ -91,7 +91,6 @@ export function OnboardingPlansStep({ studentEmail, plus, pro }: Props) {
       }).catch((err) => {
         // Loader failure → hosted checkout URL, same fallback as
         // PlanPicker (strict-CSP browsers, offline-during-load blips).
-        // eslint-disable-next-line no-console
         console.warn("Paystack inline failed; falling back to hosted URL", err);
         window.location.href = authorizationUrl;
         return { status: "success" as const, reference };
