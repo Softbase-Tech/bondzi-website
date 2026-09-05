@@ -23,31 +23,96 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * TODO(content): the OFFICIAL_LINKS hrefs below are placeholder paths on
- * the real official domains. Replace each href with the exact page URL
- * before or shortly after publishing — the anchor text can stay.
- */
-const OFFICIAL_LINKS = [
+const NACCA_HUB = "https://nacca.gov.gh/secondary-education-curriculum";
+const PDF = "https://nacca.gov.gh/wp-content/uploads/2025/04";
+
+const SYLLABUS_GROUPS: { group: string; subjects: [string, string][] }[] = [
   {
-    label: "NaCCA — SHS curriculum & subject syllabuses",
-    href: "https://nacca.gov.gh/shs-curriculum/", // TODO: replace with exact URL
-    note: "The National Council for Curriculum and Assessment publishes the official curriculum documents for every subject.",
+    group: "Languages",
+    subjects: [
+      ["English Language", `${PDF}/English-Language-Curriculum.pdf`],
+      ["Literature in English", `${PDF}/Literature-in-English-Curriculum.pdf`],
+      ["French", `${PDF}/French-Curriculum.pdf`],
+      ["Arabic", `${PDF}/Arabic-Curriculum.pdf`],
+      ["Spanish", `${PDF}/Spanish-Curriculum.pdf`],
+    ],
   },
   {
-    label: "NaCCA — teacher and learner materials",
-    href: "https://nacca.gov.gh/learning-materials/", // TODO: replace with exact URL
-    note: "Official learner materials and teacher manuals aligned to the new curriculum.",
+    group: "Mathematics and Sciences",
+    subjects: [
+      ["Mathematics", `${PDF}/Mathematics-Curriculum.pdf`],
+      ["Additional Mathematics", `${PDF}/Additional-Mathematics-Curriculum.pdf`],
+      ["Biology", `${PDF}/Biology-Curriculum.pdf`],
+      ["Chemistry", `${PDF}/Chemistry-Curriculum.pdf`],
+      ["Physics", `${PDF}/Physics-Curriculum.pdf`],
+      ["General Science", `${PDF}/GENERAL-SCIENCE-Curriculum.pdf`],
+      ["Biomedical Science", `${PDF}/BIOMEDICAL-SCIENCE-Curriculum.pdf`],
+    ],
   },
   {
-    label: "Ministry of Education — SHS reform updates",
-    href: "https://moe.gov.gh/shs-curriculum-reform/", // TODO: replace with exact URL
-    note: "Policy announcements, rollout timelines, and circulars from the Ministry.",
+    group: "Humanities and Social Sciences",
+    subjects: [
+      ["Economics", `${PDF}/Economics-Curriculum-Curriculum.pdf`],
+      [
+        "Geography",
+        "https://nacca.gov.gh/wp-content/uploads/2025/11/Geography-Curriculum.pdf",
+      ],
+      ["Government", `${PDF}/Government-Curriculum.pdf`],
+      ["History", `${PDF}/History-Curriculum.pdf`],
+      ["Social Studies", `${PDF}/Social-Studies-Curriculum.pdf`],
+      [
+        "Religious and Moral Education",
+        `${PDF}/RELIGIOUS-AND-MORAL-EDUCATION-Curriculum.pdf`,
+      ],
+    ],
   },
   {
-    label: "WAEC Ghana — examinations & timetables",
-    href: "https://waecgh.org/",
-    note: "How and when the new curriculum will be examined, plus current timetables.",
+    group: "Computing, Technology and Engineering",
+    subjects: [
+      ["Computing", `${PDF}/Computing-Curriculum.pdf`],
+      ["ICT", `${PDF}/ICT-Curriculum.pdf`],
+      ["Robotics", `${PDF}/ROBOTICS-Curriculum.pdf`],
+      ["Engineering", `${PDF}/Engineering-Curriculum.pdf`],
+      [
+        "Manufacturing Engineering",
+        `${PDF}/Manufacturing-Engineering-Curriculum.pdf`,
+      ],
+      [
+        "Aviation and Aerospace Engineering",
+        `${PDF}/Aviation-and-Aerospace-Engineering-Curriculum.pdf`,
+      ],
+      ["Applied Technology", `${PDF}/Applied-Technology-Curriculum.pdf`],
+      [
+        "Design and Communication Technology",
+        `${PDF}/Design-Communication-Technology-Curriculum.pdf`,
+      ],
+    ],
+  },
+  {
+    group: "Agriculture",
+    subjects: [
+      ["Agriculture", `${PDF}/Agriculture-Curriculum.pdf`],
+      ["Agricultural Science", `${PDF}/Agricultural-Science-Curriculum.pdf`],
+    ],
+  },
+  {
+    group: "Arts, Sports and Others",
+    subjects: [
+      [
+        "Art and Design Foundation",
+        `${PDF}/Art-and-Design-Foundation-Curriculum.pdf`,
+      ],
+      ["Art and Design Studio", `${PDF}/Art-and-Design-Studio-Curriculum.pdf`],
+      ["Performing Arts", `${PDF}/Performing-Arts-Curriculum.pdf`],
+      [
+        "Physical Education and Health (Core)",
+        `${PDF}/PHYSICAL-EDUCATION-HEALTH-CORE-Curriculum.pdf`,
+      ],
+      [
+        "Physical Education and Health (Elective)",
+        `${PDF}/PHYSICAL-EDUCATION-HEALTH-Elective-Curriculum.pdf`,
+      ],
+    ],
   },
 ];
 
@@ -58,148 +123,187 @@ export default function Page() {
     <>
       <ArticleLayout post={post}>
         <p>
-          Ghana&apos;s secondary-school curriculum is in the middle of its
-          biggest redesign in a generation. The new{" "}
-          <strong>Standards-Based Curriculum (SBC)</strong>, developed by the
-          National Council for Curriculum and Assessment (NaCCA), started at
-          the basic level and is now rolling through senior high school —
-          which means students, parents, and teachers are living through a
-          period where <em>two curricula exist at once</em>. This guide
-          explains what actually changed, who it affects, and where to find
-          the official documents.
+          If you are in SHS right now, or heading there soon, you have heard
+          people talk about the &ldquo;new curriculum&rdquo;. Your teachers
+          mention it. It comes up on the news. Somebody in your WhatsApp group
+          has forwarded a PDF claiming to be the new syllabus. Some of what
+          you hear is true, some is outdated, and a lot of it is just
+          confusing.
+        </p>
+        <p>
+          This article clears it up. You will find out whether the new
+          curriculum affects you and your exams, what actually changes in the
+          classroom, and you can download the official syllabus for every
+          subject directly from NaCCA, the government body that writes them.
+          No third-party mirrors, no forwarded PDFs of unknown age.
         </p>
 
-        <h2>What the new curriculum is</h2>
-        <p>
-          The old system was objective-based: long lists of topics a teacher
-          should cover. The SBC flips the question from &ldquo;what was
-          taught?&rdquo; to &ldquo;what can the learner{" "}
-          <strong>do</strong>?&rdquo; Every subject is now organised in a
-          consistent hierarchy:
-        </p>
+        <h2>First: does the new curriculum affect you?</h2>
+        <p>Find yourself in this list before you read anything else.</p>
         <ul>
           <li>
-            <strong>Strands</strong> — the big pillars of a subject (in
-            Mathematics, for example: Number, Algebra, Geometry &amp;
-            Measurement, Data).
+            <strong>You are in JHS.</strong> Yes. Basic schools already teach
+            the standards-based curriculum, and the BECE is set from it. When
+            you enter SHS you will continue on the new system.
           </li>
           <li>
-            <strong>Sub-strands</strong> — the themes inside each pillar.
+            <strong>You entered SHS 1 in the 2024/25 academic year or
+            later.</strong> Yes. You are in the first group learning under
+            the new SHS curriculum. The syllabuses linked below are yours.
           </li>
           <li>
-            <strong>Content standards</strong> — what a learner is expected
-            to know and be able to do by the end of a level.
+            <strong>You are in SHS 2 or SHS 3 on the old system.</strong> No
+            change for you. You finish your programme under the old
+            curriculum and your WASSCE will be set from the old syllabus.
+            Nobody moves you midway.
           </li>
           <li>
-            <strong>Learning indicators</strong> — the specific, observable
-            skills a learner demonstrates, which is also what assessment is
-            built against.
-          </li>
-        </ul>
-        <p>
-          Alongside the structure, the SBC bakes in core competencies —
-          critical thinking, communication, digital literacy — and pushes
-          classroom assessment away from one-off recall tests toward
-          continuous, skill-based evidence.
-        </p>
-
-        <h2>Who is on which curriculum right now</h2>
-        <p>
-          This is the part that confuses most families, so plainly:
-        </p>
-        <ul>
-          <li>
-            <strong>Basic school (KG–JHS):</strong> already on the new
-            standards-based curriculum. The BECE is progressively aligned to
-            it.
-          </li>
-          <li>
-            <strong>Senior high school:</strong> transitioning. Newer cohorts
-            enter under the reformed SHS programme; students who started
-            under the old system finish — and are examined — under it.
-          </li>
-          <li>
-            <strong>Private / Nov/Dec candidates:</strong> still examined on
-            the old curriculum. WAEC labels the current private-candidate
-            series &ldquo;Old Curriculum&rdquo; explicitly — see the{" "}
+            <strong>You are a private or Nov/Dec candidate.</strong> No
+            change either. WAEC prints &ldquo;Old Curriculum&rdquo; on the
+            private-candidate timetable itself. If you are re-sitting, the
+            syllabus you learned is still the syllabus you will be examined
+            on. See the{" "}
             <Link href="/blog/wassce-novdec-2026-timetable">
               official Nov/Dec 2026 timetable
-            </Link>
-            . If you&apos;re re-sitting or writing as a private candidate,
-            the old syllabus is still your syllabus.
+            </Link>{" "}
+            for your dates.
           </li>
         </ul>
 
-        <ArticleCta
-          headline="Whichever curriculum you're on, the exam is still the exam."
-          body="Bondzi's question bank spans thirty-four years of WAEC papers, organised by syllabus topic — practise exactly what your series will test."
-        />
-
-        <h2>What actually changes for students</h2>
-        <ul>
-          <li>
-            <strong>Fewer, deeper topics.</strong> The SBC trims breadth in
-            favour of mastery — expect more multi-step problems and fewer
-            &ldquo;define the following&rdquo; questions over time.
-          </li>
-          <li>
-            <strong>Continuous assessment counts more.</strong> Projects,
-            classwork, and practical evidence feed into your record, not just
-            a terminal exam.
-          </li>
-          <li>
-            <strong>New learner materials.</strong> NaCCA publishes official
-            learner materials per subject and form — written for
-            self-study, not just classroom use. They are free to download
-            (links below).
-          </li>
-          <li>
-            <strong>Exams will follow the curriculum, not lead it.</strong>{" "}
-            WAEC aligns papers to whichever curriculum a cohort was taught
-            under — which is why the private-candidate series still says
-            &ldquo;Old Curriculum&rdquo; while school-candidate papers
-            migrate.
-          </li>
-        </ul>
-
-        <h2>Where to get the official documents</h2>
+        <h2>What actually changes for you in class</h2>
         <p>
-          Don&apos;t rely on third-party PDF mirrors — curriculum documents
-          get revised, and outdated mirrors circulate for years. Go to the
-          source:
+          Forget the policy language for a moment. Here is what the new
+          curriculum means in practice, sitting at your desk:
         </p>
         <ul>
-          {OFFICIAL_LINKS.map((l) => (
-            <li key={l.href}>
-              <a href={l.href} target="_blank" rel="noopener noreferrer">
-                {l.label}
-              </a>{" "}
-              — {l.note}
-            </li>
-          ))}
+          <li>
+            <strong>Your classwork counts.</strong> Under the old system,
+            everything came down to the final exam. Under the new one,
+            projects, group work and class exercises feed into your assessment
+            through the school year. A bad term of &ldquo;I will fix it during
+            revision&rdquo; costs you real marks now.
+          </li>
+          <li>
+            <strong>Questions test whether you can use it, not just recall
+            it.</strong> Expect fewer &ldquo;define the following&rdquo;
+            questions and more problems where you apply what you learned to a
+            situation. If your study habit is memorising notes the night
+            before, this curriculum will punish that habit.
+          </li>
+          <li>
+            <strong>There are subjects your seniors never had.</strong>{" "}
+            Robotics. Aviation and Aerospace Engineering. Biomedical Science.
+            Manufacturing Engineering. Spanish and Arabic as languages. If you
+            are still in JHS, it is worth knowing these exist before you
+            choose your SHS programme.
+          </li>
+          <li>
+            <strong>ICT skills run through everything.</strong> Computing and
+            ICT are no longer side subjects for one group of students. The
+            curriculum expects every student to handle digital tools.
+          </li>
         </ul>
 
-        <h2>How Bondzi fits in</h2>
+        <h2>Why you should download your own syllabus</h2>
         <p>
-          Bondzi&apos;s syllabus engine is built on the same
-          strand → sub-strand → content-standard structure NaCCA uses, so
-          your practice, weakness reports, and reading recommendations map
-          onto the official curriculum rather than a made-up topic list. For
-          the exams themselves, the past-question bank covers every WAEC
-          series — old curriculum included — with an AI tutor to explain
-          whatever you get wrong.
+          Most students never read the syllabus for their own subjects. That
+          is a mistake, and it is an easy one to fix.
+        </p>
+        <p>
+          The syllabus is the agreement between you and the examiner. It
+          lists everything you can be asked, term by term and year by year.
+          When your teacher rushes a topic, the syllabus tells you what you
+          missed. When you revise, it is your checklist: go topic by topic
+          and be honest about which ones you can handle and which ones you
+          are avoiding. When a friend claims &ldquo;they removed that
+          topic&rdquo;, you check the document instead of arguing.
+        </p>
+        <p>
+          Each PDF below is the full official curriculum for that subject,
+          published by NaCCA. Download the ones for your subjects and keep
+          them on your phone. They cost nothing but data.
+        </p>
+
+        <h2>Download the official syllabus for every SHS subject</h2>
+        <p>
+          All of these live on{" "}
+          <a href={NACCA_HUB} target="_blank" rel="noopener noreferrer">
+            NaCCA&apos;s secondary education curriculum page
+          </a>
+          , which is the page to bookmark in case any document gets revised.
+        </p>
+        {SYLLABUS_GROUPS.map((g) => (
+          <div key={g.group}>
+            <h3>{g.group}</h3>
+            <ul>
+              {g.subjects.map(([name, href]) => (
+                <li key={name}>
+                  <a href={href} target="_blank" rel="noopener noreferrer">
+                    {name}
+                  </a>{" "}
+                  (PDF)
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+
+        <ArticleCta
+          headline="The syllabus tells you what to learn. Practice makes it stick."
+          body="Bondzi gives you thirty-four years of real WAEC past questions, organised by topic, with an AI tutor that explains every answer you get wrong. Free to start."
+        />
+
+        <h2>What this means for BECE and WASSCE</h2>
+        <p>
+          WAEC examines you on the curriculum you were taught. That is the
+          rule that settles every rumour.
+        </p>
+        <ul>
+          <li>
+            The BECE already follows the new basic-school curriculum.
+          </li>
+          <li>
+            Students who started SHS under the old system will write the old
+            WASSCE, and the Nov/Dec series for private candidates stays on
+            the old syllabus for now.
+          </li>
+          <li>
+            The first WASSCE based on the new SHS curriculum arrives when the
+            new-curriculum students reach their final year. If that is you,
+            the syllabuses above are the most reliable picture of what your
+            exam can contain, because WAEC sets papers from them.
+          </li>
+        </ul>
+        <p>
+          One warning: do not study from old syllabus PDFs circulating in
+          study groups if you are on the new curriculum, and do not study
+          from the new ones if you are writing an old-curriculum paper.
+          Matching the right document to your own exam is half the battle.
+        </p>
+
+        <h2>Syllabus in hand. What about textbooks?</h2>
+        <p>
+          The syllabus tells you what to learn. The learning materials are
+          the official books that actually teach it, and NaCCA publishes
+          those too, free to download. We put together a separate guide on
+          where to find them:{" "}
+          <Link href="/blog/ghana-learning-materials-download">
+            where to download the official learning materials
+          </Link>
+          .
         </p>
 
         <h2>Next reads</h2>
         <ul>
           <li>
-            <Link href="/blog/wassce-novdec-2026-timetable">
-              The official WASSCE Nov/Dec 2026 timetable
+            <Link href="/blog/ghana-learning-materials-download">
+              Where to download the official learning materials for the new
+              curriculum
             </Link>
           </li>
           <li>
-            <Link href="/blog/how-to-use-bondzi">
-              How to use Bondzi, step by step
+            <Link href="/blog/wassce-novdec-2026-timetable">
+              The official WASSCE Nov/Dec 2026 timetable
             </Link>
           </li>
           <li>
