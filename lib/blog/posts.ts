@@ -51,14 +51,26 @@ export const POSTS: PostMeta[] = [
   {
     slug: "ghana-new-curriculum-guide",
     title:
-      "Ghana's new curriculum explained: what the SBC changes for students",
+      "New SHS curriculum in Ghana: what changed, plus every official syllabus PDF",
     description:
-      "What Ghana's new Standards-Based Curriculum actually changes, who is on which curriculum right now, and where to download the official NaCCA syllabuses and learner materials.",
+      "A student's guide to Ghana's new SHS curriculum: whether it affects your exams, what changes in class, and direct download links to the official NaCCA syllabus for every subject.",
     excerpt:
-      "Two curricula exist at once in Ghana right now. Here's what the new Standards-Based Curriculum changes, who it affects, and where the official documents live.",
+      "Does the new curriculum affect your exam? Find out in one list, then download the official syllabus for every subject directly from NaCCA. No forwarded PDFs.",
     publishedAt: "2026-09-04",
-    readMinutes: 7,
-    tags: ["Curriculum", "NaCCA", "SHS", "BECE"],
+    readMinutes: 8,
+    tags: ["Curriculum", "NaCCA", "SHS", "Syllabus"],
+  },
+  {
+    slug: "ghana-learning-materials-download",
+    title:
+      "Official learning materials for Ghana's new curriculum: free downloads by level",
+    description:
+      "The official textbooks for Ghana's new curriculum are free. What learner materials are, why they beat pamphlets and forwarded PDFs, and where to download them for your level.",
+    excerpt:
+      "The official textbooks are free and most students don't know it. Where to download NaCCA's learner materials for your level, and how to actually study from them.",
+    publishedAt: "2026-09-04",
+    readMinutes: 6,
+    tags: ["Learning materials", "NaCCA", "SHS", "JHS"],
   },
   {
     slug: "wassce-2026-timetable",
