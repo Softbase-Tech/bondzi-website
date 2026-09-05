@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { appPath } from "@/lib/urls";
@@ -23,7 +22,6 @@ import { appPath } from "@/lib/urls";
  */
 export function SessionErrorGuard() {
   const { data: session } = useSession();
-  const router = useRouter();
   const firedRef = useRef(false);
 
   useEffect(() => {
@@ -38,15 +36,28 @@ export function SessionErrorGuard() {
         : "Sign back in to continue where you left off.";
 
     toast.info("Session ended", { description });
-    void signOut({
-      redirect: false,
-    }).finally(() => {
-      // Login lives on the app subdomain in production. `appPath`
-      // resolves to a relative "/login" in dev and to the full
-      // https://app.bondzi.online/login in production.
-      router.replace(appPath("/login"));
-    });
-  }, [session?.error, router]);
+
+    // Hard navigation, NOT router.replace(): in production
+    // `appPath("/login")` is the absolute
+    // https://app.bondzi.online/login URL, which the App Router's
+    // client router rejects — the old code threw here after the
+    // toast, leaving the student "signed out" but stranded on the
+    // page. A location replace always works, and it also drops every
+    // bit of in-memory state (React Query caches etc.) built with the
+    // dead session.
+    const goToLogin = () => {
+      window.location.replace(appPath("/login"));
+    };
+    // Failsafe: if the signOut round-trip hangs (flaky network), send
+    // them to login anyway — the session cookie is already unusable.
+    const failsafe = window.setTimeout(goToLogin, 3000);
+    void signOut({ redirect: false })
+      .catch(() => undefined)
+      .finally(() => {
+        window.clearTimeout(failsafe);
+        goToLogin();
+      });
+  }, [session?.error]);
 
   return null;
 }
