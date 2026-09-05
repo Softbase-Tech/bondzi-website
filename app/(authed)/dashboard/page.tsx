@@ -124,15 +124,27 @@ export default async function DashboardPage() {
       </section>
 
       {resume ? (
-        <ContinueCard
-          examId={resume.id}
-          mode={resume.mode}
-          questionCount={resume.questionCount}
-          remaining={
-            resume.questions.filter((q) => q).length ||
-            resume.questionCount
-          }
-        />
+        <div>
+          <ContinueCard
+            examId={resume.id}
+            mode={resume.mode}
+            questionCount={resume.questionCount}
+            remaining={
+              resume.questions.filter((q) => q).length ||
+              resume.questionCount
+            }
+          />
+          {/* Students often have several unfinished sessions — the card
+              shows the most recent; this link opens all of them. */}
+          <div className="mt-2 text-right">
+            <Link
+              href="/sessions?status=in_progress"
+              className="text-[13px] font-medium text-ink-soft hover:text-ink underline underline-offset-4"
+            >
+              View all in progress
+            </Link>
+          </div>
+        </div>
       ) : null}
 
       {/* Stat tiles */}

@@ -26,7 +26,10 @@ export function VerifyEmailBanner() {
     <div className="w-full bg-yellow border-b border-yellow-soft">
       <Link
         href="/verify-email"
-        className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-10 py-2.5 flex items-center gap-2 text-[13px] text-ink hover:text-orange-deep transition-colors"
+        // Fixed dark text, NOT the ink token: the banner's yellow stays
+        // brand-yellow in both themes, but dark mode remaps --ink to
+        // off-white — which made this copy white-on-yellow (invisible).
+        className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-10 py-2.5 flex items-center gap-2 text-[13px] font-medium text-[#141414] hover:text-[#8a4a00] transition-colors"
       >
         <Mail size={16} className="shrink-0" />
         <span className="flex-1 truncate">

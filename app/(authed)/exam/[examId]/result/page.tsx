@@ -59,6 +59,18 @@ export default async function ExamResultPage({ params }: Props) {
   const scoreFraction = Math.max(0, Math.min(1, result.score));
   const scorePercent = Math.round(scoreFraction * 100);
 
+  // "Try another" goes back to where THIS session came from: quiz
+  // sessions to the quiz picker, everything else to the exam's
+  // subject page (or the subjects index when the subject is unknown).
+  const primarySubjectId = examSession?.subjectIds?.[0];
+  const isQuiz = examSession?.mode === "pm_test";
+  const tryAgainHref = isQuiz
+    ? "/quiz"
+    : primarySubjectId
+      ? `/subjects/${encodeURIComponent(primarySubjectId)}`
+      : "/subjects";
+  const tryAgainLabel = isQuiz ? "Try another quiz" : "Try another paper";
+
   return (
     <div className="max-w-[960px] mx-auto space-y-8">
       {/* Hero */}
@@ -85,8 +97,8 @@ export default async function ExamResultPage({ params }: Props) {
             <Button href="/dashboard" variant="outline">
               Back to dashboard
             </Button>
-            <Button href="/past-papers" rightIcon={<ArrowUpRight size={16} />}>
-              Try another paper
+            <Button href={tryAgainHref} rightIcon={<ArrowUpRight size={16} />}>
+              {tryAgainLabel}
             </Button>
           </div>
         </div>
