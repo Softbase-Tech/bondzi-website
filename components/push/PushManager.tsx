@@ -10,8 +10,10 @@ import {
   SW_MESSAGE_SOURCE,
 } from "@/lib/push/firebase";
 
-/** One automatic ask per browser session (per tab lifetime). */
-const AUTO_ASK_KEY = "bondzi_push_auto_asked";
+/** Timestamp (ms) of the last automatic ask on this browser. */
+const AUTO_ASK_AT_KEY = "bondzi_push_auto_asked_at";
+/** Re-ask cadence for the automatic prompt. Client-side only. */
+const AUTO_ASK_COOLDOWN_MS = 5 * 24 * 60 * 60 * 1000;
 
 /**
  * Invisible manager mounted once in the (authed) layout. Two jobs:
@@ -43,20 +45,29 @@ export function PushManager() {
 
     // Automatic ask: a signed-in user who has never decided on
     // notifications gets the native prompt without needing to find
-    // the CTA. Once per browser session (sessionStorage), small delay
-    // so it doesn't collide with first paint. Denied/granted states
-    // short-circuit inside autoRequestPushPermission.
-    // The session flag is written INSIDE the callback (not at mount)
-    // so dev strict-mode's mount/unmount/mount doesn't mark the ask
-    // as done while cancelling its own timer.
+    // the CTA. At most once every 5 days per browser (localStorage,
+    // no backend involved), small delay so it doesn't collide with
+    // first paint. Denied/granted states short-circuit inside
+    // autoRequestPushPermission. The timestamp is written INSIDE the
+    // callback (not at mount) so dev strict-mode's mount/unmount/
+    // mount doesn't burn the cooldown while cancelling its own timer.
     let askTimer: number | undefined;
     if (Notification.permission === "default") {
       askTimer = window.setTimeout(() => {
         try {
-          if (sessionStorage.getItem(AUTO_ASK_KEY)) return;
-          sessionStorage.setItem(AUTO_ASK_KEY, "1");
+          const last = Number.parseInt(
+            localStorage.getItem(AUTO_ASK_AT_KEY) ?? "0",
+            10,
+          );
+          if (
+            Number.isFinite(last) &&
+            Date.now() - last < AUTO_ASK_COOLDOWN_MS
+          ) {
+            return;
+          }
+          localStorage.setItem(AUTO_ASK_AT_KEY, String(Date.now()));
         } catch {
-          return; // No sessionStorage — skip the auto ask, card remains.
+          return; // No storage — skip the auto ask, card remains.
         }
         void autoRequestPushPermission();
       }, 1500);

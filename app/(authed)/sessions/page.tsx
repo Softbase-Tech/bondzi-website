@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 export default async function SessionHistoryPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; status?: string }>;
 }) {
   const session = await auth();
   if (!session?.accessToken) redirect("/login");
@@ -34,9 +34,14 @@ export default async function SessionHistoryPage({
   const params = await searchParams;
   const page = params.page ? Math.max(1, parseInt(params.page, 10) || 1) : 1;
   const limit = 25;
+  // Two views over the same history endpoint: finished sessions
+  // (default) and in-progress ones the student can jump back into
+  // (linked from the dashboard's "View all" next to Continue).
+  const status = params.status === "in_progress" ? "in_progress" : "completed";
+  const inProgress = status === "in_progress";
 
   const [historyRes, subjectsRes] = await Promise.allSettled([
-    listExamHistory(accessToken, { status: "completed", page, limit }),
+    listExamHistory(accessToken, { status, page, limit }),
     listSubjects(accessToken),
   ]);
 
@@ -65,21 +70,32 @@ export default async function SessionHistoryPage({
 
       <section>
         <h1 className="font-display text-[32px] sm:text-[40px] leading-[1.05] text-ink">
-          Session history
+          {inProgress ? "In progress" : "Session history"}
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft">
-          Every exam session you&apos;ve completed. Tap a row to review it.
+          {inProgress
+            ? "Sessions you started but haven't finished. Tap one to continue where you left off."
+            : "Every exam session you've completed. Tap a row to review it."}
         </p>
+        <div className="mt-4 flex gap-2">
+          <FilterTab href="/sessions" active={!inProgress}>
+            Completed
+          </FilterTab>
+          <FilterTab href="/sessions?status=in_progress" active={inProgress}>
+            In progress
+          </FilterTab>
+        </div>
       </section>
 
       {history.items.length === 0 ? (
         <Card className="p-8 text-center">
           <p className="font-display text-[20px] text-ink">
-            No sessions yet
+            {inProgress ? "Nothing in progress" : "No sessions yet"}
           </p>
           <p className="mt-2 text-[13.5px] text-ink-soft max-w-[52ch] mx-auto">
-            Finish an exam and it&apos;ll show up here, score, time, XP, and
-            a link to the review.
+            {inProgress
+              ? "Every session you start and leave midway will wait for you here."
+              : "Finish an exam and it'll show up here, score, time, XP, and a link to the review."}
           </p>
         </Card>
       ) : (
@@ -96,6 +112,7 @@ export default async function SessionHistoryPage({
                       key={row.id}
                       row={row}
                       subjectName={subjectName}
+                      continueMode={inProgress}
                     />
                   ))}
                 </ul>
@@ -109,7 +126,7 @@ export default async function SessionHistoryPage({
         <div className="flex items-center justify-between text-[13px]">
           {page > 1 ? (
             <Link
-              href={`/sessions?page=${page - 1}`}
+              href={`/sessions?page=${page - 1}${inProgress ? "&status=in_progress" : ""}`}
               className="text-ink-mute hover:text-ink"
             >
               ← Newer
@@ -119,7 +136,7 @@ export default async function SessionHistoryPage({
           )}
           {hasMore ? (
             <Link
-              href={`/sessions?page=${page + 1}`}
+              href={`/sessions?page=${page + 1}${inProgress ? "&status=in_progress" : ""}`}
               className="text-ink-mute hover:text-ink"
             >
               Older →
@@ -133,12 +150,37 @@ export default async function SessionHistoryPage({
   );
 }
 
+function FilterTab({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={
+        active
+          ? "px-3.5 h-9 inline-flex items-center rounded-full bg-ink text-bg text-[13px] font-medium"
+          : "px-3.5 h-9 inline-flex items-center rounded-full border border-rule text-[13px] font-medium text-ink-soft hover:text-ink"
+      }
+    >
+      {children}
+    </Link>
+  );
+}
+
 function SessionRow({
   row,
   subjectName,
+  continueMode = false,
 }: {
   row: ExamHistoryRow;
   subjectName: (id: string) => string;
+  continueMode?: boolean;
 }) {
   const percent = row.percentScore
     ? Number(row.percentScore).toFixed(0)
@@ -156,7 +198,11 @@ function SessionRow({
   return (
     <li>
       <Link
-        href={`/exam/${encodeURIComponent(row.id)}/result`}
+        href={
+          continueMode
+            ? `/exam/${encodeURIComponent(row.id)}`
+            : `/exam/${encodeURIComponent(row.id)}/result`
+        }
         className="flex items-center gap-4 px-5 py-4 hover:bg-yellow-soft/40 transition-colors motion-reduce:transition-none group"
       >
         <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-yellow-soft text-orange-deep shrink-0">
