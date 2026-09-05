@@ -178,6 +178,8 @@ export interface AnalyticsEventMap {
 
   // -- Activation --
   onboarding_subjects_saved: { subjectCount: number; skipped: boolean };
+  onboarding_plans_viewed: Record<string, never>;
+  onboarding_plans_skipped: Record<string, never>;
 
   // -- Core study loop --
   exam_started: { mode: ExamMode; level: ExamLevel };

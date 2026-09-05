@@ -61,12 +61,15 @@ export function OnboardingSubjectPicker({
     });
   };
 
-  // `skipped` distinguishes the two callers — both land on the
-  // dashboard and both persist whatever is currently toggled, so the
-  // only difference is intent, and that's exactly the thing worth
-  // measuring: how many students bail past the picker with only the
-  // pre-checked cores.
-  const save = (thenGo: "dashboard", { skipped }: { skipped: boolean }) => {
+  // `skipped` distinguishes the two callers — both persist whatever is
+  // currently toggled, so the only difference is intent, and that's
+  // exactly the thing worth measuring: how many students bail past the
+  // picker with only the pre-checked cores.
+  //
+  // Both routes continue to the onboarding pricing step (one
+  // skippable look at Plus/Pro while intent is highest — right after
+  // signup). That step carries the escape hatch to the dashboard.
+  const save = ({ skipped }: { skipped: boolean }) => {
     startTransition(async () => {
       // Bucketed, not raw — the exact count is noise, the shape of the
       // distribution is what tells you whether the picker is working.
@@ -85,7 +88,7 @@ export function OnboardingSubjectPicker({
             : "Couldn't save your picks. You can update them under Settings later.",
         );
       }
-      router.replace(`/${thenGo}`);
+      router.replace("/onboarding/plans");
     });
   };
 
@@ -160,14 +163,14 @@ export function OnboardingSubjectPicker({
           block
           size="lg"
           loading={pending}
-          onClick={() => save("dashboard", { skipped: false })}
+          onClick={() => save({ skipped: false })}
           className="sm:flex-1"
         >
           {count > 0 ? `Continue with ${count} subjects` : "Continue"}
         </Button>
         <button
           type="button"
-          onClick={() => save("dashboard", { skipped: true })}
+          onClick={() => save({ skipped: true })}
           disabled={pending}
           className="text-[13px] text-ink-soft hover:text-ink underline underline-offset-2 disabled:opacity-60"
         >
