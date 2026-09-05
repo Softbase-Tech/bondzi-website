@@ -120,7 +120,7 @@ export function AiReviewView({
               <span className="text-[12px] font-medium text-ink-mute">
                 {q.canGenerate
                   ? `${q.remaining} of ${q.limit} left this month`
-                  : `0 of ${q.limit} left — resets on the 1st`}
+                  : `0 of ${q.limit} left, resets on the 1st`}
               </span>
             ) : null}
           </div>

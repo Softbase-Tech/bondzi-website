@@ -54,7 +54,7 @@ export default async function WinnersPage() {
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           Every week we crown the students who put in the work. XP is
-          real — top winners earn spendable XP that unlocks Bondzi Pro.
+          real, top winners earn spendable XP that unlocks Bondzi Pro.
         </p>
       </header>
 

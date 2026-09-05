@@ -30,8 +30,8 @@ export default function Page() {
     <>
       <ArticleLayout post={post}>
         <p>
-          The WASSCE — short for the West African Senior School Certificate
-          Examination — is the school-leaving exam every Ghanaian SHS 3
+          The WASSCE, short for the West African Senior School Certificate
+          Examination, is the school-leaving exam every Ghanaian SHS 3
           candidate sits at the end of their senior high journey. It&apos;s
           set and marked by <strong>WAEC</strong>, the West African
           Examinations Council, and the same exam decides admission into
@@ -55,7 +55,7 @@ export default function Page() {
         <ul>
           <li>
             <strong>May/June 2026 (school candidates):</strong> completed.
-            If you sat it, your next milestone is results — see{" "}
+            If you sat it, your next milestone is results, see{" "}
             <Link href="/blog/waec-results-checker-ghana">
               our guide to checking WAEC results
             </Link>
@@ -63,7 +63,7 @@ export default function Page() {
           </li>
           <li>
             <strong>2026 second series (private candidates):</strong> the
-            final international timetable is out — papers run from{" "}
+            final international timetable is out, papers run from{" "}
             <strong>4 September to 29 October 2026</strong>. We&apos;ve
             broken down every Ghana paper, date and time in{" "}
             <Link href="/blog/wassce-novdec-2026-timetable">
@@ -75,7 +75,7 @@ export default function Page() {
         <p>
           Don&apos;t trust unofficial timetables shared on WhatsApp without
           checking against the WAEC Ghana site. Every year there&apos;s a
-          version going around that swaps two papers — it&apos;s a real
+          version going around that swaps two papers, it&apos;s a real
           source of last-minute panic.
         </p>
 
@@ -86,17 +86,17 @@ export default function Page() {
         </p>
         <ul>
           <li>
-            <strong>Paper 1 — Objective.</strong> Multiple-choice questions,
+            <strong>Paper 1: Objective.</strong> Multiple-choice questions,
             usually 40–60 of them in an hour or so. Mostly testing recall and
             quick reasoning.
           </li>
           <li>
-            <strong>Paper 2 — Essay / Theory.</strong> Longer-form
-            questions — proofs in mathematics, structured answers in the
+            <strong>Paper 2: Essay / Theory.</strong> Longer-form
+            questions, proofs in mathematics, structured answers in the
             sciences, essays in English and Social Studies.
           </li>
           <li>
-            <strong>Paper 3 — Practical / Test of Oral.</strong> Only in
+            <strong>Paper 3: Practical / Test of Oral.</strong> Only in
             certain subjects: the sciences (lab practicals), Music, French
             (listening), Visual Art, etc.
           </li>
@@ -104,13 +104,13 @@ export default function Page() {
 
         <ArticleCta
           headline="Sitting the second series?"
-          body="Practise the exact papers on the timetable — thirty-four years of WAEC past questions with an AI tutor, free to start."
+          body="Practise the exact papers on the timetable, thirty-four years of WAEC past questions with an AI tutor, free to start."
         />
 
         <h2>A WASSCE study plan that actually works</h2>
         <p>
           The single most useful thing any WASSCE candidate can do is
-          practise past questions under timed conditions — not just read the
+          practise past questions under timed conditions, not just read the
           textbook. WAEC questions follow patterns; decades of past papers
           show you exactly how they like to phrase a quadratic equation, an
           ecosystem question, a mole calculation.
@@ -134,7 +134,7 @@ export default function Page() {
           <li>
             <strong>Mark honestly.</strong> Don&apos;t give yourself the
             method mark you don&apos;t deserve. Use the WAEC chief
-            examiners&apos; reports — they&apos;re free to download and tell
+            examiners&apos; reports, they&apos;re free to download and tell
             you exactly what they marked candidates down for.
           </li>
         </ol>
@@ -145,13 +145,13 @@ export default function Page() {
           fourteen most-sat subjects, sorted by paper, year, and topic. When
           you get a question wrong, an AI tutor explains it step by step in
           the same language your teacher would use. Questions you stumble on
-          come back tomorrow, then in three days, then a week — until they
+          come back tomorrow, then in three days, then a week, until they
           stick.
         </p>
         <p>
           Whether you&apos;re sitting the 2026 May/June series in school or
           registering for the Nov/Dec window as a private candidate, the
-          syllabus is the same — and so is the rule: practise what WAEC
+          syllabus is the same, and so is the rule: practise what WAEC
           actually asks, not what you wish they&apos;d ask.
         </p>
 

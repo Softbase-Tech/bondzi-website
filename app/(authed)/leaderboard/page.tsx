@@ -39,7 +39,7 @@ export default async function LeaderboardPage() {
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           See where you stand in Ghana this week. Earn XP by answering
-          questions — the board refreshes every Monday morning.
+          questions, the board refreshes every Monday morning.
         </p>
       </header>
       <LeaderboardView

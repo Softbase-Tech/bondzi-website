@@ -83,8 +83,8 @@ export function ArticleLayout({ post, children }: Props) {
             </h3>
             <p className="mt-2 text-[14px] text-ink-soft max-w-md leading-[1.5]">
               Bondzi is the WAEC, WASSCE and BECE prep app behind this
-              journal. Free to use in any browser — thirty-four years of past
-              questions, an AI tutor on every wrong answer.
+              journal. Free to use in any browser, with thirty-four years of
+              past questions and an AI tutor on every wrong answer.
             </p>
           </div>
           <TrackedLink
@@ -93,7 +93,7 @@ export function ArticleLayout({ post, children }: Props) {
             properties={{ surface: "blog_article_footer", target: "register" }}
             className="inline-flex items-center justify-center gap-2 bg-orange text-on-brand px-5 h-12 rounded-full font-medium hover:bg-orange-deep transition-colors shrink-0 whitespace-nowrap"
           >
-            Use the Bondzi app — free
+            Use the Bondzi app free
             <ArrowUpRight size={16} strokeWidth={2.25} />
           </TrackedLink>
         </div>

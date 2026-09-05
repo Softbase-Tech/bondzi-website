@@ -18,7 +18,7 @@ import { Card, CardBody } from "@/components/ui/Card";
  * partner routes.
  */
 export const metadata: Metadata = {
-  title: "Partner sign in — Bondzi",
+  title: "Partner sign in · Bondzi",
   description:
     "Sign in to the Bondzi partner portal to manage codes, payouts, and earnings.",
   robots: { index: false, follow: false },
@@ -34,7 +34,7 @@ export default function PartnerSigninPage() {
             Sign in
           </h1>
           <p className="mt-2 text-ink-soft text-[14px] leading-relaxed">
-            Use your Bondzi account — same login you use on the
+            Use your Bondzi account, same login you use on the
             student app. If you haven&apos;t registered as a partner
             yet, sign in first and we&apos;ll walk you through it.
           </p>

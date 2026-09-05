@@ -16,7 +16,7 @@ import { ENV } from "@/lib/env";
  */
 
 export const metadata: Metadata = {
-  title: "Pricing — Bondzi",
+  title: "Pricing · Bondzi",
   description:
     "Bondzi pricing for Ghana: free past-question practice for everyone, one-time Plus access per exam, and Pro subscriptions with the full AI tutor. Paid in cedis via mobile money.",
   alternates: { canonical: "https://bondzi.online/pricing" },
@@ -99,18 +99,18 @@ const FREE_FEATURES = [
   "Daily spaced-repetition review of what you got wrong",
   "Progress tracking, streaks, XP and the weekly leaderboard",
   "10 AI explanations every month",
-  "Works offline — practice syncs when you're back online",
+  "Works offline. Practice syncs when you're back online",
 ];
 
 const PLUS_FEATURES = [
   "Everything in Free",
-  "Full AI tutor — an explanation on every wrong answer",
-  "Pay once, keep it — no renewals",
+  "Full AI tutor, an explanation on every wrong answer",
+  "Pay once, keep it, no renewals",
 ];
 
 const PRO_FEATURES = [
   "Everything in Plus",
-  "AI Level Tests — fresh questions calibrated to your syllabus",
+  "AI Level Tests, fresh questions calibrated to your syllabus",
   "Weakness analytics and curated drills on your weak topics",
   "Full mock exams with post-exam breakdowns",
 ];
@@ -163,7 +163,7 @@ export default async function PricingPage() {
           Free to study seriously. Paid when you want the full tutor.
         </h1>
         <p className="mt-5 text-[16px] sm:text-[17px] text-ink-soft max-w-2xl leading-[1.6]">
-          Every price below comes straight from our live catalogue — what you
+          Every price below comes straight from our live catalogue. What you
           see is what checkout charges, in Ghana cedis, paid with MTN,
           Telecel, or AirtelTigo mobile money. No card needed.
         </p>
@@ -180,7 +180,7 @@ export default async function PricingPage() {
             </div>
             <p className="mt-3 text-[14px] text-ink-soft leading-[1.55]">
               The full question bank and the study system. Enough to prepare
-              properly — not a trial.
+              properly, not a trial.
             </p>
             <ul className="mt-5 space-y-2.5 text-[14px] text-ink-soft flex-1">
               {FREE_FEATURES.map((f) => (
@@ -227,7 +227,7 @@ export default async function PricingPage() {
               )}
             </div>
             <p className="mt-3 text-[14px] text-ink-soft leading-[1.55]">
-              One payment for your exam level, yours for good — built for the
+              One payment for your exam level, yours for good, built for the
               student who wants the AI tutor without a subscription.
             </p>
             {plus.length > 0 && (
@@ -288,7 +288,7 @@ export default async function PricingPage() {
               )}
             </div>
             <p className="mt-3 text-[14px] text-ink-soft leading-[1.55]">
-              The complete system — AI tests, analytics, and drills — for the
+              The complete system. AI tests, analytics, and drills, for the
               student treating this exam like a campaign.
             </p>
             {pro.length > 0 && (
@@ -338,7 +338,7 @@ export default async function PricingPage() {
 
         {!plans && (
           <p className="mt-6 text-[13px] text-ink-mute">
-            Live prices are shown inside the app —{" "}
+            Live prices are shown inside the app.{" "}
             <TrackedLink
               href={appPath("/register")}
               event="cta_click"
@@ -359,7 +359,7 @@ export default async function PricingPage() {
             <div>
               <dt className="font-medium text-[15px]">How do I pay?</dt>
               <dd className="mt-1.5 text-[14px] text-ink-soft leading-[1.6]">
-                With mobile money — MTN MoMo, Telecel Cash, or AirtelTigo
+                With mobile money: MTN MoMo, Telecel Cash, or AirtelTigo
                 Money. Prices are in Ghana cedis and any applicable VAT is
                 handled at checkout.
               </dd>
@@ -371,7 +371,7 @@ export default async function PricingPage() {
               <dd className="mt-1.5 text-[14px] text-ink-soft leading-[1.6]">
                 Plus is a one-time payment that permanently unlocks the full
                 AI tutor for your exam level. Pro is a subscription that adds
-                the diagnostic layer on top — AI Level Tests, weakness
+                the diagnostic layer on top: AI Level Tests, weakness
                 analytics, curated drills, and full mock exams.
               </dd>
             </div>
@@ -380,7 +380,7 @@ export default async function PricingPage() {
                 Is the free plan really enough to prepare?
               </dt>
               <dd className="mt-1.5 text-[14px] text-ink-soft leading-[1.6]">
-                Yes — it includes the entire past-question bank, the daily
+                Yes, it includes the entire past-question bank, the daily
                 review system, and 10 AI explanations a month. Upgrade when
                 you find yourself wanting an explanation on every wrong
                 answer, not before.

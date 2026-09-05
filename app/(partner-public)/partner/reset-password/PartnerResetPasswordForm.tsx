@@ -81,7 +81,7 @@ export function PartnerResetPasswordForm() {
         otp,
         password,
       });
-      toast.success("Password updated — sign in with your new password.");
+      toast.success("Password updated, sign in with your new password.");
       router.replace("/partner/signin");
     } catch (err) {
       const msg =

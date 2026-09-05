@@ -26,7 +26,7 @@ import { StreakDots } from "./StreakDots";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Your Bondzi home — pick up where you left off.",
+  description: "Your Bondzi home, pick up where you left off.",
 };
 
 /**
@@ -242,7 +242,7 @@ export default async function DashboardPage() {
               </div>
               <div className="mt-1 font-display text-[20px] leading-tight text-ink">
                 {dailyProgress >= dailyGoal
-                  ? "Nice — you're done for today"
+                  ? "Nice, you're done for today"
                   : `${dailyGoal - dailyProgress} to go`}
               </div>
               <div className="mt-1 text-[12.5px] text-ink-soft inline-flex items-center gap-1">

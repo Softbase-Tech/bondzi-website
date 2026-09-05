@@ -53,7 +53,7 @@ export default async function SettingsHubPage() {
       href: "/settings/account",
       icon: <UserIcon size={18} />,
       title: "Account",
-      subtitle: "Name, username, school, password — and danger zone",
+      subtitle: "Name, username, school, password, and danger zone",
     },
     {
       href: "/settings/notifications",

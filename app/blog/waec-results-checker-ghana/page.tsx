@@ -54,7 +54,7 @@ export default function Page() {
         <h2>What you need before you start</h2>
         <ul>
           <li>
-            <strong>Your index number</strong> — printed on your WAEC
+            <strong>Your index number</strong>: printed on your WAEC
             registration slip. Looks like a long string of digits.
           </li>
           <li>
@@ -65,7 +65,7 @@ export default function Page() {
             times.
           </li>
           <li>
-            <strong>The exam type and year</strong> — e.g. WASSCE May/June
+            <strong>The exam type and year</strong>: e.g. WASSCE May/June
             2026, or BECE 2026.
           </li>
         </ul>
@@ -74,7 +74,7 @@ export default function Page() {
         <ol>
           <li>Open the WAEC Ghana eresults portal.</li>
           <li>
-            Pick the right exam type — <strong>WASSCE</strong> for SHS
+            Pick the right exam type, <strong>WASSCE</strong> for SHS
             candidates, <strong>BECE</strong> for JHS, and select May/June or
             Nov/Dec where prompted.
           </li>
@@ -86,14 +86,14 @@ export default function Page() {
           </li>
         </ol>
         <p>
-          Screenshot the result page immediately. If you need it later — for
-          university application, a visa, a scholarship — that screenshot is
+          Screenshot the result page immediately. If you need it later, for
+          university application, a visa, a scholarship, that screenshot is
           much easier than buying another card.
         </p>
 
         <ArticleCta
           headline="Waiting on results? Get ahead of the re-sit."
-          body="Thirty-four years of WAEC past questions, an AI tutor on every wrong answer — free to start, right in your browser."
+          body="Thirty-four years of WAEC past questions, an AI tutor on every wrong answer, free to start, right in your browser."
         />
 
         <h2>What WASSCE grades mean</h2>
@@ -128,7 +128,7 @@ export default function Page() {
 
         <h2>If your result is withheld</h2>
         <p>
-          A result can be withheld if WAEC flags possible irregularities — a
+          A result can be withheld if WAEC flags possible irregularities, a
           shared answer pattern, a missing script, an unresolved attendance
           query. Withheld results display as <code>WH</code> or &ldquo;Result
           withheld&rdquo;. Don&apos;t panic:
@@ -156,7 +156,7 @@ export default function Page() {
         <p>
           Every year, thousands of candidates open the checker and find a D7
           or an F9 sitting exactly where they needed a C6. That grade is not
-          the end of the road — it&apos;s the reason the{" "}
+          the end of the road, it&apos;s the reason the{" "}
           <strong>WASSCE for Private Candidates (Nov/Dec)</strong> series
           exists. The 2026 second series runs from{" "}
           <strong>4 September to 29 October 2026</strong>, and a Nov/Dec
@@ -173,14 +173,14 @@ export default function Page() {
           <Link href="/blog/wassce-novdec-2026-timetable">
             the official Nov/Dec 2026 timetable
           </Link>{" "}
-          tells you exactly how long you have per paper. For the second — the
+          tells you exactly how long you have per paper. For the second, the
           honest fix is practising the topics that produced the bad grade,
           not re-reading the whole textbook.
         </p>
 
         <h2>The best result is one you don&apos;t stress-check</h2>
         <p>
-          Bondzi can&apos;t check your result for you — only WAEC can — but
+          Bondzi can&apos;t check your result for you, only WAEC can, but
           the best version of results day is one where you already know what
           to expect because you walked into the exam prepared. The app gives
           you thirty-four years of WAEC past questions, an AI tutor on every wrong

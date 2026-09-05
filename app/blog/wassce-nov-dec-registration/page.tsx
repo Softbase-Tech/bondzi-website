@@ -29,9 +29,9 @@ export default function Page() {
     <>
       <ArticleLayout post={post}>
         <p>
-          The <strong>WASSCE Nov/Dec series</strong> — officially the
+          The <strong>WASSCE Nov/Dec series</strong>, officially the
           WAEC West African Senior School Certificate Examination for Private
-          Candidates — is the second annual sitting of the same exam school
+          Candidates, is the second annual sitting of the same exam school
           candidates take in May/June. The papers are identical, the
           syllabus is identical, and a Nov/Dec credit counts exactly the
           same toward university admission.
@@ -71,7 +71,7 @@ export default function Page() {
           <strong>April or May</strong> each year and closes in{" "}
           <strong>July</strong>. Late registration is sometimes possible at a
           surcharge, but it&apos;s safer to register inside the standard
-          window — last-minute changes often hit centre allocation hardest.
+          window, last-minute changes often hit centre allocation hardest.
         </p>
         <p>
           The official timeline is published at{" "}
@@ -82,7 +82,7 @@ export default function Page() {
         <h2>What you&apos;ll need</h2>
         <ul>
           <li>
-            A valid <strong>government-issued ID</strong> — Ghana Card or
+            A valid <strong>government-issued ID</strong>: Ghana Card or
             passport.
           </li>
           <li>
@@ -98,7 +98,7 @@ export default function Page() {
             registration fee, plus a small buffer for service charges.
           </li>
           <li>
-            A <strong>WAEC registration PIN</strong> — bought at the start of
+            A <strong>WAEC registration PIN</strong>: bought at the start of
             the process from banks or accredited vendors.
           </li>
         </ul>
@@ -123,7 +123,7 @@ export default function Page() {
           <li>
             <strong>Pick your subjects.</strong> Most candidates re-sit
             specific subjects rather than the full set. You don&apos;t have
-            to do all of them — only the ones you need.
+            to do all of them, only the ones you need.
           </li>
           <li>
             <strong>Upload your passport photo</strong> within the size and
@@ -135,7 +135,7 @@ export default function Page() {
           </li>
           <li>
             <strong>Pay and submit.</strong> Print or save your registration
-            slip — you&apos;ll need the index number on it both for entering
+            slip, you&apos;ll need the index number on it both for entering
             the exam hall and for checking your result later.
           </li>
         </ol>
@@ -167,8 +167,8 @@ export default function Page() {
         <p>
           The honest answer is: practise past WAEC questions, under timed
           conditions, until the patterns are second nature. Bondzi gives you
-          the full WASSCE past-question bank — thirty-four years of papers across
-          fourteen subjects — with an AI tutor that explains every wrong
+          the full WASSCE past-question bank, thirty-four years of papers across
+          fourteen subjects, with an AI tutor that explains every wrong
           answer and a spaced-repetition schedule that drags shaky topics
           back until they&apos;re solid.
         </p>

@@ -32,7 +32,7 @@ export default function Page() {
           Core Mathematics is one of the four <strong>WASSCE core
           papers</strong> every candidate in Ghana sits, regardless of their
           programme. It&apos;s also the paper that decides whether a lot of
-          students walk into the university programme they actually want —
+          students walk into the university programme they actually want,
           most science, business, and engineering programmes set a minimum
           grade in Core Maths as a hard floor.
         </p>
@@ -45,15 +45,15 @@ export default function Page() {
         <h2>The paper structure</h2>
         <ul>
           <li>
-            <strong>Paper 1 — Objective.</strong> 50 multiple-choice
+            <strong>Paper 1: Objective.</strong> 50 multiple-choice
             questions in 1 hour 30 minutes. Roughly two minutes per
             question. Speed and accuracy on routine work matter more than
             elegance.
           </li>
           <li>
-            <strong>Paper 2 — Essay / Theory.</strong> Two sections. Section
+            <strong>Paper 2: Essay / Theory.</strong> Two sections. Section
             A is short-answer; you must answer all questions. Section B
-            offers a choice — pick five from about eight longer questions.
+            offers a choice, pick five from about eight longer questions.
             About 2 hours 30 minutes total.
           </li>
         </ul>
@@ -77,7 +77,7 @@ export default function Page() {
           <li>Approximations, significant figures, standard form.</li>
           <li>Ratio, rate, proportion, and percentage problems.</li>
           <li>Indices, logarithms, and surds.</li>
-          <li>Sequences and series — arithmetic, geometric.</li>
+          <li>Sequences and series, arithmetic, geometric.</li>
         </ul>
 
         <h3>2. Algebra</h3>
@@ -87,7 +87,7 @@ export default function Page() {
             inequalities.
           </li>
           <li>Change of subject of a formula.</li>
-          <li>Variation — direct, inverse, joint, partial.</li>
+          <li>Variation, direct, inverse, joint, partial.</li>
           <li>Polynomials, factorisation, and basic factor theorem work.</li>
           <li>Functions and relations (mappings, domains, ranges).</li>
         </ul>
@@ -96,10 +96,10 @@ export default function Page() {
         <ul>
           <li>Angles, polygons, the circle and its theorems.</li>
           <li>
-            Mensuration of plane shapes and solids — area, volume, surface
+            Mensuration of plane shapes and solids, area, volume, surface
             area, lengths of arcs and sectors.
           </li>
-          <li>Coordinate geometry — gradient, distance, midpoint, lines.</li>
+          <li>Coordinate geometry, gradient, distance, midpoint, lines.</li>
         </ul>
 
         <h3>4. Trigonometry</h3>
@@ -122,7 +122,7 @@ export default function Page() {
         <h3>6. Calculus (introductory)</h3>
         <ul>
           <li>Differentiation of simple polynomials.</li>
-          <li>Application of derivatives — gradients, simple rate problems.</li>
+          <li>Application of derivatives, gradients, simple rate problems.</li>
           <li>Basic integration as the reverse process.</li>
         </ul>
 
@@ -139,7 +139,7 @@ export default function Page() {
             most of those marks.
           </li>
           <li>
-            <strong>Mensuration</strong> — cones, cylinders, pyramids — is
+            <strong>Mensuration</strong> (cones, cylinders, pyramids) is
             almost always tested. Memorise the formulae and practise solid
             geometry questions until the formula choice is automatic.
           </li>
@@ -149,7 +149,7 @@ export default function Page() {
           </li>
           <li>
             <strong>Sets, Venn diagrams, and the universal-set &ldquo;neither&rdquo; trap</strong>{" "}
-            — at least one objective question almost every year. Drill these
+            appear as at least one objective question almost every year. Drill these
             until they&apos;re reflexive.
           </li>
         </ul>
@@ -159,7 +159,7 @@ export default function Page() {
           <li>
             <strong>Weeks 1–4: topic-by-topic recall.</strong> One topic per
             day, your notes + textbook + a small set of practice questions.
-            Don&apos;t skip topics you don&apos;t like — they&apos;re the
+            Don&apos;t skip topics you don&apos;t like, they&apos;re the
             ones that show up.
           </li>
           <li>
@@ -170,7 +170,7 @@ export default function Page() {
           <li>
             <strong>Weeks 9–11: targeted weak-topic drilling.</strong> Your
             mark scheme will have made clear what you&apos;re weak at.
-            Spend three weeks fixing those topics specifically — don&apos;t
+            Spend three weeks fixing those topics specifically, don&apos;t
             re-practice what you&apos;re already good at.
           </li>
           <li>

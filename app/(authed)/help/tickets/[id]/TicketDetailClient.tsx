@@ -183,7 +183,7 @@ export function TicketDetailClient({
         <section className="rounded-2xl border border-rule bg-paper p-4 space-y-3">
           <p className="text-sm text-ink-mute">
             This ticket is closed. Start a new ticket if the problem comes
-            back — we&apos;ll have the history.
+            back, we&apos;ll have the history.
           </p>
           <Link
             href={`/help/tickets/new?related=${encodeURIComponent(detail.ticketNumber)}`}

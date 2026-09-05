@@ -58,7 +58,7 @@ export default async function OnboardingPage() {
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[54ch] mx-auto">
           Pick the subjects you&apos;re preparing for. We&apos;ll narrow
-          everything on Bondzi — dashboard, past papers, quiz — to just
+          everything on Bondzi · dashboard, past papers, quiz, to just
           those. You can change your picks anytime under Settings.
         </p>
       </header>

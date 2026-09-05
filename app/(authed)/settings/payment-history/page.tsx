@@ -42,7 +42,7 @@ export default async function PaymentHistoryPage() {
           Payment history
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
-          Every checkout attempt on this account — pending, paid,
+          Every checkout attempt on this account, pending, paid,
           refunded. Reach out at{" "}
           <a
             href="mailto:support@bondzi.online"

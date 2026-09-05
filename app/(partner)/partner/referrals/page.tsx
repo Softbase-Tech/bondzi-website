@@ -65,7 +65,7 @@ export default async function PartnerReferralsPage({
           Every student who signed up with one of your codes. Filter by
           code to see how each channel is performing, and sort by earnings
           or engagement to find your top referrals. We only show
-          usernames — no full names, emails, or phone numbers — so your
+          usernames, no full names, emails, or phone numbers, so your
           referrals&apos; privacy stays intact.
         </p>
       </header>

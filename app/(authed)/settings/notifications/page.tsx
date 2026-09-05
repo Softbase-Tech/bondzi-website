@@ -36,7 +36,7 @@ export default async function NotificationSettingsPage() {
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           Choose which emails and push notifications Bondzi sends. You
-          can turn any topic off — account-critical mail (receipts,
+          can turn any topic off, account-critical mail (receipts,
           password resets, security notices) will always come through.
         </p>
       </header>

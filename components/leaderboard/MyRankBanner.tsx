@@ -43,7 +43,7 @@ export function MyRankBanner({ rows, currentUserId, periodLabel }: Props) {
               Not on {periodLabel}&apos;s board yet
             </div>
             <p className="text-[13px] text-ink-soft mt-0.5">
-              Answer a few questions to earn XP — you&apos;ll show up here
+              Answer a few questions to earn XP, you&apos;ll show up here
               as soon as the board picks you up.
             </p>
           </div>
@@ -81,7 +81,7 @@ export function MyRankBanner({ rows, currentUserId, periodLabel }: Props) {
             </div>
           ) : (
             <div className="mt-0.5 text-[12.5px] font-medium text-orange">
-              You&apos;re at the top — hold the line!
+              You&apos;re at the top, hold the line!
             </div>
           )}
         </div>

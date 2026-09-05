@@ -190,7 +190,7 @@ function EmptyState({ periodLabel }: { periodLabel: string }) {
         {capitalise(periodLabel)}&apos;s board just reset
       </p>
       <p className="mt-1.5 text-[13.5px] text-ink-soft max-w-[42ch] mx-auto">
-        Be the first to earn XP — every question you answer gets you
+        Be the first to earn XP, every question you answer gets you
         closer to #1.
       </p>
     </Card>

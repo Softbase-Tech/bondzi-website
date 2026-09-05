@@ -73,7 +73,7 @@ export default async function PlansPage({
         </h1>
         <p className="mt-2 text-[15.5px] text-ink-soft max-w-[62ch]">
           All past papers, AI explanations, adaptive quiz, timed mock
-          exams, and level tests — unlocked. Pay once for lifetime
+          exams, and level tests, unlocked. Pay once for lifetime
           access, subscribe monthly, or redeem your XP.
         </p>
       </header>
@@ -101,7 +101,7 @@ export default async function PlansPage({
               </h2>
               <p className="mt-1 text-[13.5px] text-ink-soft max-w-[60ch]">
                 No cash to spare? Trade the XP you&apos;ve earned answering
-                questions for days of Pro access — every tier extends
+                questions for days of Pro access, every tier extends
                 your subscription instantly.
               </p>
             </div>
@@ -138,7 +138,7 @@ export default async function PlansPage({
         <div className="flex items-start gap-3">
           <ShieldCheck size={18} className="text-orange shrink-0 mt-0.5" />
           <p className="text-[13px] text-ink-soft leading-relaxed">
-            Payments are processed by Paystack — cards, mobile money,
+            Payments are processed by Paystack, cards, mobile money,
             and bank transfer all supported. Your card details never
             touch Bondzi&apos;s servers.
           </p>

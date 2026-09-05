@@ -20,7 +20,7 @@ export default async function PartnerCodesPage() {
           Your codes
         </h1>
         <p className="mt-2 text-ink-soft text-[14px] leading-relaxed max-w-prose">
-          Create as many codes as you like — one per campaign, per
+          Create as many codes as you like, one per campaign, per
           channel, per audience. Every code you create is tied to your
           account. Codes stay active forever unless you deactivate them;
           the default code cannot be deactivated so you always have at

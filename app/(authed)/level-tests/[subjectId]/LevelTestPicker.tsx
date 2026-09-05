@@ -170,7 +170,7 @@ export function LevelTestPicker({
           {noneSelected ? (
             <p className="mt-2 text-[12px] text-ink-mute inline-flex items-center gap-1.5">
               <ListChecks size={12} />
-              Pick at least one topic — or Select all to test across the
+              Pick at least one topic, or Select all to test across the
               full Form {formLevel} syllabus.
             </p>
           ) : (
@@ -181,7 +181,7 @@ export function LevelTestPicker({
         </div>
 
         <div className="text-[12.5px] text-ink-soft">
-          Every level test is {LEVEL_TEST_COUNT} questions — drawn
+          Every level test is {LEVEL_TEST_COUNT} questions, drawn
           from the topics you picked.
         </div>
 

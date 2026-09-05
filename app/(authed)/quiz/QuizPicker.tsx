@@ -63,7 +63,7 @@ export function QuizPicker({ subjects, pro, examType }: Props) {
           </p>
           <p className="mt-1.5 text-[13.5px] text-ink-soft max-w-[42ch] mx-auto">
             The Bondzi AI is generating {examType.toUpperCase()} question
-            banks. Check back soon — the moment your subjects have active
+            banks. Check back soon, the moment your subjects have active
             questions they appear here.
           </p>
         </Card>
@@ -196,7 +196,7 @@ export function QuizPicker({ subjects, pro, examType }: Props) {
               </Button>
               {!pro ? (
                 <p className="text-[12px] text-ink-mute text-center">
-                  Free preview shows Quiz — Pro unlocks the sessions.
+                  Free preview shows Quiz. Pro unlocks the sessions.
                 </p>
               ) : null}
             </Card>

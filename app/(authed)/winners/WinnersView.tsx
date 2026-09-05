@@ -214,7 +214,7 @@ function AllTimeBoard({
         </p>
         <p className="mt-1.5 text-[13.5px] text-ink-soft max-w-[42ch] mx-auto">
           Once weekly winners start claiming their XP, their names show
-          up here — for good.
+          up here, for good.
         </p>
       </Card>
     );
@@ -405,7 +405,7 @@ function ShareBanner({
             You ranked #{mine.rank} {period === "weekly" ? "this week" : "this month"}
           </div>
           <p className="mt-0.5 text-[13px] text-on-brand/85">
-            Tell your friends — a share earns the bragging rights you
+            Tell your friends, a share earns the bragging rights you
             just paid for in XP.
           </p>
         </div>
@@ -448,7 +448,7 @@ function ShareButton({
       if ((err as { name?: string })?.name === "AbortError") return;
       try {
         await nav?.clipboard.writeText(text);
-        toast.success("Copied to clipboard — paste and share");
+        toast.success("Copied to clipboard, paste and share");
       } catch {
         toast.error("Couldn't open the share sheet. Try again.");
       }
@@ -489,7 +489,7 @@ function EmptyState({ period }: { period: LeaderboardPeriodType }) {
         No {period === "weekly" ? "weekly" : "monthly"} winners yet
       </p>
       <p className="mt-1.5 text-[13.5px] text-ink-soft max-w-[42ch] mx-auto">
-        Be the first champion — earn XP now and your name lands here
+        Be the first champion, earn XP now and your name lands here
         when winners are picked.
       </p>
     </Card>

@@ -37,7 +37,7 @@ export default async function ExamTypePage() {
           Exam type
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
-          Switch between WASSCE, BECE, and Nov/Dec — content, subjects,
+          Switch between WASSCE, BECE, and Nov/Dec, content, subjects,
           and leaderboards all follow. You can change this at most 3
           times per hour.
         </p>
@@ -51,12 +51,12 @@ export default async function ExamTypePage() {
             <strong className="text-ink">Heads up:</strong> switching
             exam type resets your leaderboard entries for the old
             level. Your subject picks, XP, streak, and past attempts
-            stay intact — each level keeps its own subject list, so
+            stay intact, each level keeps its own subject list, so
             switching back restores it.
           </p>
           <p>
             Subscriptions are per-level. Pro on WASSCE does not carry
-            over to BECE — you&apos;ll need a separate plan on the
+            over to BECE, you&apos;ll need a separate plan on the
             new level.
           </p>
         </div>

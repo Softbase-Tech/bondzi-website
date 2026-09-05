@@ -118,7 +118,7 @@ export function PastPaperLauncher({
           <Perk
             icon={<Clock size={16} />}
             title="Take your time"
-            body="No countdown unless you want one — this is practice."
+            body="No countdown unless you want one, this is practice."
           />
         </div>
 

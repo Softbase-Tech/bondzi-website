@@ -56,7 +56,7 @@ export default async function PartnerAppealsPage() {
         <p className="mt-2 text-ink-soft text-[14px] leading-relaxed max-w-prose">
           If your account was suspended, you can open an appeal. Our
           team reviews and responds by email. You get{" "}
-          <strong>{maxAppeals}</strong> appeals in total —
+          <strong>{maxAppeals}</strong> appeals in total,
           <strong> {Math.max(0, maxAppeals - usedAppeals)}</strong>{" "}
           remaining. Three denied appeals close the account
           permanently.
@@ -89,7 +89,7 @@ export default async function PartnerAppealsPage() {
           <CardBody>
             <p className="text-[14px] text-ink-soft leading-relaxed">
               Your account is permanently closed. Any appeals below
-              are preserved for reference — new appeals cannot be
+              are preserved for reference, new appeals cannot be
               opened.
             </p>
           </CardBody>

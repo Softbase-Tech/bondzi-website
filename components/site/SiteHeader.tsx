@@ -109,10 +109,10 @@ export function SiteHeader({ items }: Props) {
         <div className="flex items-center gap-2">
           {/* Desktop CTAs.
               - Public: Sign in (ghost) + Get started (primary pill).
-              - Authed: Open app (primary pill) — no reason to show
+              - Authed: Open app (primary pill): no reason to show
                 sign-in when you're already signed in.
               Both routes are Next.js Links so hover-prefetch is on for
-              the app entry point — the tap-to-in-app is faster than a
+              the app entry point, the tap-to-in-app is faster than a
               full page load. */}
           {isAuthed ? (
             <Link

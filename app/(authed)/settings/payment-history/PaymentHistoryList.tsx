@@ -67,7 +67,7 @@ export function PaymentHistoryList({ initialItems, total, pageSize }: Props) {
           No payments yet
         </p>
         <p className="mt-1.5 text-[13.5px] text-ink-soft max-w-[42ch] mx-auto">
-          When you start a checkout, you&apos;ll see it here — pending
+          When you start a checkout, you&apos;ll see it here, pending
           until it confirms, then paid.
         </p>
       </Card>
@@ -149,7 +149,7 @@ function PaymentRow({ row }: { row: PaymentAttemptView }) {
           {showRefundPill ? (
             <div className="mt-1.5 text-[12px] text-ink-soft leading-snug">
               {row.autoRefundOutcome === "failed"
-                ? "Refund is being processed by our team — your card will be credited shortly."
+                ? "Refund is being processed by our team, your card will be credited shortly."
                 : "You already own this plan on this level. A refund has been issued and will appear on your statement shortly."}
             </div>
           ) : null}

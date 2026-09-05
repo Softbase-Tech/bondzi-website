@@ -74,7 +74,7 @@ export function ReferralPanel({ stats, events }: Props) {
       }
       await nav?.clipboard.writeText(message);
       trackEvent("referral_shared", { channel: "clipboard" });
-      toast.success("Copied — paste and send");
+      toast.success("Copied, paste and send");
     } catch (err) {
       if ((err as { name?: string })?.name === "AbortError") return;
       toast.error("Couldn't open share sheet. Try again.");

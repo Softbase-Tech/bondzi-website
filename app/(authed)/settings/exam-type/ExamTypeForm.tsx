@@ -23,19 +23,19 @@ const OPTIONS: {
   {
     key: "wassce",
     title: "WASSCE",
-    subtitle: "Senior High School (SHS) — West African Senior School Cert.",
+    subtitle: "Senior High School (SHS): West African Senior School Cert.",
     needsForm: true,
   },
   {
     key: "bece",
     title: "BECE",
-    subtitle: "Junior High School (JHS) — Basic Education Cert. Exam.",
+    subtitle: "Junior High School (JHS): Basic Education Cert. Exam.",
     needsForm: true,
   },
   {
     key: "novdec",
     title: "Nov/Dec",
-    subtitle: "Private WASSCE resit — no form level.",
+    subtitle: "Private WASSCE resit, no form level.",
     needsForm: false,
   },
 ];
@@ -227,7 +227,7 @@ export function ExamTypeForm({ profile }: Props) {
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         title="Switch to a new exam type?"
-        description={`Your ${profile.examType.toUpperCase()} leaderboard entries are reset. Subject picks, XP, streak and past attempts all stay — your ${profile.examType.toUpperCase()} subjects come back when you switch back. Continue?`}
+        description={`Your ${profile.examType.toUpperCase()} leaderboard entries are reset. Subject picks, XP, streak and past attempts all stay, your ${profile.examType.toUpperCase()} subjects come back when you switch back. Continue?`}
       >
         <DialogActions>
           <Button

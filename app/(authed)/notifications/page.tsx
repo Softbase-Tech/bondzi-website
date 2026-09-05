@@ -32,7 +32,7 @@ export default async function NotificationsPage() {
           Notifications
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
-          Streak nudges, referral wins, exam updates — everything the
+          Streak nudges, referral wins, exam updates, everything the
           Bondzi backend sends you lands here.
         </p>
       </header>

@@ -70,7 +70,7 @@ export default async function StreakPage() {
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           One question a day keeps it alive. Miss a day and the count
-          resets — your personal best stays saved either way.
+          resets, your personal best stays saved either way.
         </p>
       </header>
 
@@ -96,7 +96,7 @@ export default async function StreakPage() {
         <p className="text-[13px] text-ink-soft leading-relaxed">
           Answer at least one question between midnight and midnight in
           Accra time and today counts as active. Miss a day and the
-          streak resets. Your longest streak stays saved either way — a
+          streak resets. Your longest streak stays saved either way, a
           broken streak is a fresh start, not a reset of your record.
         </p>
       </div>

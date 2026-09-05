@@ -44,7 +44,7 @@ export const REFERRAL_REWARDS = {
 } as const;
 
 export const REFERRAL_SHARE_TEMPLATE =
-  "Join me on Bondzi Ghana and ace your exams. Use my code {code} when you sign up — we both earn XP. https://bondzi.online";
+  "Join me on Bondzi Ghana and ace your exams. Use my code {code} when you sign up, we both earn XP. https://bondzi.online";
 
 /**
  * Normalise a referral code for display + sharing. Strips the legacy

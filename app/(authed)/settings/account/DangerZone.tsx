@@ -67,7 +67,7 @@ export function DangerZone() {
     <div className="space-y-4">
       <Row
         title="Sign out of all devices"
-        body="Ends every open session — mobile app, other browsers, everything."
+        body="Ends every open session, mobile app, other browsers, everything."
         action={
           <Button
             variant="outline"
@@ -81,7 +81,7 @@ export function DangerZone() {
 
       <Row
         title="Delete account"
-        body="Scheduled for deletion — sign in within 90 days to reverse. After that, personal data is permanently anonymised."
+        body="Scheduled for deletion, sign in within 90 days to reverse. After that, personal data is permanently anonymised."
         action={
           <Button
             variant="outline"
@@ -97,7 +97,7 @@ export function DangerZone() {
         open={signOutOpen}
         onOpenChange={setSignOutOpen}
         title="Sign out of every device?"
-        description="You'll need to sign in again on each device — including this one."
+        description="You'll need to sign in again on each device, including this one."
       >
         <DialogActions>
           <Button

@@ -185,7 +185,7 @@ export default async function ExamResultPage({ params }: Props) {
       ) : null}
 
       {/*
-        Wrong-answer review — ReviewList handles both the rich path
+        Wrong-answer review. ReviewList handles both the rich path
         (using the session's full questions[]) and the compact
         fallback (per-row rendering when session is missing or a
         specific question wasn't returned).

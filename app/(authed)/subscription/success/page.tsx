@@ -48,12 +48,12 @@ export default async function SubscriptionSuccessPage({
       <div>
         <h1 className="font-display text-[32px] sm:text-[42px] leading-[1.05] text-ink">
           {isPending
-            ? "Payment received — activating…"
+            ? "Payment received, activating…"
             : "You&apos;re in. Welcome to Bondzi Pro."}
         </h1>
         <p className="mt-2 text-[15.5px] text-ink-soft max-w-[52ch] mx-auto">
           {isPending
-            ? "Paystack accepted your payment. It only takes a moment for our system to catch up — this page will refresh itself."
+            ? "Paystack accepted your payment. It only takes a moment for our system to catch up, this page will refresh itself."
             : "All Pro features are unlocked. Reach out to support@bondzi.online if anything is off."}
         </p>
       </div>

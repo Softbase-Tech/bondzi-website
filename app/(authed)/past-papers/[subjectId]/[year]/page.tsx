@@ -10,7 +10,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subjectId: _s, year } = await params;
-  return { title: `Past paper — ${year}` };
+  return { title: `Past paper · ${year}` };
 }
 
 /**

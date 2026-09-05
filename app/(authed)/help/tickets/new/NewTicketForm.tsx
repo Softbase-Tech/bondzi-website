@@ -170,7 +170,7 @@ export function NewTicketForm({
       </div>
 
       <p className="text-xs text-ink-mute leading-relaxed">
-        We&apos;ll reply here and via push. Include as much detail as you can —
+        We&apos;ll reply here and via push. Include as much detail as you can,
         we can&apos;t respond faster than the info you give us.
       </p>
 

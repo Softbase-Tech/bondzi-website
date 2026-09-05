@@ -102,7 +102,7 @@ export function PartnerOnboardingFlow({
       await requestEmailOtp({ email: value });
       setEmail(value);
       setStep("verify");
-      toast.success("Code sent — check your inbox.");
+      toast.success("Code sent, check your inbox.");
     } catch (err) {
       const msg =
         err instanceof ApiError
@@ -200,7 +200,7 @@ export function PartnerOnboardingFlow({
         // Bondzi student becoming a partner vs a cold signup. They
         // convert very differently and the copy is tuned per path.
         trackEvent("partner_signup_completed", { hadAccount: isSignedIn });
-        toast.success("Partner account created — welcome!");
+        toast.success("Partner account created, welcome!");
         router.replace("/partner/dashboard");
         router.refresh();
       } catch (err) {

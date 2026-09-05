@@ -54,7 +54,7 @@ export default async function ManageSubscriptionPage() {
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           See what&apos;s active, when it renews, and cancel anytime.
-          Bondzi Plus is lifetime — nothing to cancel there.
+          Bondzi Plus is lifetime, nothing to cancel there.
         </p>
       </header>
 
@@ -96,7 +96,7 @@ export default async function ManageSubscriptionPage() {
             Payment history
           </span>
           <span className="mt-0.5 block text-[12.5px] text-ink-soft">
-            Every checkout attempt — pending, paid, refunded
+            Every checkout attempt, pending, paid, refunded
           </span>
         </span>
         <ArrowLeft

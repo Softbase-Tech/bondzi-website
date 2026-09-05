@@ -4,7 +4,7 @@ import { PartnerResetPasswordForm } from "./PartnerResetPasswordForm";
 import { Card, CardBody } from "@/components/ui/Card";
 
 export const metadata: Metadata = {
-  title: "Reset password — Bondzi Partner",
+  title: "Reset password · Bondzi Partner",
   robots: { index: false, follow: false },
 };
 

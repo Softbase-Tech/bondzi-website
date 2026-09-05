@@ -78,7 +78,7 @@ export default async function SessionHistoryPage({
             No sessions yet
           </p>
           <p className="mt-2 text-[13.5px] text-ink-soft max-w-[52ch] mx-auto">
-            Finish an exam and it&apos;ll show up here — score, time, XP, and
+            Finish an exam and it&apos;ll show up here, score, time, XP, and
             a link to the review.
           </p>
         </Card>

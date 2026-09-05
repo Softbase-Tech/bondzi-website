@@ -57,7 +57,7 @@ export default async function RedeemPage() {
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           Every question you answer earns XP. Cash it in here for days
-          of Bondzi Pro — no card required.
+          of Bondzi Pro, no card required.
         </p>
       </header>
 
@@ -122,7 +122,7 @@ export default async function RedeemPage() {
           Redeeming spends from your{" "}
           <span className="font-semibold text-ink">spendable XP</span>. It
           does not affect your{" "}
-          <span className="font-semibold text-ink">level XP</span> — you
+          <span className="font-semibold text-ink">level XP</span>, you
           keep the streak, the level, and the leaderboard rank.
         </p>
       </section>

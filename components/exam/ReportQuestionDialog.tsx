@@ -85,7 +85,7 @@ export function ReportQuestionDialog({
           reason,
           note: note.trim() || undefined,
         });
-        toast.success("Flagged for review — thanks.", {
+        toast.success("Flagged for review, thanks.", {
           description: "Our team will look into this question.",
         });
         onReported?.(questionId, reason);
