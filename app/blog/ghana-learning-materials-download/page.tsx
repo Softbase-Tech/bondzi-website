@@ -23,33 +23,24 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * TODO(content): the per-level hrefs below are PLACEHOLDERS pointing at
- * NaCCA's hub page. Swap each href for the exact level page URL when
- * the links are provided. Anchor text and layout can stay as they are.
- */
 const NACCA_HUB = "https://nacca.gov.gh/secondary-education-curriculum";
+const MATERIALS_BASE = "https://curriculumresources.edu.gh";
 
 const LEVELS: { level: string; note: string; href: string }[] = [
   {
     level: "SHS Year 1 learning materials",
     note: "Learner materials for every Year 1 subject on the new curriculum.",
-    href: NACCA_HUB, // TODO(content): replace with the Year 1 materials page
+    href: `${MATERIALS_BASE}/category/year1/`,
   },
   {
     level: "SHS Year 2 learning materials",
     note: "Year 2 learner materials, released as the new curriculum rolls forward.",
-    href: NACCA_HUB, // TODO(content): replace with the Year 2 materials page
+    href: `${MATERIALS_BASE}/year2/`,
   },
   {
     level: "SHS Year 3 learning materials",
     note: "Final-year materials, the ones that matter most in exam season.",
-    href: NACCA_HUB, // TODO(content): replace with the Year 3 materials page
-  },
-  {
-    level: "Basic school (KG to JHS) materials",
-    note: "Learner materials for the basic-school curriculum, including JHS.",
-    href: NACCA_HUB, // TODO(content): replace with the basic-level materials page
+    href: `${MATERIALS_BASE}/year3/`,
   },
 ];
 
@@ -130,13 +121,20 @@ export default function Page() {
 
         <h2>Where to download the learning materials</h2>
         <p>
-          Everything starts from{" "}
-          <a href={NACCA_HUB} target="_blank" rel="noopener noreferrer">
-            NaCCA&apos;s secondary education curriculum page
+          The materials live on the official curriculum resources portal,{" "}
+          <a
+            href={MATERIALS_BASE}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            curriculumresources.edu.gh
           </a>
-          . Below are the level pages. Download the subjects you are
-          offering, save them on your phone, and they are yours offline from
-          then on.
+          , organised by year. The syllabuses themselves stay on{" "}
+          <a href={NACCA_HUB} target="_blank" rel="noopener noreferrer">
+            NaCCA&apos;s curriculum page
+          </a>
+          . Pick your year below, download the subjects you are offering,
+          and they are yours offline from then on.
         </p>
         <ul>
           {LEVELS.map((l) => (
