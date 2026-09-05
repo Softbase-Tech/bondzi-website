@@ -30,7 +30,7 @@ export default async function HelpPage() {
       <header className="space-y-2">
         <h1 className="text-3xl font-bold text-ink">Help and feedback</h1>
         <p className="text-ink-mute">
-          Open a ticket — we reply here and by email.
+          Open a ticket, we reply here and by email.
         </p>
       </header>
 
@@ -64,7 +64,7 @@ export default async function HelpPage() {
             </div>
           ) : faq.length === 0 ? (
             <div className="px-4 py-6 text-sm text-ink-mute">
-              No FAQ entries yet — check back soon.
+              No FAQ entries yet, check back soon.
             </div>
           ) : (
             faq.map((entry) => (
@@ -92,7 +92,7 @@ export default async function HelpPage() {
           <ActionLink
             icon={<MessageSquare className="h-5 w-5 text-ink-mute" />}
             title="Chat with support"
-            subtitle="Open a ticket — we reply here and by email"
+            subtitle="Open a ticket, we reply here and by email"
             href="/help/tickets/new?category=general"
           />
           <ActionLink

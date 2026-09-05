@@ -42,7 +42,7 @@ export function ReviewList({ result, questions }: Props) {
     return (
       <Card className="p-8 text-center">
         <p className="font-display text-[20px] text-ink">
-          Nothing to review — you nailed it 🎯
+          Nothing to review, you nailed it 🎯
         </p>
         <p className="mt-1.5 text-[13.5px] text-ink-soft">
           Every question you attempted was correct.

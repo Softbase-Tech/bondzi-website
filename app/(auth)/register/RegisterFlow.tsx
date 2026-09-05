@@ -47,7 +47,7 @@ const EXAM_OPTIONS: readonly {
   {
     key: "novdec",
     title: "NOVDEC",
-    blurb: "Remedial — same syllabus as WASSCE",
+    blurb: "Remedial, same syllabus as WASSCE",
   },
 ];
 
@@ -434,7 +434,7 @@ export function RegisterFlow() {
                   </div>
                   {(dobDay || dobMonth || dobYear) && !dateOfBirthIso ? (
                     <p className="mt-1.5 text-[12.5px] font-medium text-red-600">
-                      Enter a valid date — students must be at least 8.
+                      Enter a valid date, students must be at least 8.
                     </p>
                   ) : null}
                 </div>

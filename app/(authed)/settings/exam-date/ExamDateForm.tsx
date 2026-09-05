@@ -156,7 +156,7 @@ export function ExamDateForm({ profile }: Props) {
           </p>
         ) : (
           <p className="mt-3 text-[13px] text-ink-mute leading-relaxed">
-            We store the day exactly — no timezone gymnastics.
+            We store the day exactly, no timezone gymnastics.
           </p>
         )}
       </div>

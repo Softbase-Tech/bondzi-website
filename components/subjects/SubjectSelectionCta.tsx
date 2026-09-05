@@ -22,8 +22,8 @@ export function NoSelectedSubjectsCta({
         Pick the subjects you&apos;re preparing for
       </p>
       <p className="mt-1.5 text-[13.5px] text-ink-soft max-w-[42ch] mx-auto">
-        We&apos;ll narrow everything on Bondzi — dashboard, past papers,
-        quizzes — to just those subjects. You can change your picks
+        We&apos;ll narrow everything on Bondzi · dashboard, past papers,
+        quizzes, to just those subjects. You can change your picks
         anytime.
       </p>
       <Link

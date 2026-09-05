@@ -82,7 +82,7 @@ export function ManagePanel({ subscription, currentLevelLabel }: Props) {
                 ? "Lifetime access"
                 : isXpCredited
                   ? "Pro via XP redemption"
-                  : "Pro — recurring"}
+                  : "Pro, recurring"}
             </h2>
             <p className="mt-0.5 text-[13.5px] text-ink-soft">
               Level: {currentLevelLabel}
@@ -126,7 +126,7 @@ export function ManagePanel({ subscription, currentLevelLabel }: Props) {
 
         {isCancelled && subscription.expiresAt ? (
           <div className="rounded-xl bg-yellow-soft/60 border border-orange/40 p-3 text-[13px] text-ink">
-            Your Pro is cancelled — you&apos;ll keep access until{" "}
+            Your Pro is cancelled, you&apos;ll keep access until{" "}
             <strong className="font-semibold">
               {formatDate(subscription.expiresAt)}
             </strong>
@@ -159,7 +159,7 @@ export function ManagePanel({ subscription, currentLevelLabel }: Props) {
         title="Cancel Bondzi Pro?"
         description={
           subscription.expiresAt
-            ? `You'll keep Pro access until ${formatDate(subscription.expiresAt)}. After that you drop to the free tier — you can resubscribe anytime.`
+            ? `You'll keep Pro access until ${formatDate(subscription.expiresAt)}. After that you drop to the free tier, you can resubscribe anytime.`
             : "Cancelling ends your subscription. You can resubscribe anytime."
         }
       >

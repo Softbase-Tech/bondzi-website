@@ -31,11 +31,11 @@ If you have any questions, contact us at **support@bondzi.online**.
 
 ## How we use your information
 
-- To provide and personalise the service — practice, mock exams, explanations,
+- To provide and personalise the service, practice, mock exams, explanations,
   leaderboards and reminders.
 - To process subscriptions and referrals.
 - To send you account, security and service messages (and, where you've opted
-  in, streak nudges and updates — you can turn these off any time).
+  in, streak nudges and updates, you can turn these off any time).
 - To keep Bondzi safe, prevent abuse, and improve our content and features.
 
 ## When we share information
@@ -48,7 +48,7 @@ We do **not** sell your personal data. We share it only with:
 - Authorities where we are legally required to do so.
 
 Leaderboards and the Winners Hall display your **public handle (username)** and
-avatar to other students — not your email, phone or real name.
+avatar to other students, not your email, phone or real name.
 
 ## Data retention and deletion
 
@@ -195,7 +195,7 @@ it's really you before we proceed.
 
 - Your account is **scheduled for deletion** and you're signed out.
 - There is a **90-day grace period**. If you change your mind, just **log back
-  in before the 90 days are up** and the deletion is cancelled — nothing is lost.
+  in before the 90 days are up** and the deletion is cancelled, nothing is lost.
 - We email you before the deadline, and again once the account is deleted.
 - After 90 days, we permanently **anonymise** your account.
 
@@ -206,8 +206,8 @@ number, date of birth, avatar and username.
 
 ## What may be retained
 
-- **Anonymised** records that no longer identify you — for example, past
-  leaderboard standings — so historical results stay intact.
+- **Anonymised** records that no longer identify you, for example, past
+  leaderboard standings, so historical results stay intact.
 - **Transaction records** we are required to keep for legal, tax or anti-fraud
   reasons, retained only for as long as the law requires.
 

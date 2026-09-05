@@ -70,7 +70,7 @@ export default async function PastPapersPage({
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           Pick a subject to see every year with past questions. Each
-          paper opens as a timed exam — with AI explanations on every
+          paper opens as a timed exam, with AI explanations on every
           wrong answer for Pro students.
         </p>
       </section>

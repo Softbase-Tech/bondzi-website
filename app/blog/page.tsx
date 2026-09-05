@@ -6,14 +6,14 @@ import { postsSortedByDate } from "../../lib/blog/posts";
 import { buildBlogPostingJsonLd } from "../../lib/blog/jsonld";
 
 export const metadata: Metadata = {
-  title: "Bondzi Journal — WAEC, WASSCE & BECE study guides",
+  title: "Bondzi Journal · WAEC, WASSCE & BECE study guides",
   description:
-    "Practical guides on WASSCE timetables, WAEC results checking, Nov/Dec registration, subject syllabi, and BECE prep — written by the team building Bondzi for Ghanaian students.",
+    "Practical guides on WASSCE timetables, WAEC results checking, Nov/Dec registration, subject syllabi, and BECE prep, written by the team building Bondzi for Ghanaian students.",
   alternates: { canonical: "/blog" },
   openGraph: {
-    title: "Bondzi Journal — WAEC, WASSCE & BECE study guides",
+    title: "Bondzi Journal · WAEC, WASSCE & BECE study guides",
     description:
-      "Guides on WAEC, WASSCE and BECE — timetable, results, Nov/Dec registration, subject syllabi.",
+      "Guides on WAEC, WASSCE and BECE, timetable, results, Nov/Dec registration, subject syllabi.",
     type: "website",
     url: "/blog",
   },
@@ -33,7 +33,7 @@ export default function BlogIndex() {
     name: "Bondzi Journal",
     url: "https://bondzi.online/blog",
     description:
-      "Guides on WAEC, WASSCE and BECE for Ghanaian students — written by the team building Bondzi.",
+      "Guides on WAEC, WASSCE and BECE for Ghanaian students, written by the team building Bondzi.",
     inLanguage: "en-GH",
     publisher: {
       "@type": "Organization",
@@ -92,7 +92,7 @@ export default function BlogIndex() {
         <p className="mt-6 sm:mt-8 max-w-2xl text-[15.5px] sm:text-[17px] leading-[1.6] text-ink-soft">
           Practical, no-fluff writing on the exams that decide a Ghanaian
           student&apos;s next chapter. Timetables, registration, subject
-          syllabi, study habits — answered by the team building the app.
+          syllabi, study habits, answered by the team building the app.
         </p>
       </section>
 

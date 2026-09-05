@@ -20,7 +20,7 @@ export default function LoginPage() {
         </p>
       </div>
       {/* Suspense is here to shield useSearchParams from bailing the whole
-          page out of static generation — the form reads `?returnTo` to
+          page out of static generation, the form reads `?returnTo` to
           route the user back where they came from after login. */}
       <Suspense fallback={null}>
         <LoginForm />

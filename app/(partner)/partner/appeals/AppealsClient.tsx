@@ -74,7 +74,7 @@ export function AppealsClient({
         <Card>
           <CardHeader>
             <h2 className="text-[16px] font-semibold text-ink">
-              Appeal #{openAppeal.appealNumber} — under review
+              Appeal #{openAppeal.appealNumber}: under review
             </h2>
           </CardHeader>
           <CardBody>
@@ -94,7 +94,7 @@ export function AppealsClient({
             </h2>
             <p className="text-[13px] text-ink-mute mt-1">
               Explain what happened and why the suspension should be
-              reversed. Be specific — we read every appeal.
+              reversed. Be specific, we read every appeal.
             </p>
           </CardHeader>
           <CardBody>
@@ -110,7 +110,7 @@ export function AppealsClient({
                   minLength={50}
                   maxLength={2000}
                   className="w-full min-h-[140px] rounded-xl border border-rule-strong bg-paper px-3.5 py-2.5 text-[16px] leading-snug text-ink outline-none focus:border-orange focus:ring-2 focus:ring-orange/20 resize-y"
-                  placeholder="I received a suspension for … but the flagged sign-ups are from a genuine WhatsApp study group I coach — happy to share the group link."
+                  placeholder="I received a suspension for … but the flagged sign-ups are from a genuine WhatsApp study group I coach, happy to share the group link."
                 />
                 <div className="mt-1.5 flex items-center justify-between text-[12px] text-ink-mute">
                   <span>Minimum 50 characters.</span>

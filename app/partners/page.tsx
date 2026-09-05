@@ -30,7 +30,7 @@ import { TrackedLink } from "@/components/analytics/TrackedLink";
  * keep the FAQ short + specific.
  */
 export const metadata: Metadata = {
-  title: "Partner programme — Bondzi",
+  title: "Partner programme · Bondzi",
   description:
     "Earn cash by referring Ghanaian students to Bondzi. GHS 30 per WASSCE Plus subscription, GHS 20 per 10 signups, GHS 2 per active student. Paid weekly to MoMo.",
   openGraph: {
@@ -61,31 +61,31 @@ const NAV = [
 const FAQ: { q: string; a: string }[] = [
   {
     q: "Who can be a Bondzi partner?",
-    a: "Anyone with an audience of Ghanaian students. Creators on Instagram / TikTok / X, tutors running WhatsApp study groups, teachers who recommend Bondzi to classes, or parents whose kids' friends already ask about the app. There's no minimum audience — earnings scale with your referrals, so a WhatsApp group of 30 friends can still make real money.",
+    a: "Anyone with an audience of Ghanaian students. Creators on Instagram / TikTok / X, tutors running WhatsApp study groups, teachers who recommend Bondzi to classes, or parents whose kids' friends already ask about the app. There's no minimum audience, earnings scale with your referrals, so a WhatsApp group of 30 friends can still make real money.",
   },
   {
     q: "How much can I earn?",
-    a: "A tutor with a WhatsApp study group of 40 active students who each buy Plus earns GHS 30 × 40 = GHS 1,200 in Plus commissions alone, plus GHS 80 in signup batches (4 batches of 10) and up to GHS 80 in answers bonuses. Real earnings depend on how engaged your audience is — Bondzi doesn't pay for signups that never come back to the app.",
+    a: "A tutor with a WhatsApp study group of 40 active students who each buy Plus earns GHS 30 × 40 = GHS 1,200 in Plus commissions alone, plus GHS 80 in signup batches (4 batches of 10) and up to GHS 80 in answers bonuses. Real earnings depend on how engaged your audience is · Bondzi doesn't pay for signups that never come back to the app.",
   },
   {
     q: "When and how do I get paid?",
-    a: "Payouts run weekly on Mondays via MTN MoMo, AirtelTigo Money, or Telecel Cash — you pick your provider during registration. Every payout carries a downloadable invoice PDF with the MoMo reference we sent, so your records match ours.",
+    a: "Payouts run weekly on Mondays via MTN MoMo, AirtelTigo Money, or Telecel Cash, you pick your provider during registration. Every payout carries a downloadable invoice PDF with the MoMo reference we sent, so your records match ours.",
   },
   {
     q: "Do you pay for students who sign up but never use the app?",
-    a: "No — we deliberately don't. The signup batch commission only counts students who've answered at least 40 questions in exam sessions. The Plus commission requires them to actually pay for Plus. This is the same reason the ratecard is generous: we're paying for genuine engagement, not vanity metrics.",
+    a: "No, we deliberately don't. The signup batch commission only counts students who've answered at least 40 questions in exam sessions. The Plus commission requires them to actually pay for Plus. This is the same reason the ratecard is generous: we're paying for genuine engagement, not vanity metrics.",
   },
   {
     q: "How long do referrals stay attributed to me?",
-    a: "90 days from the moment your student signs up with your code. If they buy Plus within that window, you earn. After 90 days the attribution expires — the student is still yours in terms of gratitude, but the commission window closes.",
+    a: "90 days from the moment your student signs up with your code. If they buy Plus within that window, you earn. After 90 days the attribution expires, the student is still yours in terms of gratitude, but the commission window closes.",
   },
   {
     q: "What happens if a student asks for a refund?",
-    a: "If a student refunds their Plus purchase, the commission is clawed back automatically. If we'd already paid you, the clawback sits as a negative offset in your ledger and nets against your next payout. This never puts you in a negative-balance debt situation — the offset just delays your next payout by however much it takes to earn back.",
+    a: "If a student refunds their Plus purchase, the commission is clawed back automatically. If we'd already paid you, the clawback sits as a negative offset in your ledger and nets against your next payout. This never puts you in a negative-balance debt situation, the offset just delays your next payout by however much it takes to earn back.",
   },
   {
     q: "Can I have more than one code?",
-    a: "Yes — create as many as you like. Label them by campaign (\"Instagram Feb\", \"WhatsApp Group\", \"YouTube Channel\") so you can see which channel actually converts. Every code shares the same commission rate; the codes are just a tracker.",
+    a: "Yes, create as many as you like. Label them by campaign (\"Instagram Feb\", \"WhatsApp Group\", \"YouTube Channel\") so you can see which channel actually converts. Every code shares the same commission rate; the codes are just a tracker.",
   },
   {
     q: "How do I stop being a partner?",
@@ -227,7 +227,7 @@ function Hero() {
                 </span>
               </div>
               <p className="mt-3 text-[11.5px] text-ink-mute">
-                Illustrative — earnings scale with engagement, not
+                Illustrative, earnings scale with engagement, not
                 just sign-ups.
               </p>
             </div>
@@ -278,7 +278,7 @@ function How() {
           <Step
             n="02"
             title="Share your code"
-            body="WhatsApp study group, Instagram bio, a comment under your videos, a printout in class. Students type your code when they sign up on the Bondzi app — you get credit for 90 days."
+            body="WhatsApp study group, Instagram bio, a comment under your videos, a printout in class. Students type your code when they sign up on the Bondzi app, you get credit for 90 days."
           />
           <Step
             n="03"
@@ -334,7 +334,7 @@ function Rates() {
           </div>
           <p className="col-span-12 lg:col-span-6 lg:col-start-7 text-[15px] text-ink-soft leading-[1.6] max-w-lg">
             Every rate is public. We deliberately don&apos;t pay for
-            empty signups — the ratecard rewards genuine engagement so
+            empty signups, the ratecard rewards genuine engagement so
             the students you refer are the students you&apos;d be
             proud of.
           </p>
@@ -343,14 +343,14 @@ function Rates() {
           <RateCard
             Icon={Coins}
             amount="GHS 30"
-            title="Plus subscription — WASSCE / NOVDEC"
+            title="Plus subscription: WASSCE / NOVDEC"
             body="One-time commission when a referred student purchases Bondzi Plus (WASSCE or NOVDEC) within 90 days of signing up with your code."
           />
           <RateCard
             Icon={Coins}
             amount="GHS 15"
-            title="Plus subscription — BECE"
-            body="Same as above for BECE Plus students. Lower price point, lower commission — same 90-day window."
+            title="Plus subscription: BECE"
+            body="Same as above for BECE Plus students. Lower price point, lower commission, same 90-day window."
           />
           <RateCard
             Icon={Users}
@@ -362,19 +362,19 @@ function Rates() {
             Icon={Sparkles}
             amount="GHS 2"
             title="Answers bonus"
-            body="One-time top-up per paid-Plus student when they cross 100 completed answers — the moment they're clearly here to stay."
+            body="One-time top-up per paid-Plus student when they cross 100 completed answers, the moment they're clearly here to stay."
           />
           <RateCard
             Icon={PhoneCall}
             amount="MoMo"
             title="Paid weekly, in cedis"
-            body="MTN MoMo, AirtelTigo Money, or Telecel Cash — you pick during signup. Payouts land every Monday with an invoice PDF."
+            body="MTN MoMo, AirtelTigo Money, or Telecel Cash, you pick during signup. Payouts land every Monday with an invoice PDF."
           />
           <RateCard
             Icon={ShieldCheck}
             amount="90 days"
             title="Attribution window"
-            body="From the moment your student signs up. If they buy Plus later than that, they're still yours socially — the commission just resets to zero."
+            body="From the moment your student signs up. If they buy Plus later than that, they're still yours socially, the commission just resets to zero."
           />
         </div>
       </div>
@@ -430,7 +430,7 @@ function WhoFor() {
           <WhoTile
             Icon={Sparkles}
             title="Creators & influencers"
-            body="If your audience is Ghanaian teenagers or twentysomethings, they're the ones sitting BECE, WASSCE, or NOVDEC right now. Post once — earn every time one signs up."
+            body="If your audience is Ghanaian teenagers or twentysomethings, they're the ones sitting BECE, WASSCE, or NOVDEC right now. Post once, earn every time one signs up."
           />
           <WhoTile
             Icon={GraduationCap}
@@ -440,7 +440,7 @@ function WhoFor() {
           <WhoTile
             Icon={MessageCircle}
             title="Group leaders & prefects"
-            body="Class group chats, church youth groups, alumni networks — the small, trusted circles that actually drive decisions. Perfect fit."
+            body="Class group chats, church youth groups, alumni networks, the small, trusted circles that actually drive decisions. Perfect fit."
           />
         </div>
       </div>
@@ -488,22 +488,22 @@ function Trust() {
           <p className="col-span-12 lg:col-span-6 text-[15px] text-ink-soft leading-[1.6] max-w-lg">
             We built the partner ledger so you can see exactly what
             you earned and when. Every commission carries the reason
-            it fired — sub id, batch, threshold — so we&apos;re
+            it fired, sub id, batch, threshold, so we&apos;re
             never paying twice for the same student.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <TrustTile
             title="See your ledger, live"
-            body="Every commission appears in your dashboard the moment it fires — with amount, reason, and status (approved / paid / pending)."
+            body="Every commission appears in your dashboard the moment it fires, with amount, reason, and status (approved / paid / pending)."
           />
           <TrustTile
             title="Every payout comes with an invoice"
-            body="One PDF per weekly payout, listing every commission we netted. Same document our accountants use — nothing hidden behind a summary."
+            body="One PDF per weekly payout, listing every commission we netted. Same document our accountants use, nothing hidden behind a summary."
           />
           <TrustTile
             title="Refunds handled automatically"
-            body="If a referred student refunds their Plus, the commission is clawed back cleanly and shown on your ledger — no manual back-and-forth."
+            body="If a referred student refunds their Plus, the commission is clawed back cleanly and shown on your ledger, no manual back-and-forth."
           />
         </div>
       </div>
@@ -614,7 +614,7 @@ function CTA() {
               properties={{ surface: "partners", target: "partner_signin" }}
               className="inline-flex items-center gap-2 px-6 h-12 rounded-full border border-ink/15 hover:border-ink/40 transition-colors text-[15px] whitespace-nowrap"
             >
-              I&apos;m already a partner — sign in
+              Already a partner? Sign in
               <ArrowRight size={16} strokeWidth={2.25} />
             </TrackedLink>
           </div>

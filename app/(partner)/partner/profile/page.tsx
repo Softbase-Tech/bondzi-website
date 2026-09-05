@@ -55,7 +55,7 @@ export default async function PartnerProfilePage() {
           </h2>
           <p className="text-[13px] text-ink-mute mt-1">
             Where we send your earnings. Update this only if you&apos;ve
-            moved to a new MoMo number — the name must match the number
+            moved to a new MoMo number, the name must match the number
             registered with the provider.
           </p>
         </CardHeader>

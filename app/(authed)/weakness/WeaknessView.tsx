@@ -102,7 +102,7 @@ export function WeaknessView({ initial }: { initial: WeaknessBySource }) {
           <div className="mt-2">
             <p className="text-[14px] text-ink-soft">
               A personalised read on why you&apos;re losing marks and what to do
-              about it — available on Plus and Pro.
+              about it, available on Plus and Pro.
             </p>
             <Button
               href="/subscription/plans"
@@ -128,7 +128,7 @@ export function WeaknessView({ initial }: { initial: WeaknessBySource }) {
             onClick={() => narrative.refetch()}
             className="mt-2 text-[14px] text-orange hover:underline"
           >
-            Couldn&apos;t load insight — tap to retry.
+            Couldn&apos;t load insight, tap to retry.
           </button>
         ) : (
           <div className="mt-2">

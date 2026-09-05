@@ -55,7 +55,7 @@ export default async function PartnerBannersPage() {
           </CardHeader>
           <CardBody>
             <p className="text-[14px] text-ink-mute">
-              We&apos;re preparing shareable artwork. Check back soon —
+              We&apos;re preparing shareable artwork. Check back soon,
               we&apos;ll email you when the first batch drops.
             </p>
           </CardBody>

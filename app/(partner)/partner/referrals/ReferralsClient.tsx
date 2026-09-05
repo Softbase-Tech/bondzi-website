@@ -138,7 +138,7 @@ export function ReferralsClient({
               <option value="">All codes</option>
               {activeCodes.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {c.code} — {c.label}
+                  {c.code}, {c.label}
                   {c.isDefault ? " (default)" : ""}
                 </option>
               ))}
@@ -410,7 +410,7 @@ function EmptyState({ hasFilter }: { hasFilter: boolean }) {
         <p className="text-[14px] text-ink-mute">
           {hasFilter
             ? "Try picking a different code, or share this one on a new channel to bring in your first signup."
-            : "Share your code — every student who signs up with it shows up here with a real-time engagement + earnings summary."}
+            : "Share your code, every student who signs up with it shows up here with a real-time engagement + earnings summary."}
         </p>
       </CardBody>
     </Card>

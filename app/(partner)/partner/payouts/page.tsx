@@ -46,7 +46,7 @@ export default async function PartnerPayoutsPage() {
         </h1>
         <p className="mt-2 text-ink-soft text-[14px] leading-relaxed max-w-prose">
           Payouts run weekly. Each row below carries the invoice PDF we
-          sent to your email — download it here any time.
+          sent to your email, download it here any time.
         </p>
       </header>
 

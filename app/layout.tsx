@@ -41,12 +41,12 @@ const SITE_URL = "https://bondzi.online";
 const SITE_NAME = "Bondzi";
 const TAGLINE = "WASSCE & BECE exam prep, made in Ghana";
 const DESCRIPTION =
-  "Bondzi is the AI-powered WAEC, WASSCE and BECE exam prep app for Ghanaian students — school candidates and Nov/Dec private candidates. Thirty-four years of past questions across Core Mathematics, English, Integrated Science, Elective Maths, Physics, Chemistry, Biology, Economics and more. AI explanations for every wrong answer, spaced-repetition review, and full offline support. Free to download, paid in cedis.";
+  "Bondzi is the AI-powered WAEC, WASSCE and BECE exam prep app for Ghanaian students, school candidates and Nov/Dec private candidates. Thirty-four years of past questions across Core Mathematics, English, Integrated Science, Elective Maths, Physics, Chemistry, Biology, Economics and more. AI explanations for every wrong answer, spaced-repetition review, and full offline support. Free to download, paid in cedis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — ${TAGLINE}`,
+    default: `${SITE_NAME} · ${TAGLINE}`,
     template: `%s · ${SITE_NAME}`,
   },
   description: DESCRIPTION,
@@ -70,20 +70,20 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US", "en_GB"],
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — ${TAGLINE}`,
+    title: `${SITE_NAME} · ${TAGLINE}`,
     description: DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — ${TAGLINE}`,
+        alt: `${SITE_NAME} · ${TAGLINE}`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — ${TAGLINE}`,
+    title: `${SITE_NAME} · ${TAGLINE}`,
     description: DESCRIPTION,
     images: ["/opengraph-image"],
     creator: "@bondziapp",
@@ -225,7 +225,7 @@ export default function RootLayout({
       <head>
         {/* Must run before first paint: a dark-mode student would
             otherwise get a full-brightness white flash on every load.
-            Also decides whether this surface gets dark mode at all —
+            Also decides whether this surface gets dark mode at all,
             the marketing site is light-only. */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://images.unsplash.com" />
@@ -257,7 +257,7 @@ export default function RootLayout({
         </ThemeProvider>
         {/* Google Analytics 4 (gtag.js). next/script's
             `afterInteractive` strategy is the App Router equivalent of
-            the `async` attribute on the original snippet — the loader
+            the `async` attribute on the original snippet, the loader
             script runs after the initial page becomes interactive so
             it never blocks first paint. The second Script element
             holds the init code; giving it an `id` lets Next.js skip

@@ -209,7 +209,7 @@ export function ExamRunner({ session }: Props) {
         const message =
           err instanceof ApiError
             ? err.message
-            : "Answer didn't send — tap again to retry.";
+            : "Answer didn't send, tap again to retry.";
         toast.error("Couldn't submit answer", { description: message });
       }
     },
@@ -350,7 +350,7 @@ export function ExamRunner({ session }: Props) {
           non-interactive, the tapped option shows a spinner in place
           of its letter chip, and the others fade. Once the server
           responds we reveal correct/wrong inline via
-          `correctOptionId` — same as mobile. Options stay tap-able
+          `correctOptionId`, same as mobile. Options stay tap-able
           after the reveal so the student can change their mind. */}
       <QuestionRenderer
         question={currentQuestion}
@@ -394,7 +394,7 @@ export function ExamRunner({ session }: Props) {
         >
           <div className="flex-1 min-w-0">
             {currentAnswer.isCorrect
-              ? "Correct — nice."
+              ? "Correct, nice."
               : "Not this one. The correct answer is highlighted in green."}
           </div>
           {/* Explain button surfaces after a wrong pick — the
@@ -437,7 +437,7 @@ export function ExamRunner({ session }: Props) {
             title={
               isMarked
                 ? "This question was flagged for admin review. Tap to add another note."
-                : "Flag this question — an admin will review it and fix any problems."
+                : "Flag this question, an admin will review it and fix any problems."
             }
             aria-label={
               isMarked
@@ -545,10 +545,10 @@ export function ExamRunner({ session }: Props) {
 
       {/* Abandon confirm. Three real options, spelled out clearly
           so a student doesn't lose work by accident:
-            - "Keep working" — dismiss the dialog and stay put.
-            - "Submit now" — finalise everything answered so far and
+            - "Keep working", dismiss the dialog and stay put.
+            - "Submit now", finalise everything answered so far and
               route to the result screen.
-            - "Discard session" — mark abandoned; no result, no XP. */}
+            - "Discard session", mark abandoned; no result, no XP. */}
       <Dialog
         open={confirmAbandonOpen}
         onOpenChange={setConfirmAbandonOpen}

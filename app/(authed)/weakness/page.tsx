@@ -8,7 +8,7 @@ import { WeaknessView } from "./WeaknessView";
 export const metadata: Metadata = {
   title: "Weak spots",
   description:
-    "The topics where you're losing the most marks — and an AI read on how to fix them.",
+    "The topics where you're losing the most marks, and an AI read on how to fix them.",
 };
 
 const EMPTY: WeaknessBySource = {

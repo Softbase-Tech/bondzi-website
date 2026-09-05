@@ -29,7 +29,7 @@ export default function Page() {
     <>
       <ArticleLayout post={post}>
         <p>
-          The <strong>BECE</strong> — Basic Education Certificate Examination —
+          The <strong>BECE</strong> (Basic Education Certificate Examination)
           is the first national exam most Ghanaian students sit. It comes at
           the end of JHS 3 and decides which Senior High School the Computer
           School Selection and Placement System (CSSPS) sends them to. The
@@ -50,19 +50,19 @@ export default function Page() {
         </p>
         <ul>
           <li>
-            <strong>Mathematics</strong> — number work, algebra, geometry,
+            <strong>Mathematics</strong>: number work, algebra, geometry,
             statistics, simple probability.
           </li>
           <li>
-            <strong>English Language</strong> — comprehension, summary,
+            <strong>English Language</strong>: comprehension, summary,
             essay/composition, lexis and structure.
           </li>
           <li>
-            <strong>Integrated Science</strong> — basic physics, chemistry,
+            <strong>Integrated Science</strong>: basic physics, chemistry,
             biology, environment.
           </li>
           <li>
-            <strong>Social Studies</strong> — Ghana&apos;s geography, civic
+            <strong>Social Studies</strong>: Ghana&apos;s geography, civic
             education, history, basic economics.
           </li>
           <li>
@@ -72,7 +72,7 @@ export default function Page() {
             <strong>Basic Design &amp; Technology (BDT)</strong>.
           </li>
           <li>
-            A <strong>Ghanaian Language</strong> — Akan, Ga, Ewe, Dagbani,
+            A <strong>Ghanaian Language</strong>: Akan, Ga, Ewe, Dagbani,
             Hausa, or another, depending on the school&apos;s offerings.
           </li>
           <li>
@@ -81,7 +81,7 @@ export default function Page() {
         </ul>
         <p>
           Each subject is graded on a nine-point Stanine scale (1 is best, 9
-          is worst). Your aggregate is the sum of your best six papers — and
+          is worst). Your aggregate is the sum of your best six papers, and
           a lower aggregate (better Stanines) wins better SHS placement.
         </p>
 
@@ -94,13 +94,13 @@ export default function Page() {
         </p>
         <ul>
           <li>
-            <strong>Paper 1 — Objective.</strong> 40–60 multiple-choice
+            <strong>Paper 1: Objective.</strong> 40–60 multiple-choice
             questions. Time pressure is real; don&apos;t spend ten minutes on
             one question.
           </li>
           <li>
-            <strong>Paper 2 — Essay.</strong> Structured questions, usually
-            with some choice. Practise writing answers in full sentences —
+            <strong>Paper 2: Essay.</strong> Structured questions, usually
+            with some choice. Practise writing answers in full sentences.
             BECE markers don&apos;t reward note-form answers in subjects like
             English and Social Studies.
           </li>
@@ -146,7 +146,7 @@ export default function Page() {
           <li>
             <strong>Not learning the Ghanaian Language properly.</strong>{" "}
             For students who speak it at home, this should be one of their
-            best papers — but it&apos;s often the one they prepare least
+            best papers, but it&apos;s often the one they prepare least
             for.
           </li>
           <li>
@@ -160,7 +160,7 @@ export default function Page() {
           The CSSPS system places JHS 3 leavers into Senior High Schools
           based on aggregate score, programme choice, and a school&apos;s
           available slots. The most-contested schools require very low
-          aggregates — typically 06–10. The lower your aggregate, the more
+          aggregates, typically 06–10. The lower your aggregate, the more
           likely you get your first-choice school and programme.
         </p>
         <p>
@@ -171,9 +171,9 @@ export default function Page() {
 
         <h2>Bondzi for BECE</h2>
         <p>
-          Bondzi covers every BECE subject — Mathematics, English Language,
+          Bondzi covers every BECE subject: Mathematics, English Language,
           Integrated Science, Social Studies, RME, BDT, Ghanaian Language and
-          French — with the full nine-year WAEC past-question bank. Wrong
+          French, with thirty-four years of the WAEC past-question bank. Wrong
           answers trigger AI explanations pitched at JHS level. Topics you
           stumble on get scheduled to come back tomorrow, in three days,
           then in a week.

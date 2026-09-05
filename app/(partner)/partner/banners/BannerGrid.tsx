@@ -188,11 +188,11 @@ function BannerCard({
 function aspectLabel(aspect: PartnerBanner["aspect"]): string {
   switch (aspect) {
     case "square":
-      return "Square (1:1) — Instagram feed";
+      return "Square (1:1): Instagram feed";
     case "story":
-      return "Story (9:16) — Instagram / WhatsApp status";
+      return "Story (9:16): Instagram / WhatsApp status";
     case "landscape":
-      return "Landscape (16:9) — X / LinkedIn";
+      return "Landscape (16:9): X / LinkedIn";
     default:
       return aspect;
   }
@@ -203,8 +203,8 @@ function buildCaption(
   referralCode: string | null,
 ): string {
   const codeLine = referralCode
-    ? `\n\nUse my Bondzi code ${referralCode} — you get a boost, I earn a bit. Everyone wins.`
-    : "\n\nCheck out Bondzi — the WASSCE / BECE exam prep app.";
+    ? `\n\nUse my Bondzi code ${referralCode}, you get a boost, I earn a bit. Everyone wins.`
+    : "\n\nCheck out Bondzi · the WASSCE / BECE exam prep app.";
   return `${banner.description ?? banner.label}${codeLine}`;
 }
 

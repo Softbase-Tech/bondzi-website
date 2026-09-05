@@ -108,7 +108,7 @@ export function PlanPicker({
 
     if (!studentEmail) {
       toast.error(
-        "Add an email to your profile before buying — Paystack needs one for receipts.",
+        "Add an email to your profile before buying. Paystack needs one for receipts.",
       );
       return;
     }
@@ -205,7 +205,7 @@ export function PlanPicker({
           account: dims.account,
           level: dims.level,
         });
-        toast("You already started a checkout — reopening it.");
+        toast("You already started a checkout, reopening it.");
         // Reopen with the SAME reference so backend recognises the
         // attempt.
         try {
@@ -247,7 +247,7 @@ export function PlanPicker({
         {levelPlans.length === 0 ? (
           <Card className="p-6 text-center md:col-span-2">
             <p className="text-[13.5px] text-ink-soft">
-              Plans for {label(level)} aren&apos;t published yet — check
+              Plans for {label(level)} aren&apos;t published yet, check
               back soon.
             </p>
           </Card>
@@ -432,7 +432,7 @@ function PlanCard({
         <div className="rounded-xl bg-yellow-soft/60 border border-orange/40 p-3 text-[12.5px] text-ink">
           You already have {isPlus ? "Plus" : "Pro"} on {label(plan.level)}
           {entitlement?.expiresAt && !isPlus
-            ? ` — renews ${formatDate(entitlement.expiresAt)}`
+            ? `, renews ${formatDate(entitlement.expiresAt)}`
             : ""}
         </div>
       ) : null}
@@ -459,7 +459,7 @@ function PlanCard({
 const PLUS_PERKS = [
   "All past papers for this level, forever",
   "All AI-generated explanations",
-  "One-time payment — no renewals",
+  "One-time payment, no renewals",
   "Study any subject you pick",
 ];
 

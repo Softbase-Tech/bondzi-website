@@ -18,7 +18,7 @@ export function HeroFlame({
     ? "from-[#1E293B] to-[#0F172A]"
     : "from-[#FF6B35] via-[#E55A26] to-[#B23A0C]";
   const subtitle = isBroken
-    ? "Streak broken — start today to rekindle it"
+    ? "Streak broken, start today to rekindle it"
     : streakDays === 1
       ? "Day one · make it two"
       : `Day ${streakDays} · keep it alive today`;

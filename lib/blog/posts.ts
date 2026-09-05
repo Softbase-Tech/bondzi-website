@@ -76,9 +76,9 @@ export const POSTS: PostMeta[] = [
     slug: "wassce-2026-timetable",
     title: "WASSCE 2026 timetable: dates, format, and how to plan your study",
     description:
-      "A practical guide to the WASSCE 2026 series — the exam structure under WAEC, when papers typically run, and how to build a revision schedule that actually works.",
+      "A practical guide to the WASSCE 2026 series, the exam structure under WAEC, when papers typically run, and how to build a revision schedule that actually works.",
     excerpt:
-      "When is the WASSCE 2026? How many papers? Here's the format every Ghanaian SHS candidate should know — plus a revision schedule that fits around school.",
+      "When is the WASSCE 2026? How many papers? Here's the format every Ghanaian SHS candidate should know, plus a revision schedule that fits around school.",
     publishedAt: "2026-05-12",
     updatedAt: "2026-09-04",
     readMinutes: 6,
@@ -102,7 +102,7 @@ export const POSTS: PostMeta[] = [
     description:
       "Who can sit the WASSCE Nov/Dec series, when registration opens, what documents and fees you need, and how to choose the right subjects.",
     excerpt:
-      "Private candidate, school leaver, or working professional? Here's how the WASSCE Nov/Dec registration actually works — and the mistakes to avoid.",
+      "Private candidate, school leaver, or working professional? Here's how the WASSCE Nov/Dec registration actually works, and the mistakes to avoid.",
     publishedAt: "2026-05-12",
     readMinutes: 7,
     tags: ["WASSCE", "Nov/Dec", "WAEC", "Private candidates"],
@@ -122,7 +122,7 @@ export const POSTS: PostMeta[] = [
     slug: "bece-2026-prep-guide",
     title: "BECE 2026: a complete prep guide for JHS 3 students",
     description:
-      "A full BECE 2026 preparation guide for Junior High School Form 3 students in Ghana — subjects, format, study routine, and the habits that move grades.",
+      "A full BECE 2026 preparation guide for Junior High School Form 3 students in Ghana, subjects, format, study routine, and the habits that move grades.",
     excerpt:
       "Every BECE paper, how it's structured, when to start serious revision, and the small habits that decide a Stanine 1.",
     publishedAt: "2026-05-12",

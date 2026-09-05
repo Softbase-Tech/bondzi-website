@@ -39,7 +39,7 @@ export default async function AiReviewPage() {
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft">
           A personalised breakdown of where you&apos;re strong, where you&apos;re
-          losing marks, and exactly what to study next — built from your own
+          losing marks, and exactly what to study next, built from your own
           answers.
         </p>
       </header>

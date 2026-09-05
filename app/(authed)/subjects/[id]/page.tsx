@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const subject = await getSubject(session.accessToken, id);
     return {
       title: subject.name,
-      description: `Practise ${subject.name} — past papers, quiz, and mock exam.`,
+      description: `Practise ${subject.name}, past papers, quiz, and mock exam.`,
     };
   } catch {
     return { title: "Subject" };
@@ -374,7 +374,7 @@ function ComingSoonPanel({ subjectName }: { subjectName: string }) {
             <AltRow
               icon={<BookOpenText size={20} />}
               title="Browse other subjects"
-              subtitle="Most subjects are ready — pick another and keep the streak alive."
+              subtitle="Most subjects are ready, pick another and keep the streak alive."
               href="/subjects"
             />
             <AltRow
@@ -386,7 +386,7 @@ function ComingSoonPanel({ subjectName }: { subjectName: string }) {
             <AltRow
               icon={<MessageSquareText size={20} />}
               title="Ask us to prioritise this subject"
-              subtitle="Send a note through Support — we prioritise the ones students ask for."
+              subtitle="Send a note through Support, we prioritise the ones students ask for."
               href={buildPrioritiseHref(subjectName)}
               rightIcon={<Flag size={14} />}
             />

@@ -74,7 +74,7 @@ export function AuthedHeader() {
         </Link>
 
         {/*
-          Desktop nav — primary destinations only (same 5 as the mobile
+          Desktop nav, primary destinations only (same 5 as the mobile
           bottom bar). Secondary items are surfaced inside the profile
           dropdown so we don't have to fit 10 pills in one row.
         */}

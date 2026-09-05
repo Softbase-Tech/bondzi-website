@@ -34,7 +34,7 @@ const COPY: Record<
 > = {
   explanation: {
     title: "Understand every wrong answer",
-    body: "AI explanations walk you through the exact step you missed — in your own language pace.",
+    body: "AI explanations walk you through the exact step you missed, in your own language pace.",
     perks: [
       "Step-by-step reasoning for every question",
       "Ghanaian context and examples",
@@ -43,7 +43,7 @@ const COPY: Record<
   },
   quiz: {
     title: "Fresh AI questions on demand",
-    body: "Bondzi Pro unlocks the Quiz tab — endless practice questions generated to match your exam and your weakest topics.",
+    body: "Bondzi Pro unlocks the Quiz tab, endless practice questions generated to match your exam and your weakest topics.",
     perks: [
       "New questions every session",
       "Adaptive difficulty",

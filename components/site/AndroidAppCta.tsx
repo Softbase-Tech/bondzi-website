@@ -35,7 +35,7 @@ export function AndroidAppCta() {
         className="inline-flex items-center gap-2 px-5 h-12 rounded-full border border-ink/15 text-[14px] sm:text-[15px] text-ink-mute whitespace-nowrap cursor-default"
         aria-disabled="true"
       >
-        Android app — coming to Play Store
+        Android app, coming to Play Store
       </span>
     );
   }

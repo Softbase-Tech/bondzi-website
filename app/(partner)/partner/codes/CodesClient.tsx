@@ -316,7 +316,7 @@ function EmptyState() {
       <CardBody>
         <p className="text-[14px] text-ink-mute">
           No codes yet. Once your account is registered we generate a
-          default code for you automatically — check back after
+          default code for you automatically, check back after
           registering.
         </p>
       </CardBody>

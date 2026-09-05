@@ -52,11 +52,11 @@ export default async function MockExamSubjectPage({
           Pro
         </div>
         <h1 className="mt-3 font-display text-[30px] sm:text-[38px] leading-[1.05] text-ink">
-          {subject.name} — Mock exam
+          {subject.name} · Mock exam
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           A timed paper drawn at random from the {subject.name} question
-          bank. Once the timer starts, closing the tab does not stop it —
+          bank. Once the timer starts, closing the tab does not stop it,
           the paper auto-submits at the deadline.
         </p>
       </header>

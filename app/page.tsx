@@ -70,31 +70,31 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Does Bondzi cover the WAEC WASSCE Nov/Dec exam for private candidates?",
-    a: "Yes. The same WASSCE past-question bank, AI tutor, and spaced-repetition schedule serve school candidates sitting WASSCE in May/June and private candidates sitting the Nov/Dec series. The syllabus is identical across both windows — only the registration process and timetable differ.",
+    a: "Yes. The same WASSCE past-question bank, AI tutor, and spaced-repetition schedule serve school candidates sitting WASSCE in May/June and private candidates sitting the Nov/Dec series. The syllabus is identical across both windows, only the registration process and timetable differ.",
   },
   {
     q: "Which exams and subjects does Bondzi cover?",
-    a: "All core BECE subjects — Mathematics, English Language, Integrated Science, Social Studies, RME, BDT, Ghanaian Language, and French — plus the most-sat WASSCE subjects, including Core Mathematics, Elective Mathematics, English Language, Integrated Science, Physics, Chemistry, Biology, Economics, Geography, Government, History, Literature in English, ICT, and French.",
+    a: "All core BECE subjects. Mathematics, English Language, Integrated Science, Social Studies, RME, BDT, Ghanaian Language, and French, plus the most-sat WASSCE subjects, including Core Mathematics, Elective Mathematics, English Language, Integrated Science, Physics, Chemistry, Biology, Economics, Geography, Government, History, Literature in English, ICT, and French.",
   },
   {
     q: "Is Bondzi free?",
-    a: "Yes. The full past-question bank, your daily review schedule, your subject progress, and the leaderboard are free forever — and every free account includes 10 AI explanations each month. Bondzi Plus and Pro unlock the full AI tutor, AI-generated practice tests, and remove ads — paid in cedis by MTN, Telecel, or AirtelTigo mobile money.",
+    a: "Yes. The full past-question bank, your daily review schedule, your subject progress, and the leaderboard are free forever, and every free account includes 10 AI explanations each month. Bondzi Plus and Pro unlock the full AI tutor, AI-generated practice tests, and remove ads, paid in cedis by MTN, Telecel, or AirtelTigo mobile money.",
   },
   {
     q: "Does Bondzi work without internet?",
-    a: "Yes — Bondzi caches your subjects, past questions, and progress on the device. You can answer a paper on a bus with no signal; the app reconciles your score and streak the next time it sees a network.",
+    a: "Yes · Bondzi caches your subjects, past questions, and progress on the device. You can answer a paper on a bus with no signal; the app reconciles your score and streak the next time it sees a network.",
   },
   {
     q: "How does the AI tutor work?",
-    a: "When you get a question wrong, the AI tutor walks you through it step by step — the concept in play, the working, and why each wrong option tempts people — pitched at your syllabus level. Every free account gets 10 AI explanations a month; Bondzi Plus and Pro unlock the full tutor.",
+    a: "When you get a question wrong, the AI tutor walks you through it step by step, the concept in play, the working, and why each wrong option tempts people, pitched at your syllabus level. Every free account gets 10 AI explanations a month; Bondzi Plus and Pro unlock the full tutor.",
   },
   {
     q: "Is Bondzi available on iPhone?",
-    a: "Bondzi works in any phone browser today, iPhone included — nothing to install. A native iOS app is coming; join the waitlist from the app and we'll email you the day it ships.",
+    a: "Bondzi works in any phone browser today, iPhone included, nothing to install. A native iOS app is coming; join the waitlist from the app and we'll email you the day it ships.",
   },
   {
     q: "Can Bondzi help me check my WAEC results?",
-    a: "Bondzi is a prep tool, not the WAEC results portal — official WASSCE and BECE results are released through WAEC Ghana's checker at waecgh.org with a scratch card serial number and PIN. We publish guides on how to check results when each series is released; the best thing Bondzi can do is help you score well in the first place so checking is a celebration, not a stress event.",
+    a: "Bondzi is a prep tool, not the WAEC results portal, official WASSCE and BECE results are released through WAEC Ghana's checker at waecgh.org with a scratch card serial number and PIN. We publish guides on how to check results when each series is released; the best thing Bondzi can do is help you score well in the first place so checking is a celebration, not a stress event.",
   },
   {
     q: "Who builds Bondzi?",
@@ -127,14 +127,14 @@ const FEATURES = [
     n: "01",
     Icon: BookOpenText,
     title: "Real past papers",
-    body: "Thirty-four years of WASSCE and BECE past questions, sorted by subject, topic, paper and year. The same questions your exam will look like — because they’re the ones your exam came from.",
+    body: "Thirty-four years of WASSCE and BECE past questions, sorted by subject, topic, paper and year. The same questions your exam will look like, because they’re the ones your exam came from.",
     tag: "Question bank",
   },
   {
     n: "02",
     Icon: Sparkles,
     title: "Wrong answers, explained",
-    body: "Miss a question and an AI tutor walks you through it — step by step, in the same language your teacher would use. Generated on demand, cached for the next student.",
+    body: "Miss a question and an AI tutor walks you through it, step by step, in the same language your teacher would use. Generated on demand, cached for the next student.",
     tag: "AI explanations",
   },
   {
@@ -148,7 +148,7 @@ const FEATURES = [
     n: "04",
     Icon: GraduationCap,
     title: "Bondzi Test",
-    body: "Fresh AI-written questions calibrated to your syllabus level and weak topics. Not a question bank — a tutor that won’t repeat itself.",
+    body: "Fresh AI-written questions calibrated to your syllabus level and weak topics. Not a question bank, a tutor that won’t repeat itself.",
     tag: "Adaptive",
   },
   {
@@ -173,7 +173,7 @@ const GOALS = [
     name: "Quality Education",
     color: "#C5192D",
     points: [
-      "Free tier covers every past paper and the full SRS — the parts that decide whether you pass.",
+      "Free tier covers every past paper and the full SRS, the parts that decide whether you pass.",
       "Targets 4.1 (secondary completion) and 4.6 (functional literacy and numeracy) directly.",
     ],
   },
@@ -182,7 +182,7 @@ const GOALS = [
     name: "Industry, Innovation & Infrastructure",
     color: "#FD6925",
     points: [
-      "Offline-first caching and a sub-50MB build target 4.c — universal access to ICT on the phones students already own.",
+      "Offline-first caching and a sub-50MB build target 4.c, universal access to ICT on the phones students already own.",
       "Push and SMS fallback means a student without data still gets reminded to review.",
     ],
   },
@@ -192,7 +192,7 @@ const GOALS = [
     color: "#DD1367",
     points: [
       "The student in Bolgatanga sees the same AI tutor as the student in East Legon. Pricing in cedis, paid via mobile money.",
-      "Targets 10.2 — economic and social inclusion regardless of where a student went to JHS.",
+      "Targets 10.2, economic and social inclusion regardless of where a student went to JHS.",
     ],
   },
 ];
@@ -341,7 +341,7 @@ function Hero() {
             </figure>
             <p className="mt-3 text-[12px] text-ink-mute leading-snug">
               Bondzi was built for the seven hundred thousand Ghanaian students
-              sitting BECE and WASSCE every year — and the millions who&apos;ve
+              sitting BECE and WASSCE every year, and the millions who&apos;ve
               been before them.
             </p>
           </div>
@@ -421,9 +421,9 @@ function Dispatch() {
             ones whose families could pay for more help.
           </p>
           <p>
-            Bondzi takes the parts of expensive prep that actually move marks —
+            Bondzi takes the parts of expensive prep that actually move marks,
             the explanations, the steady review, the diagnostic of what
-            you&apos;re weak at — and ships them in an app that opens in English
+            you&apos;re weak at, and ships them in an app that opens in English
             on a phone that already lives in your pocket.
           </p>
           <p className="text-ink font-medium">
@@ -511,7 +511,7 @@ function Built() {
             <p className="mt-5 sm:mt-6 text-[15px] sm:text-[16px] leading-[1.65] text-bg/70">
               A student in Bawku shouldn&apos;t need a fibre connection to
               revise tonight&apos;s topic. Bondzi caches your subjects, your
-              questions, and your offline answers locally — and reconciles when
+              questions, and your offline answers locally, and reconciles when
               the network comes back.
             </p>
 
@@ -524,19 +524,19 @@ function Built() {
               <Trait
                 Icon={Smartphone}
                 title="Built for the phones students own"
-                body="A light, fast app under fifty megabytes — it runs comfortably on the entry-level Android devices that dominate Ghana."
+                body="A light, fast app under fifty megabytes. It runs comfortably on the entry-level Android devices that dominate Ghana."
               />
               <Trait
                 Icon={ShieldCheck}
                 title="Mobile-money native"
-                body="Subscriptions paid in cedis by mobile money — MTN, Telecel, AirtelTigo. No card required."
+                body="Subscriptions paid in cedis by mobile money: MTN, Telecel, AirtelTigo. No card required."
               />
             </ul>
           </div>
 
           {/* Photo collage: three confirmed Accra/Ghana scenes from Unsplash.
-              Top — instructor teaching in an Accra classroom. Bottom-left —
-              group of Ghanaian students sitting together. Bottom-right —
+              Top: instructor teaching in an Accra classroom. Bottom-left:
+              group of Ghanaian students sitting together. Bottom-right,
               students walking home from school in Accra. */}
           <div className="lg:col-span-7 grid grid-cols-2 gap-3">
             <figure className="col-span-2 relative aspect-[16/10] overflow-hidden rounded-md border border-ink-soft/30">
@@ -651,7 +651,7 @@ function Subjects() {
                 Required by every WASSCE candidate
               </h3>
               <p className="text-[13.5px] text-ink-soft mt-3 leading-[1.55]">
-                The four core papers every candidate sits — May/June or Nov/Dec.
+                The four core papers every candidate sits, May/June or Nov/Dec.
               </p>
             </header>
             <ul className="space-y-2 text-[14.5px] text-ink leading-[1.6]">
@@ -671,7 +671,7 @@ function Subjects() {
                 Your three elective papers
               </h3>
               <p className="text-[13.5px] text-ink-soft mt-3 leading-[1.55]">
-                The science, business, arts and humanities papers — pick three
+                The science, business, arts and humanities papers. Pick three
                 based on your programme.
               </p>
             </header>
@@ -722,7 +722,7 @@ function Goals() {
           <div className="col-span-12 lg:col-span-6 lg:col-start-7 text-[14.5px] sm:text-[15px] text-ink-soft leading-[1.65]">
             <p>
               We aligned Bondzi against the UN Sustainable Development Goals
-              that genuinely fit — not all seventeen as a marketing claim, but
+              that genuinely fit, not all seventeen as a marketing claim, but
               the three where shipping the product moves the indicator. Here
               they are, with the parts of Bondzi that earn each of them.
             </p>
@@ -782,7 +782,7 @@ function Voices() {
       <div className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-10 py-14 sm:py-20 lg:py-28">
         {/* TODO(marketing): as named permission-cleared testimonials come
             in, replace these interview excerpts one-for-one with real
-            quotes — name, school, region. Until then every quote below is
+            quotes, name, school, region. Until then every quote below is
             verbatim from our student onboarding interviews, unattributed
             by name because most interviewees are minors. */}
         <div className="grid grid-cols-12 gap-6 sm:gap-8 items-start">
@@ -804,7 +804,7 @@ function Voices() {
                   className="absolute left-0 right-0 bottom-1 h-1.5 bg-orange/40 -z-0"
                 />
               </em>{" "}
-              — not just marked — I realised I&apos;d been studying the wrong
+             , not just marked. I realised I&apos;d been studying the wrong
               way for two years.”
               <footer className="mt-3 text-[12px] font-normal text-ink-soft">
                 — SHS student, Greater Accra
@@ -872,7 +872,7 @@ function Partners() {
             <p className="mt-6 max-w-md text-[15px] sm:text-[16px] leading-[1.6] text-ink-soft">
               Share your code with the students you already reach on
               WhatsApp, Instagram, or in a study group. When they sign
-              up, study, and upgrade, you earn — paid weekly to your
+              up, study, and upgrade, you earn, paid weekly to your
               MTN, AirtelTigo, or Telecel Cash.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -907,13 +907,13 @@ function Partners() {
             <PartnerTile
               amount="Activity"
               stream="Engagement bonuses"
-              body="Batch bonuses as your referred students actually study — we reward real engagement, not empty sign-ups."
+              body="Batch bonuses as your referred students actually study. We reward real engagement, not empty sign-ups."
               sub="Tracked live on your dashboard"
             />
             <PartnerTile
               amount="Weekly"
               stream="MoMo payouts"
-              body="Everything you earn is paid out every Monday to your MTN, AirtelTigo, or Telecel Cash — with an invoice PDF."
+              body="Everything you earn is paid out every Monday to your MTN, AirtelTigo, or Telecel Cash, with an invoice PDF."
               sub="No minimum audience required"
             />
           </ul>
@@ -1019,7 +1019,7 @@ function GetTheApp() {
             </h2>
             <p className="mt-5 sm:mt-6 text-[15px] sm:text-[16px] leading-[1.65] text-ink-soft max-w-xl">
               Free to study, with 10 AI explanations included every month.
-              Bondzi Plus and Pro unlock the full AI tutor and Bondzi Test —
+              Bondzi Plus and Pro unlock the full AI tutor and Bondzi Test,
               paid in cedis, by mobile money, and cheaper than a single
               weekend tutor session.
             </p>
@@ -1036,7 +1036,7 @@ function GetTheApp() {
               <AndroidAppCta />
             </div>
             <p className="mt-3 text-[11.5px] sm:text-[12px] text-ink-mute leading-snug max-w-md">
-              Works in any phone browser — nothing to install. The Android app
+              Works in any phone browser, nothing to install. The Android app
               lands on the Play Store shortly.
             </p>
             <div className="mt-6 sm:mt-8 border-t border-rule pt-5 flex flex-wrap items-center gap-3">

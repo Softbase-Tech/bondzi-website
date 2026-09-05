@@ -60,11 +60,11 @@ export default async function LevelTestSubjectPage({
           Pro
         </div>
         <h1 className="mt-3 font-display text-[30px] sm:text-[38px] leading-[1.05] text-ink">
-          {subject.name} — Level test
+          {subject.name} · Level test
         </h1>
         <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
           Pick the syllabus topics you&apos;ve already covered in class
-          — Bondzi builds a graded test on exactly those topics. You
+          · Bondzi builds a graded test on exactly those topics. You
           get a per-topic breakdown so you know where to spend the
           next study session.
         </p>

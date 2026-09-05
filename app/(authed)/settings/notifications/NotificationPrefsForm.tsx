@@ -176,8 +176,8 @@ export function NotificationPrefsForm({ profile }: Props) {
           />
         </div>
         <p className="mt-3 text-[12px] text-ink-mute">
-          These choose WHICH pushes you get — delivery to this browser is
-          controlled below.
+          Push notifications also require your browser&apos;s permission,
+          we&apos;ll ask when you first enable them.
         </p>
       </Card>
 

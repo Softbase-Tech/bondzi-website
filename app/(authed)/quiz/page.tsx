@@ -66,7 +66,7 @@ export default async function QuizPage() {
           </h1>
           <p className="mt-2 text-[15px] text-ink-soft max-w-[62ch]">
             Bondzi AI writes fresh questions matched to your exam and your
-            weakest topics — every session, brand new. Answers come with
+            weakest topics, every session, brand new. Answers come with
             step-by-step explanations.
           </p>
         </div>

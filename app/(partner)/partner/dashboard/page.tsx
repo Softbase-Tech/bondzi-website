@@ -125,7 +125,7 @@ export default async function PartnerDashboardPage() {
             <div>
               <p className="font-semibold text-ink">Pending approval</p>
               <p className="mt-1 text-[13px] text-ink-soft leading-relaxed">
-                Your code works immediately — share it away. Earnings
+                Your code works immediately, share it away. Earnings
                 accrue but payouts unlock once we approve your account.
               </p>
             </div>
@@ -169,7 +169,7 @@ export default async function PartnerDashboardPage() {
             </h2>
             <p className="text-[13px] text-ink-mute mt-1">
               Share this code with students. Anyone who signs up with
-              it — and stays — earns you commission.
+              it, and stays, earns you commission.
             </p>
           </CardHeader>
           <CardBody className="space-y-3">

@@ -23,7 +23,7 @@ export default function PartnerSignedOutPage() {
         </h1>
         <p className="mt-3 text-ink-soft text-[15px] leading-relaxed">
           You&apos;ve been signed out of the Bondzi partner portal.
-          Thanks for the referrals — sign back in whenever you&apos;re
+          Thanks for the referrals, sign back in whenever you&apos;re
           ready.
         </p>
         <Card className="mt-8">

@@ -11,7 +11,7 @@ import { ReferralPanel } from "./ReferralPanel";
 
 export const metadata: Metadata = {
   title: "Share & earn XP",
-  description: "Invite friends to Bondzi — you both earn XP.",
+  description: "Invite friends to Bondzi · you both earn XP.",
 };
 
 /**
