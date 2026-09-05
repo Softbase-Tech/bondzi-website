@@ -34,6 +34,29 @@ export async function markAllNotificationsRead(): Promise<void> {
   });
 }
 
+export interface RegisterPushTokenBody {
+  platform: "web";
+  fcmToken: string;
+  /** Backend caps this at 128 chars. */
+  deviceId?: string;
+  appVersion?: string;
+}
+
+/**
+ * Register (upsert) this browser's FCM token so the backend can target
+ * it with re-engagement pushes. Re-registering the same token is an
+ * upsert server-side — safe to call on every app load.
+ */
+export async function registerPushToken(
+  body: RegisterPushTokenBody,
+): Promise<void> {
+  await api<void>("/notifications/push-token", {
+    method: "POST",
+    body,
+    raw: true,
+  });
+}
+
 /**
  * Maps the notification's `data.type` (or plain `type` fallback) to the
  * route web students land on when they tap the row. Matches mobile's

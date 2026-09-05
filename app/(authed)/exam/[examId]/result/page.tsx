@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { getExamResult, getExamSession } from "@/lib/api/exams";
+import { PushPromptCard } from "@/components/push/PushPromptCard";
 import { ReviewList } from "./ReviewList";
 
 interface Props {
@@ -134,6 +135,15 @@ export default async function ExamResultPage({ params }: Props) {
           tone="warm"
         />
       </section>
+
+      {/*
+        Push opt-in prompt — the just-finished session is the
+        "meaningful moment" (never on cold load), and both quiz and
+        past-paper runs land here via ExamRunner. The card feature-
+        detects, respects a 14-day dismissal snooze, and renders
+        nothing once enabled/denied/unsupported.
+      */}
+      <PushPromptCard />
 
       {/* By-topic breakdown */}
       {result.byTopic.length > 0 ? (
