@@ -30,9 +30,9 @@ export const POSTS: PostMeta[] = [
     title:
       "WASSCE Nov/Dec 2026 timetable (official): dates for every Ghana paper",
     description:
-      "The official WAEC timetable for the 2026 WASSCE for Private Candidates (Second Series) — 4 September to 29 October 2026 — with dates and times for every major Ghana paper.",
+      "The official WAEC timetable for the 2026 WASSCE for Private Candidates (Second Series), running 4 September to 29 October 2026, with dates and times for every major Ghana paper.",
     excerpt:
-      "WAEC has released the final timetable — and the 'Nov/Dec' series actually runs 4 September to 29 October. Every Ghana paper, date by date.",
+      "WAEC has released the final timetable, and the 'Nov/Dec' series actually runs 4 September to 29 October. Every Ghana paper, date by date.",
     publishedAt: "2026-09-04",
     readMinutes: 8,
     tags: ["WASSCE", "Nov/Dec", "WAEC", "Timetable"],
@@ -41,7 +41,7 @@ export const POSTS: PostMeta[] = [
     slug: "how-to-use-bondzi",
     title: "How to use Bondzi: a step-by-step guide to smarter WAEC prep",
     description:
-      "A complete walkthrough of the Bondzi app — past-question practice, AI explanations, spaced review, level tests, mock exams, and what's free versus paid.",
+      "A complete walkthrough of the Bondzi app: past-question practice, AI explanations, spaced review, level tests, mock exams, and what's free versus paid.",
     excerpt:
       "From your first sign-up to your first full mock exam: how every part of Bondzi works, and the daily habit that actually moves grades.",
     publishedAt: "2026-09-04",

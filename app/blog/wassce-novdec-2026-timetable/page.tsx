@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
 /**
  * Dates, paper codes, and times below are transcribed from WAEC's
- * "WASSCE for Private Candidates, 2026 — Second Series — Final
+ * "WASSCE for Private Candidates, 2026, Second Series, Final
  * International Timetable" (issued Headquarters, Accra, August 2026).
  * Subjects shown are the Ghana-available papers most candidates sit.
  * If WAEC issues a revision, update this table from the official PDF.
@@ -58,7 +58,7 @@ const PAPERS: {
   },
   {
     date: "Mon 28 Sep",
-    subject: "English Language — Orals (Paper 3)",
+    subject: "English Language Orals (Paper 3)",
     detail: "1st set 08:30–09:15 · 2nd set 09:45–10:30",
   },
   {
@@ -90,13 +90,13 @@ const PAPERS: {
   },
   {
     date: "Thu 8 Oct",
-    subject: "Literature-in-English — Paper 3 (Practical Test)",
+    subject: "Literature-in-English Paper 3 (Practical Test)",
     detail: "13:00–15:00",
   },
   {
     date: "Fri 9 Oct",
     subject: "CRS · Islamic Studies · W.A. Traditional Religion",
-    detail: "Morning sessions from 08:30 — check your subject's row",
+    detail: "Morning sessions from 08:30. Check your subject's row",
   },
   {
     date: "Sat 10 Oct",
@@ -153,7 +153,7 @@ const PAPERS: {
   },
   {
     date: "Tue 27 Oct",
-    subject: "ICT — Paper 3 (Practical)",
+    subject: "ICT Paper 3 (Practical)",
     detail: "1st set 08:30–10:30 · 2nd set 11:00–13:00",
   },
   {
@@ -171,43 +171,48 @@ export default function Page() {
       <ArticleLayout post={post}>
         <p>
           WAEC has released the <strong>final international timetable</strong>{" "}
-          for the West African Senior School Certificate Examination for
-          Private Candidates, 2026 — Second Series (the sitting most people
-          call <strong>Nov/Dec</strong>, even in years when it starts
-          earlier). The 2026 second series runs from{" "}
-          <strong>Friday 4 September to Thursday 29 October 2026</strong> —
-          notably earlier than the name suggests, so if you were pacing your
-          revision toward a November start, your calendar just moved.
+          for the WASSCE for Private Candidates, 2026 (Second Series). This
+          is the sitting everybody calls <strong>Nov/Dec</strong>, but check
+          the dates: the 2026 series runs from{" "}
+          <strong>Friday 4 September to Thursday 29 October 2026</strong>. If
+          you were planning to start serious revision in October, you no
+          longer have that luxury.
         </p>
         <p>
-          This guide covers the Ghana papers most candidates sit. It is a
-          transcription of WAEC&apos;s official timetable (issued from
-          Headquarters, Accra, in August 2026) — always confirm your own
-          papers against the official copy at{" "}
+          Below you will find the dates and times for the Ghana papers most
+          candidates sit, taken from WAEC&apos;s official timetable issued
+          from Headquarters, Accra, in August 2026. Two things before you
+          scroll: confirm your own papers against the official copy at{" "}
           <a href="https://waecgh.org/timetable/">waecgh.org</a> before exam
-          week, and note this series is for candidates on the{" "}
-          <strong>old curriculum</strong>.
+          week, and remember this series is set on the{" "}
+          <strong>old curriculum</strong>. If you are not sure what that
+          means for you, read our{" "}
+          <Link href="/blog/ghana-new-curriculum-guide">
+            guide to the new curriculum
+          </Link>{" "}
+          after this.
         </p>
 
         <h2>The shape of the series</h2>
         <ul>
           <li>
-            <strong>Fri 4 Sep 2026</strong> — practical planning sessions
+            <strong>Fri 4 Sep 2026:</strong> practical planning sessions
             (Foods &amp; Nutrition, Home Management) open the series.
           </li>
           <li>
-            <strong>7–26 Sep</strong> — project-work and orals window:
-            Ghanaian-language orals, visual-arts project work, French oral,
-            music performance. Dates and times for these are arranged by the
-            Council and communicated to registered candidates directly.
+            <strong>7 to 26 Sep:</strong> project work and orals, including
+            Ghanaian-language orals, visual-arts project work, French oral
+            and music performance. WAEC arranges the exact dates and times
+            for these and communicates them to registered candidates
+            directly.
           </li>
           <li>
-            <strong>21 Sep – 29 Oct</strong> — the written papers, laid out
-            below.
+            <strong>21 Sep to 29 Oct:</strong> the written papers, laid out
+            in the table below.
           </li>
         </ul>
 
-        <h2>Ghana written papers — date by date</h2>
+        <h2>Ghana written papers, date by date</h2>
         <p>
           All times are GMT, which is Ghana&apos;s local time. Morning
           sessions start 08:30; afternoon sessions start 13:00 unless shown.
@@ -235,7 +240,7 @@ export default function Page() {
 
         <ArticleCta
           headline="Your paper has a date. Your prep should too."
-          body="Practise the exact subjects above with thirty-four years of WAEC past questions and an AI tutor on every wrong answer — free to start."
+          body="Practise the exact subjects above with thirty-four years of real WAEC past questions, free. Every answer you get wrong comes with an AI explanation."
         />
 
         <h2>How to read the official timetable</h2>
@@ -243,13 +248,14 @@ export default function Page() {
           <li>
             <strong>If the question paper and the timetable disagree on
             duration, the question paper wins.</strong> WAEC states this
-            explicitly in the timetable notes.
+            rule in the timetable notes itself.
           </li>
           <li>
             <strong>&ldquo;1st set / 2nd set&rdquo;</strong> means candidates
-            are split into two sittings of the same paper (English orals, ICT
-            practical, and a few others). Your centre tells you which set
-            you&apos;re in — don&apos;t assume the earlier one.
+            are split into two sittings of the same paper. This applies to
+            the English orals, the ICT practical and a few others. Your
+            centre tells you which set you are in, so do not assume you are
+            in the earlier one.
           </li>
           <li>
             <strong>Project-work papers arrive early.</strong> Question
@@ -266,26 +272,26 @@ export default function Page() {
 
         <h2>Planning backwards from your dates</h2>
         <p>
-          The most useful property of a released timetable is that it turns
-          &ldquo;revise everything&rdquo; into a schedule. Two examples from
+          Now that you have dates, stop revising &ldquo;everything&rdquo;
+          and build a schedule that ends on your papers. Two examples from
           the table:
         </p>
         <ul>
           <li>
             <strong>Core Mathematics sits on Saturday 3 October.</strong>{" "}
-            Counting back, that leaves roughly five weeks from today — enough
-            for one timed past paper a week with the remaining days spent
-            fixing whatever that paper exposed. Our{" "}
+            Count backwards and you have roughly five weeks. That is enough
+            for one timed past paper every week, with the days in between
+            spent fixing whatever that paper exposed. Our{" "}
             <Link href="/blog/wassce-core-mathematics-syllabus">
               Core Maths syllabus guide
             </Link>{" "}
             has the full topic list and a week-by-week plan.
           </li>
           <li>
-            <strong>English Language splits across two dates</strong> — orals
+            <strong>English Language splits across two dates:</strong> orals
             on 28 September, then the written papers on 17 October. Prepare
-            the oral early; it&apos;s the paper candidates most often forget
-            is coming.
+            the oral early. It is the paper candidates most often forget is
+            coming until the week it arrives.
           </li>
         </ul>
         <p>
