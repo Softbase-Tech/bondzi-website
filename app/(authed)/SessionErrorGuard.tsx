@@ -49,8 +49,11 @@ export function SessionErrorGuard() {
       window.location.replace(appPath("/login"));
     };
     // Failsafe: if the signOut round-trip hangs (flaky network), send
-    // them to login anyway — the session cookie is already unusable.
-    const failsafe = window.setTimeout(goToLogin, 3000);
+    // them to login anyway. Generous timeout — navigating too early
+    // CANCELS the in-flight signOut POST, leaving the cookie behind.
+    // (The proxy now treats errored sessions as unauthenticated, so
+    // even a surviving cookie can't bounce /login back to /dashboard.)
+    const failsafe = window.setTimeout(goToLogin, 8000);
     void signOut({ redirect: false })
       .catch(() => undefined)
       .finally(() => {

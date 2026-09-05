@@ -107,8 +107,16 @@ function isAuthPath(pathname: string): boolean {
 
 export default auth((req: NextRequest & { auth: unknown }) => {
   const { pathname, search } = req.nextUrl;
-  const session = req.auth as { user?: unknown } | null;
-  const isAuthed = Boolean(session?.user);
+  const session = req.auth as { user?: unknown; error?: unknown } | null;
+  // A session carrying an error (refresh-token expired / refresh
+  // failed / device kicked) is dead weight: its access token can't be
+  // renewed, so every page it renders is one failed API call from a
+  // "Session ended" toast. Treat it as UNAUTHENTICATED here so
+  // protected pages server-redirect straight to /login and /login
+  // itself stays reachable. Without this, the errored-but-present
+  // cookie bounced /login → /dashboard → guard → /login forever (the
+  // infinite "Session ended" refresh loop).
+  const isAuthed = Boolean(session?.user) && !session?.error;
 
   if (isAlwaysPublic(pathname)) return NextResponse.next();
 
