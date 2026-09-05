@@ -45,6 +45,33 @@ export function clearPushPromptSnooze(): void {
     // Best-effort.
   }
 }
+
+/**
+ * Automatic permission request — fired on authed-app load when
+ * permission is still "default" (product call: the ask must not depend
+ * on the CTA click). Browser reality check:
+ *
+ *   - Chrome/Edge/Android: shows the native prompt.
+ *   - Firefox: a gestureless request is demoted to the quiet
+ *     address-bar icon; the CTA card stays as the real path.
+ *   - Safari (macOS + iOS PWA): requires a user gesture — the call
+ *     rejects; we swallow it and the CTA card carries the ask.
+ *
+ * On grant it completes the full opt-in (token registered with the
+ * backend + local flag), identical to the card's "Turn on".
+ */
+export async function autoRequestPushPermission(): Promise<void> {
+  if (!isPushAvailable()) return;
+  if (Notification.permission !== "default") return;
+  try {
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted") return;
+    const registered = await obtainAndRegisterToken();
+    if (registered) writePushEnabledFlag(true);
+  } catch {
+    // Gesture-required browsers land here — the prompt card remains.
+  }
+}
 /** `source` marker on messages the service worker posts to the page. */
 export const SW_MESSAGE_SOURCE = "bondzi-push";
 
