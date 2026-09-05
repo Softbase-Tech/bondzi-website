@@ -294,20 +294,24 @@ body {
     margin-top: 1.6em;
   }
 }
-.prose-bondzi p {
+/* Anchors and paragraphs inside a `not-prose` island (e.g. the inline
+   CTA card) keep their own utility colors — without the guard,
+   `.prose-bondzi a`'s orange wins over `text-on-brand` and the CTA
+   label renders orange-on-orange (invisible). */
+.prose-bondzi p:not(.not-prose *) {
   color: var(--ink-soft);
 }
 .prose-bondzi strong {
   color: var(--ink);
   font-weight: 600;
 }
-.prose-bondzi a {
+.prose-bondzi a:not(.not-prose *) {
   color: var(--orange);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
-.prose-bondzi a:hover {
+.prose-bondzi a:not(.not-prose *):hover {
   color: var(--orange-deep);
 }
 .prose-bondzi ul,
