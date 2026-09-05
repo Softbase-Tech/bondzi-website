@@ -66,10 +66,9 @@ export function OnboardingSubjectPicker({
   // exactly the thing worth measuring: how many students bail past the
   // picker with only the pre-checked cores.
   //
-  // Both routes continue to the plans page in onboarding mode (one
-  // skippable pricing look while intent is highest — right after
-  // signup). The plans page's onboarding banner carries the escape
-  // hatch to the dashboard.
+  // Both routes continue to the onboarding pricing step (one
+  // skippable look at Plus/Pro while intent is highest — right after
+  // signup). That step carries the escape hatch to the dashboard.
   const save = ({ skipped }: { skipped: boolean }) => {
     startTransition(async () => {
       // Bucketed, not raw — the exact count is noise, the shape of the
@@ -89,7 +88,7 @@ export function OnboardingSubjectPicker({
             : "Couldn't save your picks. You can update them under Settings later.",
         );
       }
-      router.replace("/subscription/plans?onboarding=1");
+      router.replace("/onboarding/plans");
     });
   };
 
