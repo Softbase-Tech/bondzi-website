@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { detectAuthMode, normalizeGhanaPhone } from "@/lib/auth-input";
 import { getWebDeviceId, getWebDeviceName } from "@/lib/device";
+import { clearPushPromptSnooze } from "@/lib/push/firebase";
 import { trackEvent } from "@/lib/analytics";
 
 /**
@@ -95,6 +96,10 @@ export function LoginForm() {
         // Success — clear form state so a "back" tap doesn't leak the
         // last-typed password into a re-mount.
         setPassword("");
+        // Fresh session = fresh chance to say yes to notifications:
+        // forget any earlier prompt dismissal so the dashboard card
+        // shows again (browser-DENIED stays hidden — can't re-ask).
+        clearPushPromptSnooze();
         // Prefer router.replace to avoid a bounceable /login entry
         // in history.
         router.replace(returnTo);
