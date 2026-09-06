@@ -30,11 +30,22 @@ export default function Page() {
     <>
       <ArticleLayout post={post}>
         <p>
-          When the WAEC results window opens, traffic to the WAEC Ghana
-          checker spikes hard enough that the site can buckle for a few hours
-          at a time. Knowing exactly what you need, where to go, and what
-          each grade means turns a stressful afternoon into a five-minute
-          job.
+          WASSCE 2026 results are out, and the checker is getting hammered:
+          when the results window opens, traffic spikes hard enough that the
+          site can buckle for hours at a time. Knowing exactly what you
+          need, where to go, and what each grade means turns a stressful
+          afternoon into a five-minute job.
+        </p>
+        <p>
+          Once you have your grades, two follow-ups answer most questions:{" "}
+          <Link href="/blog/wassce-grades-explained">
+            what your grades and aggregate actually mean
+          </Link>
+          , and{" "}
+          <Link href="/blog/after-wassce-results">
+            your options if the grades are not what you needed
+          </Link>
+          .
         </p>
 
         <h2>Where to check WAEC results in Ghana</h2>

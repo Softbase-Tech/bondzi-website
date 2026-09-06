@@ -59,9 +59,18 @@ export default function Page() {
           book chapter by chapter.
         </p>
         <p>
-          This guide explains what learning materials are, why the official
-          versions beat whatever is circulating in your study group, and
-          where to download them for your level.
+          The portal behind it all is{" "}
+          <a
+            href="https://curriculumresources.edu.gh"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            curriculumresources.edu.gh
+          </a>
+          , the official curriculum resources site. This guide explains what
+          learning materials are, why the official versions beat whatever is
+          circulating in your study group, and where on that portal to find
+          your year&apos;s books.
         </p>
 
         <h2>Syllabus vs learning material: know the difference</h2>
