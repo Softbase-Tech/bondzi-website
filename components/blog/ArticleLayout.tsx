@@ -1,9 +1,12 @@
+import { Children } from "react";
 import Link from "next/link";
 import { TrackedLink } from "../analytics/TrackedLink";
 import { appPath } from "../../lib/urls";
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import type { PostMeta } from "../../lib/blog/posts";
+import { getWebAdsConfig } from "../../lib/api/ads";
+import { AdSlot } from "../ads/AdSlot";
 
 interface Props {
   post: PostMeta;
@@ -17,7 +20,32 @@ interface Props {
  *  - `prose` body container styled for serif headings + readable measure
  *  - Footer cross-link back to the app
  */
-export function ArticleLayout({ post, children }: Props) {
+export async function ArticleLayout({ post, children }: Props) {
+  // Admin-controlled ad placements (blog first). Failure = no ads.
+  const ads = await getWebAdsConfig();
+  const inline = ads.placements["blog_inline"];
+  const footer = ads.placements["blog_footer"];
+
+  // blog_inline: inject the unit after the Nth top-level content block
+  // (default 6 ≈ after the second section) — far enough in that the
+  // reader has value, early enough that most scroll depths see it.
+  let body = children;
+  if (inline && ads.publisherId) {
+    const blocks = Children.toArray(children);
+    const at = Math.min(Math.max(inline.afterBlock ?? 6, 1), blocks.length);
+    body = (
+      <>
+        {blocks.slice(0, at)}
+        <AdSlot
+          publisherId={ads.publisherId}
+          slotId={inline.slotId}
+          placement="blog_inline"
+        />
+        {blocks.slice(at)}
+      </>
+    );
+  }
+
   return (
     <main id="main" className="bg-bg text-ink">
       <header className="sticky top-0 z-40 bg-bg/85 backdrop-blur border-b border-rule">
@@ -71,7 +99,15 @@ export function ArticleLayout({ post, children }: Props) {
           ))}
         </div>
 
-        <div className="mt-9 sm:mt-12 prose-bondzi">{children}</div>
+        <div className="mt-9 sm:mt-12 prose-bondzi">{body}</div>
+
+        {footer && ads.publisherId ? (
+          <AdSlot
+            publisherId={ads.publisherId}
+            slotId={footer.slotId}
+            placement="blog_footer"
+          />
+        ) : null}
 
         <hr className="mt-12 sm:mt-16 border-rule" />
 
