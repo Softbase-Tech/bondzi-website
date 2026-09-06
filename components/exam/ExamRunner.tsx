@@ -76,6 +76,10 @@ interface LocalAnswer {
 export function ExamRunner({ session }: Props) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
+  // When the on-screen question was last brought into view — the delta
+  // at answer time becomes `timeSpentMs`, which mobile has always sent
+  // and web never did (admin's Active-min stat read 0 for web sessions).
+  const questionShownAtRef = useRef(Date.now());
   const [answers, setAnswers] = useState<Record<string, LocalAnswer>>({});
   const [marksForReview, setMarksForReview] = useState<Set<string>>(
     () => new Set(),
@@ -95,6 +99,10 @@ export function ExamRunner({ session }: Props) {
   const questions = session.questions;
   const total = questions.length;
   const currentQuestion: Question | undefined = questions[currentIndex];
+
+  useEffect(() => {
+    questionShownAtRef.current = Date.now();
+  }, [currentIndex]);
 
   // Prompt on tab close / refresh / URL-bar navigation. Fires the
   // native browser "Leave site?" dialog while the exam is in
@@ -167,9 +175,16 @@ export function ExamRunner({ session }: Props) {
       }));
 
       try {
+        // Clamped: a backgrounded tab can make the raw delta absurd,
+        // and 0 breaks the admin engagement stats' assumptions.
+        const timeSpentMs = Math.min(
+          10 * 60_000,
+          Math.max(250, Date.now() - questionShownAtRef.current),
+        );
         const res = await submitAnswer(session.id, {
           questionId: qid,
           selectedOptionId: optionId,
+          timeSpentMs,
           idempotencyKey,
         });
         setAnswers((prev) => ({
@@ -523,7 +538,7 @@ export function ExamRunner({ session }: Props) {
         title="Submit exam?"
         description={
           answeredCount < total
-            ? `You've answered ${answeredCount} of ${total}. Any unanswered questions will be marked skipped.`
+            ? `${total - answeredCount} of ${total} questions are still unanswered. Answer every question to submit — use the question map below to jump to the ones you've missed.`
             : "You've answered every question. Ready to see your result?"
         }
       >
@@ -534,11 +549,18 @@ export function ExamRunner({ session }: Props) {
           >
             Keep working
           </Button>
+          {/* No skips: the backend rejects partial manual submissions
+              (timer expiry is the only path that finalises a partial
+              session), so the button stays disabled until every
+              question has an answer. */}
           <Button
             onClick={() => handleComplete("manual")}
             loading={submittingComplete}
+            disabled={answeredCount < total}
           >
-            Submit
+            {answeredCount < total
+              ? `${total - answeredCount} left`
+              : "Submit"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -553,7 +575,7 @@ export function ExamRunner({ session }: Props) {
         open={confirmAbandonOpen}
         onOpenChange={setConfirmAbandonOpen}
         title="Leave this exam?"
-        description="Every answer you've picked is already saved. You can submit now to see your result, or discard this session and start over later."
+        description="Every answer you've picked is already saved and this session will wait for you under In Progress. Submitting requires every question answered; you can also discard this session entirely."
       >
         <DialogActions>
           <Button
