@@ -230,6 +230,15 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        {/* Google AdSense — site-ownership verification + ad serving.
+            Plain async script (not next/script) so it sits in the
+            initial <head> HTML, which is what AdSense's verification
+            crawler checks. Paired with /ads.txt in public/. */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8786512219927724"
+          crossOrigin="anonymous"
+        />
       </head>
       <body>
         <a
