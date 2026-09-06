@@ -120,6 +120,12 @@ export function redactAnalyticsUrl(rawUrl: string): string {
 // ---------------------------------------------------------------------------
 
 /** Which surface a shared event fired from. Closed set — keep it that way. */
+export type AdPlacement =
+  | "blog_inline"
+  | "blog_footer"
+  | "landing_mid"
+  | "app_dashboard";
+
 export type AnalyticsSurface =
   | "home"
   | "home_hero"
@@ -165,6 +171,8 @@ export type PaidAccount = "plus" | "pro";
 export interface AnalyticsEventMap {
   /** Any marketing/nav call-to-action click. */
   cta_click: { surface: AnalyticsSurface; target: string };
+  /** An AdSense unit requested a fill on this placement. */
+  ad_impression: { placement: AdPlacement };
   /** Mobile app acquisition — the primary conversion on the marketing site. */
   app_download_click: { platform: "android" | "ios"; surface: AnalyticsSurface };
 
