@@ -94,12 +94,14 @@ export const POSTS: PostMeta[] = [
   },
   {
     slug: "ges-academic-calendar",
-    title: "GES academic calendar: reopening and vacation dates in one place",
+    title:
+      "GES 2026/27 academic calendar: reopening, vacation, BECE and WASSCE dates",
     description:
       "The current GES reopening and vacation dates for SHS and basic schools, the official source to verify against, and how to use the break without losing it.",
     excerpt:
-      "When are schools reopening? The current GES dates for SHS and basic school, with the official source linked so you never travel on a rumour.",
+      "When are schools reopening? The 2026/27 GES dates for SHS and basic school, plus BECE and WASSCE 2027 windows, with the official source linked.",
     publishedAt: "2026-09-06",
+    updatedAt: "2026-09-06",
     readMinutes: 4,
     tags: ["GES", "Calendar", "SHS", "JHS"],
   },
