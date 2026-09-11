@@ -20,6 +20,8 @@ import { listYears } from "@/lib/api/questions";
 import { listPmTestSubjects } from "@/lib/api/pm-test";
 import { getSubjectProgress } from "@/lib/api/user";
 import { getWeaknessServer } from "@/lib/api/weakness";
+import { getMySubscription, isPro } from "@/lib/api/subscription";
+import { SubjectInsightCard } from "@/components/subject/SubjectInsightCard";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -67,14 +69,22 @@ export default async function SubjectDetailPage({ params }: Props) {
   const { id } = await params;
   const { accessToken, profile } = session;
 
-  const [subjectRes, yearsRes, pmSubjectsRes, progressRes, weaknessRes] =
-    await Promise.allSettled([
-      getSubject(accessToken, id),
-      listYears(accessToken, id),
-      listPmTestSubjects(accessToken),
-      getSubjectProgress(accessToken),
-      getWeaknessServer(accessToken, id),
-    ]);
+  const [
+    subjectRes,
+    yearsRes,
+    pmSubjectsRes,
+    progressRes,
+    weaknessRes,
+    subRes,
+  ] = await Promise.allSettled([
+    getSubject(accessToken, id),
+    listYears(accessToken, id),
+    listPmTestSubjects(accessToken),
+    getSubjectProgress(accessToken),
+    getWeaknessServer(accessToken, id),
+    getMySubscription(accessToken),
+  ]);
+  const proTier = isPro(subRes.status === "fulfilled" ? subRes.value : null);
 
   if (subjectRes.status !== "fulfilled") {
     if (
@@ -198,6 +208,11 @@ export default async function SubjectDetailPage({ params }: Props) {
           </p>
         </Card>
       ) : null}
+
+      {/* Subject-scoped AI insight — parity with mobile subject hub.
+          Manual trigger so the daily quota isn't burned on page-load;
+          Free tier renders an upgrade CTA. */}
+      <SubjectInsightCard subjectId={subject.id} pro={proTier} />
 
       {noModesAvailable ? (
         <ComingSoonPanel subjectName={subject.name} />

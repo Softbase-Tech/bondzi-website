@@ -16,6 +16,7 @@ import { getUserStats, getSelectedSubjectIds } from "@/lib/api/user";
 import { listSubjects } from "@/lib/api/subjects";
 import { getResumeExam } from "@/lib/api/exams";
 import { getAchievementsServer } from "@/lib/api/achievements";
+import { getMySubscription, isPro } from "@/lib/api/subscription";
 import type { Achievement } from "@/lib/api/types";
 import { intersectWithSelected, hasSelection } from "@/lib/subjects/selected";
 import {
@@ -24,6 +25,7 @@ import {
 } from "@/components/subjects/SubjectSelectionCta";
 import { StreakDots } from "./StreakDots";
 import { PushPromptCard } from "@/components/push/PushPromptCard";
+import { AiReviewCard } from "@/components/dashboard/AiReviewCard";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -52,14 +54,21 @@ export default async function DashboardPage() {
   }
   const { accessToken, profile } = session;
 
-  const [statsRes, subjectsRes, selectedRes, resumeRes, achievementsRes] =
-    await Promise.allSettled([
-      getUserStats(accessToken),
-      listSubjects(accessToken, profile.examType),
-      getSelectedSubjectIds(accessToken),
-      getResumeExam(accessToken),
-      getAchievementsServer(accessToken),
-    ]);
+  const [
+    statsRes,
+    subjectsRes,
+    selectedRes,
+    resumeRes,
+    achievementsRes,
+    subRes,
+  ] = await Promise.allSettled([
+    getUserStats(accessToken),
+    listSubjects(accessToken, profile.examType),
+    getSelectedSubjectIds(accessToken),
+    getResumeExam(accessToken),
+    getAchievementsServer(accessToken),
+    getMySubscription(accessToken),
+  ]);
 
   const stats = statsRes.status === "fulfilled" ? statsRes.value : null;
   const subjects = subjectsRes.status === "fulfilled" ? subjectsRes.value : [];
@@ -68,6 +77,7 @@ export default async function DashboardPage() {
   const resume = resumeRes.status === "fulfilled" ? resumeRes.value : null;
   const achievements =
     achievementsRes.status === "fulfilled" ? achievementsRes.value : [];
+  const proTier = isPro(subRes.status === "fulfilled" ? subRes.value : null);
 
   const firstName = profile.fullName?.split(" ")[0] ?? "there";
   const streakDays = stats?.streakDays ?? profile.streakDays ?? 0;
@@ -146,6 +156,11 @@ export default async function DashboardPage() {
           </div>
         </div>
       ) : null}
+
+      {/* AI Study Review — parity with mobile home. Free tier renders a
+          locked upgrade CTA (no network); Plus/Pro fetch the monthly
+          quota client-side and render the latest review + regenerate. */}
+      <AiReviewCard pro={proTier} />
 
       {/* Stat tiles */}
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
