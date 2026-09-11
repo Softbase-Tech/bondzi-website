@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth/config";
 import { getSubject } from "@/lib/api/subjects";
 import { listSyllabusTopics } from "@/lib/api/syllabus";
 import { getMySubscription, isPro } from "@/lib/api/subscription";
+import { SubjectInsightCard } from "@/components/subject/SubjectInsightCard";
 import { LevelTestPicker } from "./LevelTestPicker";
 
 export const metadata: Metadata = {
@@ -69,6 +70,11 @@ export default async function LevelTestSubjectPage({
           next study session.
         </p>
       </header>
+
+      {/* Subject-scoped AI insight — parity with mobile. Manual
+          trigger so the student doesn't burn their daily quota just
+          by landing here; Free tier gets an upgrade CTA. */}
+      <SubjectInsightCard subjectId={subject.id} pro={proTier} />
 
       <LevelTestPicker
         subjectId={subject.id}

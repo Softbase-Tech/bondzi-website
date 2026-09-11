@@ -7,6 +7,8 @@ import { ApiError } from "@/lib/api/client";
 import { Card } from "@/components/ui/Card";
 import { getSubject } from "@/lib/api/subjects";
 import { listYears } from "@/lib/api/questions";
+import { getMySubscription, isPro } from "@/lib/api/subscription";
+import { SubjectInsightCard } from "@/components/subject/SubjectInsightCard";
 
 interface Props {
   params: Promise<{ subjectId: string }>;
@@ -38,10 +40,12 @@ export default async function SubjectYearsPage({ params }: Props) {
   const { subjectId } = await params;
   const { accessToken } = session;
 
-  const [subjectRes, yearsRes] = await Promise.allSettled([
+  const [subjectRes, yearsRes, subRes] = await Promise.allSettled([
     getSubject(accessToken, subjectId),
     listYears(accessToken, subjectId),
+    getMySubscription(accessToken),
   ]);
+  const proTier = isPro(subRes.status === "fulfilled" ? subRes.value : null);
 
   if (subjectRes.status !== "fulfilled") {
     if (
@@ -85,6 +89,11 @@ export default async function SubjectYearsPage({ params }: Props) {
             : "No past questions published yet for this subject."}
         </p>
       </section>
+
+      {/* Subject-scoped AI insight — parity with mobile. Manual
+          trigger so the student doesn't burn their daily quota just
+          by landing here; Free tier gets an upgrade CTA. */}
+      <SubjectInsightCard subjectId={subject.id} pro={proTier} />
 
       {sortedYears.length === 0 ? (
         <Card className="p-8 text-center">
