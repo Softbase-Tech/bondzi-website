@@ -168,3 +168,30 @@ export async function abandonExam(examId: string): Promise<void> {
     { method: "POST", body: {}, raw: true },
   );
 }
+
+/**
+ * `POST /exams/:id/breakdown` — generates the post-exam AI narrative
+ * for a completed exam. Idempotent on the server side: a cached
+ * breakdown returns without consuming another `post_exam_ai_breakdown`
+ * entitlement point, so a duplicate call is harmless. Throws
+ * `ApiError` 403 for Free tier (`AI_REVIEW_REQUIRES_SUBSCRIPTION` or
+ * the tier-service equivalent) and 400 if the exam isn't COMPLETED.
+ */
+export async function generateExamBreakdown(examId: string): Promise<{
+  breakdown: string;
+  recommendations: Record<string, unknown>[];
+  generatedAt: string;
+  model: string;
+  cached: boolean;
+}> {
+  return api<{
+    breakdown: string;
+    recommendations: Record<string, unknown>[];
+    generatedAt: string;
+    model: string;
+    cached: boolean;
+  }>(`/exams/${encodeURIComponent(examId)}/breakdown`, {
+    method: "POST",
+    body: {},
+  });
+}

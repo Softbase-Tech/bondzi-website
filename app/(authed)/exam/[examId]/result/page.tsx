@@ -8,7 +8,9 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { getExamResult, getExamSession } from "@/lib/api/exams";
+import { getMySubscription, isPro } from "@/lib/api/subscription";
 import { PushPromptCard } from "@/components/push/PushPromptCard";
+import { PostExamBreakdown } from "@/components/exam/PostExamBreakdown";
 import { ReviewList } from "./ReviewList";
 
 interface Props {
@@ -35,10 +37,12 @@ export default async function ExamResultPage({ params }: Props) {
   if (!session?.accessToken) redirect("/login");
   const { examId } = await params;
 
-  const [resultRes, sessionRes] = await Promise.allSettled([
+  const [resultRes, sessionRes, subRes] = await Promise.allSettled([
     getExamResult(session.accessToken, examId),
     getExamSession(session.accessToken, examId),
+    getMySubscription(session.accessToken),
   ]);
+  const proTier = isPro(subRes.status === "fulfilled" ? subRes.value : null);
 
   if (resultRes.status !== "fulfilled") {
     if (
@@ -156,6 +160,17 @@ export default async function ExamResultPage({ params }: Props) {
         nothing once enabled/denied/unsupported.
       */}
       <PushPromptCard />
+
+      {/* AI post-exam breakdown — parity with mobile. Server ships the
+          existing breakdown (if any) inline in the result payload, so
+          the card renders with no round-trip; Pro without a breakdown
+          gets a Generate CTA that idempotently backs the same endpoint
+          mobile hits. Free tier gets the upgrade card. */}
+      <PostExamBreakdown
+        examId={result.examId}
+        initialBreakdown={result.aiBreakdown}
+        pro={proTier}
+      />
 
       {/* By-topic breakdown */}
       {result.byTopic.length > 0 ? (

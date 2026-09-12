@@ -312,6 +312,20 @@ export interface ExamResult {
     yourAnswer: string | null;
     correctAnswer: string;
   }[];
+  /**
+   * Post-exam AI breakdown — `null` until the student generates one
+   * via POST /exams/:id/breakdown. Inlined into the result payload
+   * so the client renders the correct affordance ("Generate" vs
+   * "Read your breakdown") on first paint.
+   */
+  aiBreakdown: ExamAiBreakdown | null;
+}
+
+export interface ExamAiBreakdown {
+  narrative: string;
+  recommendations: Record<string, unknown>[];
+  generatedAt: string;
+  model: string;
 }
 
 export interface AnswerResponse {
